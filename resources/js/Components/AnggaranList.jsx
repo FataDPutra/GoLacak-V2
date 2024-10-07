@@ -12,34 +12,51 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
         }
     };
 
+    // Fungsi untuk memformat angka ke format mata uang
+    const formatCurrency = (amount) => {
+        return `Rp ${parseFloat(amount).toLocaleString("id-ID")}`; // Format angka menjadi mata uang Rupiah
+    };
+
     return (
         <table>
             <thead>
                 <tr>
+                    <th>Nama Kegiatan</th>
                     <th>Anggaran Murni</th>
                     <th>Pergeseran</th>
                     <th>Perubahan</th>
-                    <th>Kegiatan</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                {anggarans.map((anggaran) => (
-                    <tr key={anggaran.id}>
-                        <td>{`Rp ${anggaran.anggaran_murni}`}</td>
-                        <td>{`Rp ${anggaran.pergeseran}`}</td>
-                        <td>{`Rp ${anggaran.perubahan}`}</td>
-                        <td>{anggaran.kegiatan?.nama_kegiatan}</td>
-                        <td>
-                            <button onClick={() => setEditAnggaran(anggaran)}>
-                                Edit
-                            </button>
-                            <button onClick={() => handleDelete(anggaran.id)}>
-                                Hapus
-                            </button>
+                {anggarans.length === 0 ? (
+                    <tr>
+                        <td colSpan="5" style={{ textAlign: "center" }}>
+                            Tidak ada anggaran tersedia.
                         </td>
                     </tr>
-                ))}
+                ) : (
+                    anggarans.map((anggaran) => (
+                        <tr key={anggaran.id}>
+                            <td>{anggaran.kegiatan?.nama_kegiatan}</td>
+                            <td>{formatCurrency(anggaran.anggaran_murni)}</td>
+                            <td>{formatCurrency(anggaran.pergeseran)}</td>
+                            <td>{formatCurrency(anggaran.perubahan)}</td>
+                            <td>
+                                <button
+                                    onClick={() => setEditAnggaran(anggaran)}
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(anggaran.id)}
+                                >
+                                    Hapus
+                                </button>
+                            </td>
+                        </tr>
+                    ))
+                )}
             </tbody>
         </table>
     );

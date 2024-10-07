@@ -10,36 +10,46 @@ export default function KegiatanForm({
     const [namaKegiatan, setNamaKegiatan] = useState("");
     const [programId, setProgramId] = useState("");
     const [subprogramId, setSubprogramId] = useState("");
-    const [noRekening, setNoRekening] = useState(""); // State untuk no_rekening
+    const [noRekening, setNoRekening] = useState("");
+    const [filteredSubprograms, setFilteredSubprograms] = useState([]);
 
     useEffect(() => {
         if (editKegiatan) {
             setNamaKegiatan(editKegiatan.nama_kegiatan);
             setProgramId(editKegiatan.program_id);
             setSubprogramId(editKegiatan.subprogram_id);
-
-            // Pastikan rekening ada sebelum mengambil no_rekening
-            setNoRekening(editKegiatan.rekening?.no_rekening || ""); // Jika rekening tidak ada, set ke string kosong
+            setNoRekening(editKegiatan.rekening?.no_rekening || "");
         }
     }, [editKegiatan]);
+
+    useEffect(() => {
+        // Filter subprogram berdasarkan program yang dipilih
+        if (programId) {
+            const selectedProgram = programs.find(
+                (program) => program.id === programId
+            );
+            setFilteredSubprograms(selectedProgram?.subprograms || []);
+            setSubprogramId(""); // Reset subprogram ketika program berubah
+        } else {
+            setFilteredSubprograms([]); // Reset jika tidak ada program yang dipilih
+            setSubprogramId(""); // Reset subprogram jika program kosong
+        }
+    }, [programId, programs]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        const data = {
+            nama_kegiatan: namaKegiatan,
+            program_id: programId,
+            subprogram_id: subprogramId,
+            no_rekening: noRekening,
+        };
+
         if (editKegiatan) {
-            Inertia.put(`/subkegiatan/${editKegiatan.id}`, {
-                nama_kegiatan: namaKegiatan,
-                program_id: programId,
-                subprogram_id: subprogramId,
-                no_rekening: noRekening, // Kirim no_rekening ke server
-            });
+            Inertia.put(`/subkegiatan/${editKegiatan.id}`, data);
         } else {
-            Inertia.post("/subkegiatan", {
-                nama_kegiatan: namaKegiatan,
-                program_id: programId,
-                subprogram_id: subprogramId,
-                no_rekening: noRekening, // Kirim no_rekening ke server
-            });
+            Inertia.post("/subkegiatan", data);
         }
     };
 
@@ -62,14 +72,15 @@ export default function KegiatanForm({
                 </select>
             </div>
             <div>
-                <label>Kegiatan</label>
+                <label>Subprogram</label>
                 <select
                     value={subprogramId}
                     onChange={(e) => setSubprogramId(e.target.value)}
                     required
+                    disabled={!programId} // Disable jika tidak ada program yang dipilih
                 >
-                    <option value="">Pilih Kegiatan</option>
-                    {subprograms.map((subprogram) => (
+                    <option value="">Pilih Subprogram</option>
+                    {filteredSubprograms.map((subprogram) => (
                         <option key={subprogram.id} value={subprogram.id}>
                             {subprogram.nama_subprogram}
                         </option>
@@ -77,7 +88,7 @@ export default function KegiatanForm({
                 </select>
             </div>
             <div>
-                <label>Nama Sub Kegiatan</label>
+                <label>Nama Kegiatan</label>
                 <input
                     type="text"
                     value={namaKegiatan}
@@ -95,7 +106,7 @@ export default function KegiatanForm({
                 />
             </div>
             <button type="submit">
-                {editKegiatan ? "Update Sub Kegiatan" : "Simpan Sub Kegiatan"}
+                {editKegiatan ? "Update Kegiatan" : "Simpan Kegiatan"}
             </button>
         </form>
     );

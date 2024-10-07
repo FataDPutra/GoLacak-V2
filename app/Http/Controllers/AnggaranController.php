@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anggaran;
-use App\Models\Kegiatan;
+use App\Models\Kegiatan; // Pastikan model Kegiatan diimport
+use App\Models\Program; // Import model Program
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,51 +12,44 @@ class AnggaranController extends Controller
 {
 public function index()
 {
+    // Ambil anggaran beserta kegiatan yang terkait
     $anggarans = Anggaran::with('kegiatan')->get();
-    $kegiatans = Kegiatan::all(); // Fetch all kegiatan for the dropdown
+
+    // Ambil semua program dengan subprogram dan kegiatan yang terkait
+    $programs = Program::with('subprograms.kegiatan')->get();
 
     return Inertia::render('Anggaran/Index', [
         'anggarans' => $anggarans,
-        'kegiatans' => $kegiatans,
+        'programs' => $programs, // Kirim data program
     ]);
 }
 
 
-    public function create()
-    {
-        $kegiatans = Kegiatan::all(); // Ambil semua kegiatan untuk dropdown
-        return Inertia::render('Anggaran/Create', [
-            'kegiatans' => $kegiatans,
-        ]);
-    }
-
     public function store(Request $request)
     {
-    $request->validate([
-        'anggaran_murni' => 'required|numeric',
-        'pergeseran' => 'nullable|numeric',
-        'perubahan' => 'nullable|numeric',
-        'kegiatan_id' => 'required|uuid|exists:kegiatan,id',
-    ]);
-    
-    Anggaran::create([
-        'anggaran_murni' => $request->anggaran_murni,
-        'pergeseran' => $request->pergeseran ?? 0, // Default to 0 if not provided
-        'perubahan' => $request->perubahan ?? 0, // Default to 0 if not provided
-        'kegiatan_id' => $request->kegiatan_id,
-    ]);
-
-        return redirect()->route('anggaran.index')->with('success', 'Anggaran berhasil ditambahkan!');
-    }
-
-    public function edit($id)
-    {
-        $anggaran = Anggaran::with('kegiatan')->findOrFail($id);
-        $kegiatans = Kegiatan::all(); // Ambil semua kegiatan untuk dropdown
-        return Inertia::render('Anggaran/Edit', [
-            'anggaran' => $anggaran,
-            'kegiatans' => $kegiatans,
+        $request->validate([
+            'anggaran_murni' => 'required|numeric',
+            'pergeseran' => 'nullable|numeric',
+            'perubahan' => 'nullable|numeric',
+            'kegiatan_id' => 'required|uuid|exists:kegiatan,id',
+            'subprogram_id' => 'required|uuid|exists:subprograms,id', // Validasi subprogram
+            'program_id' => 'required|uuid|exists:programs,id', // Validasi program
         ]);
+
+        try {
+            Anggaran::create([
+                'anggaran_murni' => $request->anggaran_murni,
+                'pergeseran' => $request->pergeseran ?? 0,
+                'perubahan' => $request->perubahan ?? 0,
+                'kegiatan_id' => $request->kegiatan_id,
+                'subprogram_id' => $request->subprogram_id, // Tambahkan subprogram_id
+                'program_id' => $request->program_id, // Tambahkan program_id
+            ]);
+
+            return redirect()->back()->with('success', 'Anggaran berhasil dibuat!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function update(Request $request, $id)
@@ -65,24 +59,38 @@ public function index()
             'pergeseran' => 'nullable|numeric',
             'perubahan' => 'nullable|numeric',
             'kegiatan_id' => 'required|uuid|exists:kegiatan,id',
+            'subprogram_id' => 'required|uuid|exists:subprograms,id', // Validasi subprogram
+            'program_id' => 'required|uuid|exists:programs,id', // Validasi program
         ]);
 
-        $anggaran = Anggaran::findOrFail($id);
-        $anggaran->update([
-            'anggaran_murni' => $request->anggaran_murni,
-            'pergeseran' => $request->pergeseran ?? 0,
-            'perubahan' => $request->perubahan ?? 0,
-            'kegiatan_id' => $request->kegiatan_id,
-        ]);
+        try {
+            $anggaran = Anggaran::findOrFail($id);
 
-        return redirect()->route('anggaran.index')->with('success', 'Anggaran berhasil diperbarui!');
+            // Update anggaran dengan data baru
+            $anggaran->update([
+                'anggaran_murni' => $request->anggaran_murni,
+                'pergeseran' => $request->pergeseran ?? 0,
+                'perubahan' => $request->perubahan ?? 0,
+                'kegiatan_id' => $request->kegiatan_id,
+                'subprogram_id' => $request->subprogram_id, // Update subprogram_id
+                'program_id' => $request->program_id, // Update program_id
+            ]);
+
+            return redirect()->back()->with('success', 'Anggaran berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)
     {
-        $anggaran = Anggaran::findOrFail($id);
-        $anggaran->delete();
+        try {
+            $anggaran = Anggaran::findOrFail($id);
+            $anggaran->delete();
 
-        return redirect()->route('anggaran.index')->with('success', 'Anggaran berhasil dihapus!');
+            return redirect()->back()->with('success', 'Anggaran berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

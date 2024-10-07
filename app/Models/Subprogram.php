@@ -11,7 +11,7 @@ class Subprogram extends Model
     use HasFactory;
 
     protected $fillable = ['nama_subprogram', 'program_id', 'rekening_id'];
-        // UUID sebagai primary key
+
     public $incrementing = false; // Nonaktifkan auto-increment
     protected $keyType = 'string'; // Gunakan string untuk UUID
 
@@ -19,7 +19,7 @@ class Subprogram extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->id = (string) Str::uuid();
+            $model->id = (string) Str::uuid(); // Buat UUID untuk primary key
         });
     }
 
@@ -28,6 +28,10 @@ class Subprogram extends Model
         return $this->belongsTo(Program::class);
     }
 
+    public function kegiatan()
+    {
+        return $this->hasMany(Kegiatan::class);
+    }
     public function rekening()
     {
         return $this->belongsTo(Rekening::class);

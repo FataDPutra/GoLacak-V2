@@ -23,6 +23,15 @@ class SubprogramController extends Controller
         ]);
     }
 
+
+    // public function create()
+    // {
+    //     $kegiatans = Kegiatan::all(); // Ambil semua kegiatan untuk dropdown
+    //     return Inertia::render('Anggaran/Create', [
+    //         'kegiatans' => $kegiatans,
+    //     ]);
+    // }
+
     public function store(Request $request)
     {
         $request->validate([

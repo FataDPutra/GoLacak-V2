@@ -21,12 +21,10 @@ class Rekening extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            // Buat UUID untuk primary key
-            $model->id = (string) Str::uuid();
+            $model->id = (string) Str::uuid(); // Buat UUID untuk primary key
         });
     }
 
-    // Relasi one-to-many dengan Program
     public function programs()
     {
         return $this->hasMany(Program::class);
