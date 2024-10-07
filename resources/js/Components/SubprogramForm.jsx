@@ -18,13 +18,13 @@ export default function SubprogramForm({ editSubprogram, programs }) {
         e.preventDefault();
 
         if (editSubprogram) {
-            Inertia.put(`/subprograms/${editSubprogram.id}`, {
+            Inertia.put(`/kegiatan/${editSubprogram.id}`, {
                 nama_subprogram: namaSubprogram,
                 program_id: programId,
                 no_rekening: noRekening, // Kirim no_rekening ke server
             });
         } else {
-            Inertia.post("/subprograms", {
+            Inertia.post("/kegiatan", {
                 nama_subprogram: namaSubprogram,
                 program_id: programId,
                 no_rekening: noRekening, // Kirim no_rekening ke server
@@ -37,15 +37,6 @@ export default function SubprogramForm({ editSubprogram, programs }) {
             {editSubprogram && (
                 <input type="hidden" name="_method" value="PUT" />
             )}
-            <div>
-                <label>Nama Subprogram</label>
-                <input
-                    type="text"
-                    value={namaSubprogram}
-                    onChange={(e) => setNamaSubprogram(e.target.value)}
-                    required
-                />
-            </div>
             <div>
                 <label>Program</label>
                 <select
@@ -62,6 +53,15 @@ export default function SubprogramForm({ editSubprogram, programs }) {
                 </select>
             </div>
             <div>
+                <label>Nama Kegiatan</label>
+                <input
+                    type="text"
+                    value={namaSubprogram}
+                    onChange={(e) => setNamaSubprogram(e.target.value)}
+                    required
+                />
+            </div>
+            <div>
                 <label>No Rekening</label>
                 <input
                     type="text"
@@ -71,7 +71,7 @@ export default function SubprogramForm({ editSubprogram, programs }) {
                 />
             </div>
             <button type="submit">
-                {editSubprogram ? "Update Subprogram" : "Simpan Subprogram"}
+                {editSubprogram ? "Update Kegiatan" : "Simpan Kegiatan"}
             </button>
         </form>
     );

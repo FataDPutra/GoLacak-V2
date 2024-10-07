@@ -4,7 +4,7 @@ import { Inertia } from "@inertiajs/inertia";
 const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
     const handleDelete = (id) => {
         if (confirm("Apakah Anda yakin ingin menghapus kegiatan ini?")) {
-            Inertia.delete(`/kegiatans/${id}`, {
+            Inertia.delete(`/subkegiatan/${id}`, {
                 onSuccess: () => alert("Kegiatan berhasil dihapus!"),
                 onError: (error) =>
                     alert("Terjadi kesalahan: " + error.message),
@@ -16,9 +16,9 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
         <table>
             <thead>
                 <tr>
-                    <th>Nama Kegiatan</th>
+                    <th>Nama Sub Kegiatan</th>
                     <th>Program</th>
-                    <th>Subprogram</th>
+                    <th>Kegiatan</th>
                     <th>No Rekening</th>
                     <th>Aksi</th>
                 </tr>

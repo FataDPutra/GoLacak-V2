@@ -10,7 +10,7 @@ const Index = ({ kegiatans, programs, subprograms, rekenings }) => {
         <div style={{ display: "flex" }}>
             <Sidebar />
             <div style={{ marginLeft: "20px", padding: "20px", flexGrow: 1 }}>
-                <h1>Daftar Kegiatan</h1>
+                <h1>Daftar Sub Kegiatan</h1>
                 <KegiatanForm
                     editKegiatan={editKegiatan}
                     programs={programs}

@@ -22,18 +22,26 @@ const Sidebar = () => {
                 </li>
                 <li>
                     <Link
-                        href="/subprograms"
+                        href="/kegiatan"
                         style={{ textDecoration: "none", color: "black" }}
                     >
-                        Subprogram
+                        Kegiatan
                     </Link>
                 </li>
                 <li>
                     <Link
-                        href="/kegiatans"
+                        href="/subkegiatan"
                         style={{ textDecoration: "none", color: "black" }}
                     >
-                        Kegiatan
+                        Sub Kegiatan
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href="/anggaran"
+                        style={{ textDecoration: "none", color: "black" }}
+                    >
+                        Anggaran
                     </Link>
                 </li>
             </ul>

@@ -27,14 +27,14 @@ export default function KegiatanForm({
         e.preventDefault();
 
         if (editKegiatan) {
-            Inertia.put(`/kegiatans/${editKegiatan.id}`, {
+            Inertia.put(`/subkegiatan/${editKegiatan.id}`, {
                 nama_kegiatan: namaKegiatan,
                 program_id: programId,
                 subprogram_id: subprogramId,
                 no_rekening: noRekening, // Kirim no_rekening ke server
             });
         } else {
-            Inertia.post("/kegiatans", {
+            Inertia.post("/subkegiatan", {
                 nama_kegiatan: namaKegiatan,
                 program_id: programId,
                 subprogram_id: subprogramId,
@@ -46,15 +46,6 @@ export default function KegiatanForm({
     return (
         <form onSubmit={handleSubmit}>
             {editKegiatan && <input type="hidden" name="_method" value="PUT" />}
-            <div>
-                <label>Nama Kegiatan</label>
-                <input
-                    type="text"
-                    value={namaKegiatan}
-                    onChange={(e) => setNamaKegiatan(e.target.value)}
-                    required
-                />
-            </div>
             <div>
                 <label>Program</label>
                 <select
@@ -71,19 +62,28 @@ export default function KegiatanForm({
                 </select>
             </div>
             <div>
-                <label>Subprogram</label>
+                <label>Kegiatan</label>
                 <select
                     value={subprogramId}
                     onChange={(e) => setSubprogramId(e.target.value)}
                     required
                 >
-                    <option value="">Pilih Subprogram</option>
+                    <option value="">Pilih Kegiatan</option>
                     {subprograms.map((subprogram) => (
                         <option key={subprogram.id} value={subprogram.id}>
                             {subprogram.nama_subprogram}
                         </option>
                     ))}
                 </select>
+            </div>
+            <div>
+                <label>Nama Sub Kegiatan</label>
+                <input
+                    type="text"
+                    value={namaKegiatan}
+                    onChange={(e) => setNamaKegiatan(e.target.value)}
+                    required
+                />
             </div>
             <div>
                 <label>No Rekening</label>
@@ -95,7 +95,7 @@ export default function KegiatanForm({
                 />
             </div>
             <button type="submit">
-                {editKegiatan ? "Update Kegiatan" : "Simpan Kegiatan"}
+                {editKegiatan ? "Update Sub Kegiatan" : "Simpan Sub Kegiatan"}
             </button>
         </form>
     );

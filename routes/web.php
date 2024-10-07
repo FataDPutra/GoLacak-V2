@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SubprogramController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\AnggaranController;
 use Inertia\Inertia;
 
 /*
@@ -40,10 +41,11 @@ Route::middleware('auth')->group(function () {
 
 
 Route::resource('programs', ProgramController::class);
-Route::resource('subprograms', SubprogramController::class);
-Route::resource('kegiatans', KegiatanController::class);
+Route::resource('kegiatan', SubprogramController::class);
+Route::resource('subkegiatan', KegiatanController::class);
+Route::resource('anggaran', AnggaranController::class);
 
-Route::resource('kegiatan', KegiatanController::class);
+
 
 
 

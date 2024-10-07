@@ -4,7 +4,7 @@ import { Inertia } from "@inertiajs/inertia";
 const SubprogramList = ({ subprograms, setEditSubprogram }) => {
     const handleDelete = (id) => {
         if (confirm("Apakah Anda yakin ingin menghapus subprogram ini?")) {
-            Inertia.delete(`/subprograms/${id}`, {
+            Inertia.delete(`/kegiatan/${id}`, {
                 onSuccess: () => alert("Subprogram berhasil dihapus!"),
                 onError: (error) =>
                     alert("Terjadi kesalahan: " + error.message),
@@ -16,7 +16,7 @@ const SubprogramList = ({ subprograms, setEditSubprogram }) => {
         <table>
             <thead>
                 <tr>
-                    <th>Nama Subprogram</th>
+                    <th>Nama Kegiatan</th>
                     <th>Program</th>
                     <th>No Rekening</th>
                     <th>Aksi</th>
