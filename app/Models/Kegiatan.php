@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 class Kegiatan extends Model
 {
     use HasFactory;
+    protected $table = 'kegiatan'; // Tentukan nama tabel secara eksplisit
+
 
     protected $fillable = ['nama_kegiatan', 'subprogram_id', 'program_id', 'rekening_id'];
 

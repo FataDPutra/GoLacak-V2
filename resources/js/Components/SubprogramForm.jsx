@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 
-export default function SubprogramForm({ programs, editSubprogram }) {
+export default function SubprogramForm({ editSubprogram, programs }) {
     const [namaSubprogram, setNamaSubprogram] = useState("");
     const [programId, setProgramId] = useState("");
-    const [noRekening, setNoRekening] = useState("");
 
-    // Jika sedang dalam mode edit, set nilai default pada form
     useEffect(() => {
         if (editSubprogram) {
             setNamaSubprogram(editSubprogram.nama_subprogram);
-            setProgramId(editSubprogram.program_id); // ID program yang dipilih
-            setNoRekening(editSubprogram.rekening.no_rekening); // No rekening dari subprogram
+            setProgramId(editSubprogram.program_id);
         }
     }, [editSubprogram]);
 
@@ -19,18 +16,14 @@ export default function SubprogramForm({ programs, editSubprogram }) {
         e.preventDefault();
 
         if (editSubprogram) {
-            // Jika sedang mengedit subprogram
             Inertia.put(`/subprograms/${editSubprogram.id}`, {
                 nama_subprogram: namaSubprogram,
                 program_id: programId,
-                no_rekening: noRekening,
             });
         } else {
-            // Jika menambah subprogram baru
             Inertia.post("/subprograms", {
                 nama_subprogram: namaSubprogram,
                 program_id: programId,
-                no_rekening: noRekening,
             });
         }
     };
@@ -47,7 +40,7 @@ export default function SubprogramForm({ programs, editSubprogram }) {
                 />
             </div>
             <div>
-                <label>Pilih Program</label>
+                <label>Program</label>
                 <select
                     value={programId}
                     onChange={(e) => setProgramId(e.target.value)}
@@ -60,15 +53,6 @@ export default function SubprogramForm({ programs, editSubprogram }) {
                         </option>
                     ))}
                 </select>
-            </div>
-            <div>
-                <label>No Rekening</label>
-                <input
-                    type="text"
-                    value={noRekening}
-                    onChange={(e) => setNoRekening(e.target.value)}
-                    required
-                />
             </div>
             <button type="submit">
                 {editSubprogram ? "Update Subprogram" : "Simpan Subprogram"}

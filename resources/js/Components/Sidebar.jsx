@@ -30,7 +30,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                     <Link
-                        href="/activities"
+                        href="/kegiatans"
                         style={{ textDecoration: "none", color: "black" }}
                     >
                         Kegiatan

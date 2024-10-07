@@ -8,20 +8,13 @@ const Index = ({ subprograms, programs }) => {
 
     return (
         <div style={{ display: "flex" }}>
-            {/* Sidebar */}
             <Sidebar />
-
-            {/* Konten utama */}
             <div style={{ marginLeft: "20px", padding: "20px", flexGrow: 1 }}>
                 <h1>Daftar Subprogram</h1>
-
-                {/* Form untuk menambah dan mengedit subprogram */}
                 <SubprogramForm
                     editSubprogram={editSubprogram}
                     programs={programs}
                 />
-
-                {/* List subprogram dengan action edit dan hapus */}
                 <SubprogramList
                     subprograms={subprograms}
                     setEditSubprogram={setEditSubprogram}

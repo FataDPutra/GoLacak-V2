@@ -1,26 +1,28 @@
-// resources/js/Pages/Kegiatan/Index.jsx
-import React, { useEffect, useState } from "react";
-import { Inertia } from "@inertiajs/inertia-react";
-import FormComponent from "../../Components/ProgramForm"; // Anda bisa menyesuaikan ini
-import TableComponent from "../../Components/TableComponent"; // Anda bisa menyesuaikan ini
+import React, { useState } from "react";
+import KegiatanForm from "../../Components/KegiatanForm";
+import KegiatanList from "../../Components/KegiatanList";
+import Sidebar from "../../Components/Sidebar";
 
-const KegiatanIndex = ({ kegiatan }) => {
-    const [kegiatanData, setKegiatanData] = useState(kegiatan);
-
-    const handleKegiatanSubmit = (formData) => {
-        Inertia.post("/kegiatan", formData, {
-            onSuccess: () => {
-                setKegiatanData([...kegiatanData, formData]);
-            },
-        });
-    };
+const Index = ({ kegiatans, subprograms, programs }) => {
+    const [editKegiatan, setEditKegiatan] = useState(null); // State untuk edit kegiatan
 
     return (
-        <div>
-            <FormComponent type="kegiatan" onSubmit={handleKegiatanSubmit} />
-            <TableComponent data={kegiatanData} type="kegiatan" />
+        <div style={{ display: "flex" }}>
+            <Sidebar />
+            <div style={{ marginLeft: "20px", padding: "20px", flexGrow: 1 }}>
+                <h1>Daftar Kegiatan</h1>
+                <KegiatanForm
+                    editKegiatan={editKegiatan}
+                    subprograms={subprograms}
+                    programs={programs}
+                />
+                <KegiatanList
+                    kegiatans={kegiatans}
+                    setEditKegiatan={setEditKegiatan}
+                />
+            </div>
         </div>
     );
 };
 
-export default KegiatanIndex;
+export default Index;
