@@ -3,7 +3,7 @@ import KegiatanForm from "../../Components/KegiatanForm";
 import KegiatanList from "../../Components/KegiatanList";
 import Sidebar from "../../Components/Sidebar";
 
-const Index = ({ kegiatans, subprograms, programs }) => {
+const Index = ({ kegiatans, programs, subprograms, rekenings }) => {
     const [editKegiatan, setEditKegiatan] = useState(null); // State untuk edit kegiatan
 
     return (
@@ -13,8 +13,9 @@ const Index = ({ kegiatans, subprograms, programs }) => {
                 <h1>Daftar Kegiatan</h1>
                 <KegiatanForm
                     editKegiatan={editKegiatan}
-                    subprograms={subprograms}
                     programs={programs}
+                    subprograms={subprograms}
+                    rekenings={rekenings}
                 />
                 <KegiatanList
                     kegiatans={kegiatans}

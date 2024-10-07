@@ -43,6 +43,7 @@ Route::resource('programs', ProgramController::class);
 Route::resource('subprograms', SubprogramController::class);
 Route::resource('kegiatans', KegiatanController::class);
 
+Route::resource('kegiatan', KegiatanController::class);
 
 
 

@@ -39,7 +39,7 @@ public function store(Request $request)
 
         return redirect()->back()->with('success', 'Program dan Rekening berhasil dibuat!');
     } catch (\Exception $e) {
-        \Log::error('Error saat menyimpan program: ' . $e->getMessage());
+        // \Log::error('Error saat menyimpan program: ' . $e->getMessage());
         return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
     }
 }
