@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::resource('programs', SubprogramController::class);
+Route::resource('programs', ProgramController::class);
 Route::resource('subprograms', SubprogramController::class);
 Route::resource('kegiatans', KegiatanController::class);
 

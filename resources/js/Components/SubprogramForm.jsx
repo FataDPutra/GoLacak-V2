@@ -4,11 +4,13 @@ import { Inertia } from "@inertiajs/inertia";
 export default function SubprogramForm({ editSubprogram, programs }) {
     const [namaSubprogram, setNamaSubprogram] = useState("");
     const [programId, setProgramId] = useState("");
+    const [noRekening, setNoRekening] = useState("");
 
     useEffect(() => {
         if (editSubprogram) {
             setNamaSubprogram(editSubprogram.nama_subprogram);
             setProgramId(editSubprogram.program_id);
+            setNoRekening(editSubprogram.rekening.no_rekening); // Isi no_rekening dari subprogram yang sedang diedit
         }
     }, [editSubprogram]);
 
@@ -19,11 +21,13 @@ export default function SubprogramForm({ editSubprogram, programs }) {
             Inertia.put(`/subprograms/${editSubprogram.id}`, {
                 nama_subprogram: namaSubprogram,
                 program_id: programId,
+                no_rekening: noRekening, // Kirim no_rekening ke server
             });
         } else {
             Inertia.post("/subprograms", {
                 nama_subprogram: namaSubprogram,
                 program_id: programId,
+                no_rekening: noRekening, // Kirim no_rekening ke server
             });
         }
     };
@@ -53,6 +57,15 @@ export default function SubprogramForm({ editSubprogram, programs }) {
                         </option>
                     ))}
                 </select>
+            </div>
+            <div>
+                <label>No Rekening</label>
+                <input
+                    type="text"
+                    value={noRekening}
+                    onChange={(e) => setNoRekening(e.target.value)}
+                    required
+                />
             </div>
             <button type="submit">
                 {editSubprogram ? "Update Subprogram" : "Simpan Subprogram"}
