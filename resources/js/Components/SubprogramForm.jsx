@@ -34,6 +34,9 @@ export default function SubprogramForm({ editSubprogram, programs }) {
 
     return (
         <form onSubmit={handleSubmit}>
+            {editSubprogram && (
+                <input type="hidden" name="_method" value="PUT" />
+            )}
             <div>
                 <label>Nama Subprogram</label>
                 <input

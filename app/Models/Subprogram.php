@@ -11,6 +11,9 @@ class Subprogram extends Model
     use HasFactory;
 
     protected $fillable = ['nama_subprogram', 'program_id', 'rekening_id'];
+        // UUID sebagai primary key
+    public $incrementing = false; // Nonaktifkan auto-increment
+    protected $keyType = 'string'; // Gunakan string untuk UUID
 
     protected static function boot()
     {

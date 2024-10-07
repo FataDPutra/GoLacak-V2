@@ -49,31 +49,32 @@ class SubprogramController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nama_subprogram' => 'required|string',
-            'program_id' => 'required|uuid|exists:programs,id',
-            'no_rekening' => 'required|string',
+{
+    $request->validate([
+        'nama_subprogram' => 'required|string',
+        'program_id' => 'required|uuid|exists:programs,id',
+        'no_rekening' => 'required|string',
+    ]);
+
+    try {
+        $subprogram = Subprogram::findOrFail($id);
+
+        // Cek atau buat rekening berdasarkan no_rekening
+        $rekening = Rekening::firstOrCreate(['no_rekening' => $request->no_rekening]);
+
+        // Update subprogram dengan data baru
+        $subprogram->update([
+            'nama_subprogram' => $request->nama_subprogram,
+            'program_id' => $request->program_id,
+            'rekening_id' => $rekening->id,
         ]);
 
-        try {
-            $subprogram = Subprogram::findOrFail($id);
-
-            // Cek atau buat rekening berdasarkan no_rekening
-            $rekening = Rekening::firstOrCreate(['no_rekening' => $request->no_rekening]);
-
-            // Update subprogram
-            $subprogram->update([
-                'nama_subprogram' => $request->nama_subprogram,
-                'program_id' => $request->program_id,
-                'rekening_id' => $rekening->id,
-            ]);
-
-            return redirect()->back()->with('success', 'Subprogram berhasil diperbarui!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-        }
+        return redirect()->back()->with('success', 'Subprogram berhasil diperbarui!');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
     }
+}
+
 
     public function destroy($id)
     {

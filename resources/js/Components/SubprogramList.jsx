@@ -4,7 +4,11 @@ import { Inertia } from "@inertiajs/inertia";
 const SubprogramList = ({ subprograms, setEditSubprogram }) => {
     const handleDelete = (id) => {
         if (confirm("Apakah Anda yakin ingin menghapus subprogram ini?")) {
-            Inertia.delete(`/subprograms/${id}`);
+            Inertia.delete(`/subprograms/${id}`, {
+                onSuccess: () => alert("Subprogram berhasil dihapus!"),
+                onError: (error) =>
+                    alert("Terjadi kesalahan: " + error.message),
+            });
         }
     };
 
@@ -19,12 +23,11 @@ const SubprogramList = ({ subprograms, setEditSubprogram }) => {
                 </tr>
             </thead>
             <tbody>
-                {subprograms.map((subprogram) => (
-                    <tr key={subprogram.id}>
+                {subprograms.map((subprogram, index) => (
+                    <tr key={subprogram.id || index}>
                         <td>{subprogram.nama_subprogram}</td>
-                        <td>{subprogram.program.nama_program}</td>
-                        <td>{subprogram.rekening.no_rekening}</td>{" "}
-                        {/* Tampilkan no_rekening */}
+                        <td>{subprogram.program?.nama_program}</td>
+                        <td>{subprogram.rekening?.no_rekening}</td>
                         <td>
                             <button
                                 onClick={() => setEditSubprogram(subprogram)}
