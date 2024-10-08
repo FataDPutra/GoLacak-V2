@@ -1,154 +1,201 @@
-import React from "react";
-import { useForm } from "@inertiajs/react";
+import React, { useState, useEffect } from "react";
+import { Inertia } from "@inertiajs/inertia";
 
-const AnggaranForm = ({ anggarans, programs, subprograms, kegiatans }) => {
-    const { data, setData, post, reset, errors } = useForm({
-        program_id: "",
-        sub_program_id: "",
-        kegiatan_id: "",
-        anggaran_murni: "",
-        pergeseran: "",
-        perubahan: "",
-    });
+// Fungsi untuk format Rupiah
+const formatRupiah = (value) => {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+    }).format(value);
+};
+
+export default function AnggaranForm({
+    editAnggaran, // data anggaran yang sedang diedit
+    programs,
+    subprograms,
+    kegiatans,
+}) {
+    const [anggaranMurni, setAnggaranMurni] = useState("");
+    const [pergeseran, setPergeseran] = useState(0);
+    const [perubahan, setPerubahan] = useState(0);
+    const [kegiatanId, setKegiatanId] = useState("");
+    const [programId, setProgramId] = useState("");
+    const [subprogramId, setSubprogramId] = useState("");
+    const [filteredKegiatans, setFilteredKegiatans] = useState([]);
+    const [rekening, setRekening] = useState(""); // Tambahkan state untuk rekening
+
+    // Efek untuk mengisi form jika editAnggaran ada
+    useEffect(() => {
+        if (editAnggaran) {
+            setAnggaranMurni(editAnggaran.anggaran_murni);
+            setPergeseran(editAnggaran.pergeseran || 0);
+            setPerubahan(editAnggaran.perubahan || 0);
+            setProgramId(editAnggaran.program_id);
+            setSubprogramId(editAnggaran.sub_program_id);
+            setKegiatanId(editAnggaran.kegiatan_id);
+        }
+    }, [editAnggaran]);
+
+    // Efek untuk filter kegiatan berdasarkan subprogram yang dipilih
+    useEffect(() => {
+        if (subprogramId) {
+            const selectedSubprogram = subprograms.find(
+                (subprogram) => subprogram.id === subprogramId
+            );
+            setFilteredKegiatans(selectedSubprogram?.kegiatans || []);
+            if (editAnggaran && selectedSubprogram) {
+                setKegiatanId(editAnggaran.kegiatan_id);
+            } else {
+                setKegiatanId(""); // Reset kegiatan ketika subprogram berubah
+            }
+        } else {
+            setFilteredKegiatans([]);
+            setKegiatanId(""); // Reset kegiatan jika subprogram kosong
+        }
+    }, [subprogramId, subprograms, editAnggaran]);
+
+    // Efek untuk set rekening ketika kegiatan dipilih
+    useEffect(() => {
+        const selectedKegiatan = kegiatans.find(
+            (kegiatan) => kegiatan.id === kegiatanId
+        );
+        setRekening(selectedKegiatan?.rekening?.no_rekening || ""); // Set rekening berdasarkan kegiatan
+    }, [kegiatanId, kegiatans]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post("/anggaran", {
-            onSuccess: () => reset(),
-        });
+
+        if (editAnggaran) {
+            Inertia.put(`/anggaran/${editAnggaran.id}`, {
+                anggaran_murni: anggaranMurni,
+                pergeseran,
+                perubahan,
+                kegiatan_id: kegiatanId,
+                program_id: programId,
+                sub_program_id: subprogramId,
+            });
+        } else {
+            Inertia.post("/anggaran", {
+                anggaran_murni: anggaranMurni,
+                pergeseran,
+                perubahan,
+                kegiatan_id: kegiatanId,
+                program_id: programId,
+                sub_program_id: subprogramId,
+            });
+        }
+    };
+
+    const handleChangeAnggaranMurni = (e) => {
+        const value = e.target.value.replace(/\D/g, ""); // Hanya angka
+        setAnggaranMurni(value);
+    };
+
+    const handleChangePergeseran = (e) => {
+        const value = e.target.value.replace(/\D/g, ""); // Hanya angka
+        setPergeseran(value);
+    };
+
+    const handleChangePerubahan = (e) => {
+        const value = e.target.value.replace(/\D/g, ""); // Hanya angka
+        setPerubahan(value);
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Program</label>
-                    <select
-                        value={data.program_id}
-                        onChange={(e) => setData("program_id", e.target.value)}
-                    >
-                        <option value="">Pilih Program</option>
-                        {programs.map((program) => (
-                            <option key={program.id} value={program.id}>
-                                {program.nama_program}
-                            </option>
-                        ))}
-                    </select>
-                    {errors.program_id && <div>{errors.program_id}</div>}
-                </div>
-
-                <div>
-                    <label>Sub Program</label>
-                    <select
-                        value={data.sub_program_id}
-                        onChange={(e) =>
-                            setData("sub_program_id", e.target.value)
-                        }
-                    >
-                        <option value="">Pilih Sub Program</option>
-                        {subprograms.map((subprogram) => (
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label>Program</label>
+                <select
+                    value={programId}
+                    onChange={(e) => {
+                        setProgramId(e.target.value);
+                        setSubprogramId(""); // Reset subprogram ketika program berubah
+                    }}
+                    required
+                >
+                    <option value="">Pilih Program</option>
+                    {programs.map((program) => (
+                        <option key={program.id} value={program.id}>
+                            {program.nama_program}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label>Kegiatan</label>
+                <select
+                    value={subprogramId}
+                    onChange={(e) => setSubprogramId(e.target.value)}
+                    required
+                    disabled={!programId}
+                >
+                    <option value="">Pilih Kegiatan</option>
+                    {subprograms
+                        .filter(
+                            (subprogram) => subprogram.program_id === programId
+                        )
+                        .map((subprogram) => (
                             <option key={subprogram.id} value={subprogram.id}>
                                 {subprogram.nama_subprogram}
                             </option>
                         ))}
-                    </select>
-                    {errors.sub_program_id && (
-                        <div>{errors.sub_program_id}</div>
-                    )}
-                </div>
-
-                <div>
-                    <label>Kegiatan</label>
-                    <select
-                        value={data.kegiatan_id}
-                        onChange={(e) => setData("kegiatan_id", e.target.value)}
-                    >
-                        <option value="">Pilih Kegiatan</option>
-                        {kegiatans.map((kegiatan) => (
+                </select>
+            </div>
+            <div>
+                <label>Sub Kegiatan</label>
+                <select
+                    value={kegiatanId}
+                    onChange={(e) => setKegiatanId(e.target.value)}
+                    required
+                    disabled={!subprogramId}
+                >
+                    <option value="">Pilih Sub Kegiatan</option>
+                    {filteredKegiatans.length > 0 ? (
+                        filteredKegiatans.map((kegiatan) => (
                             <option key={kegiatan.id} value={kegiatan.id}>
                                 {kegiatan.nama_kegiatan}
                             </option>
-                        ))}
-                    </select>
-                    {errors.kegiatan_id && <div>{errors.kegiatan_id}</div>}
-                </div>
-
-                <div>
-                    <label>Anggaran Murni</label>
-                    <input
-                        type="number"
-                        value={data.anggaran_murni}
-                        onChange={(e) =>
-                            setData("anggaran_murni", e.target.value)
-                        }
-                    />
-                    {errors.anggaran_murni && (
-                        <div>{errors.anggaran_murni}</div>
+                        ))
+                    ) : (
+                        <option value="">
+                            Tidak ada sub kegiatan tersedia
+                        </option>
                     )}
-                </div>
-
-                <div>
-                    <label>Pergeseran</label>
-                    <input
-                        type="number"
-                        value={data.pergeseran}
-                        onChange={(e) => setData("pergeseran", e.target.value)}
-                    />
-                    {errors.pergeseran && <div>{errors.pergeseran}</div>}
-                </div>
-
-                <div>
-                    <label>Perubahan</label>
-                    <input
-                        type="number"
-                        value={data.perubahan}
-                        onChange={(e) => setData("perubahan", e.target.value)}
-                    />
-                    {errors.perubahan && <div>{errors.perubahan}</div>}
-                </div>
-
-                <button type="submit">Simpan Anggaran</button>
-            </form>
-
-            {/* Tabel Anggaran */}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Program</th>
-                        <th>Sub Program</th>
-                        <th>Kegiatan</th>
-                        <th>Anggaran Murni</th>
-                        <th>Pergeseran</th>
-                        <th>Perubahan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {anggarans.map((anggaran) => (
-                        <tr key={anggaran.id}>
-                            <td>
-                                {anggaran.program
-                                    ? anggaran.program.nama_program
-                                    : "N/A"}
-                            </td>
-                            <td>
-                                {anggaran.subprogram
-                                    ? anggaran.subprogram.nama_subprogram
-                                    : "N/A"}
-                            </td>
-                            <td>
-                                {anggaran.kegiatan
-                                    ? anggaran.kegiatan.nama_kegiatan
-                                    : "N/A"}
-                            </td>
-                            <td>Rp{anggaran.anggaran_murni}</td>
-                            <td>Rp{anggaran.pergeseran}</td>
-                            <td>Rp{anggaran.perubahan}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                </select>
+            </div>
+            <div>
+                <label>No Rekening</label>
+                <input type="text" value={rekening} readOnly />
+            </div>
+            <div>
+                <label>Anggaran Murni (Rp)</label>
+                <input
+                    type="text"
+                    value={formatRupiah(anggaranMurni)}
+                    onChange={handleChangeAnggaranMurni}
+                    required
+                />
+            </div>
+            <div>
+                <label>Pergeseran (Rp)</label>
+                <input
+                    type="text"
+                    value={formatRupiah(pergeseran)}
+                    onChange={handleChangePergeseran}
+                />
+            </div>
+            <div>
+                <label>Perubahan (Rp)</label>
+                <input
+                    type="text"
+                    value={formatRupiah(perubahan)}
+                    onChange={handleChangePerubahan}
+                />
+            </div>
+            <button type="submit">
+                {editAnggaran ? "Update Anggaran" : "Simpan Anggaran"}
+            </button>
+        </form>
     );
-};
-
-export default AnggaranForm;
+}

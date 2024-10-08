@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 
 export default function KegiatanForm({
-    editKegiatan,
+    editKegiatan, // Data kegiatan yang akan diedit
     programs,
     subprograms,
     rekenings,
@@ -13,6 +13,7 @@ export default function KegiatanForm({
     const [noRekening, setNoRekening] = useState("");
     const [filteredSubprograms, setFilteredSubprograms] = useState([]);
 
+    // Efek untuk mengisi form jika ada data yang sedang diedit
     useEffect(() => {
         if (editKegiatan) {
             setNamaKegiatan(editKegiatan.nama_kegiatan);
@@ -22,24 +23,34 @@ export default function KegiatanForm({
         }
     }, [editKegiatan]);
 
+    // Efek untuk filter subprograms berdasarkan program yang dipilih
     useEffect(() => {
-        // Filter subprogram berdasarkan program yang dipilih
         if (programId) {
             const selectedProgram = programs.find(
                 (program) => program.id === programId
             );
             setFilteredSubprograms(selectedProgram?.subprograms || []);
-            setSubprogramId(""); // Reset subprogram ketika program berubah
         } else {
             setFilteredSubprograms([]); // Reset jika tidak ada program yang dipilih
-            setSubprogramId(""); // Reset subprogram jika program kosong
         }
     }, [programId, programs]);
+
+    // Efek untuk memastikan subprogram terisi otomatis saat edit
+    useEffect(() => {
+        if (editKegiatan && programId && subprograms) {
+            const selectedSubprograms = subprograms.filter(
+                (subprogram) => subprogram.program_id === programId
+            );
+            setFilteredSubprograms(selectedSubprograms || []);
+            setSubprogramId(editKegiatan.subprogram_id); // Set otomatis subprogramId sesuai edit data
+        }
+    }, [editKegiatan, programId, subprograms]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (editKegiatan) {
+            // Jika mengedit kegiatan, gunakan metode PUT
             Inertia.put(`/subkegiatan/${editKegiatan.id}`, {
                 nama_kegiatan: namaKegiatan, // Mengirim nama_kegiatan
                 program_id: programId, // Mengirim program_id
@@ -47,6 +58,7 @@ export default function KegiatanForm({
                 no_rekening: noRekening, // Mengirim no_rekening
             });
         } else {
+            // Jika menambah kegiatan baru, gunakan metode POST
             Inertia.post("/subkegiatan", {
                 nama_kegiatan: namaKegiatan, // Mengirim nama_kegiatan
                 program_id: programId, // Mengirim program_id
@@ -58,12 +70,16 @@ export default function KegiatanForm({
 
     return (
         <form onSubmit={handleSubmit}>
+            {/* Jika sedang mengedit, kirim hidden field dengan nilai _method PUT */}
             {editKegiatan && <input type="hidden" name="_method" value="PUT" />}
             <div>
                 <label>Program</label>
                 <select
                     value={programId}
-                    onChange={(e) => setProgramId(e.target.value)}
+                    onChange={(e) => {
+                        setProgramId(e.target.value);
+                        setSubprogramId(""); // Reset subprogram ketika program berubah
+                    }}
                     required
                 >
                     <option value="">Pilih Program</option>
@@ -75,14 +91,14 @@ export default function KegiatanForm({
                 </select>
             </div>
             <div>
-                <label>Subprogram</label>
+                <label>Kegiatan</label>
                 <select
                     value={subprogramId}
                     onChange={(e) => setSubprogramId(e.target.value)}
                     required
                     disabled={!programId} // Disable jika tidak ada program yang dipilih
                 >
-                    <option value="">Pilih Subprogram</option>
+                    <option value="">Pilih Kegiatan</option>
                     {filteredSubprograms.map((subprogram) => (
                         <option key={subprogram.id} value={subprogram.id}>
                             {subprogram.nama_subprogram}
@@ -91,7 +107,7 @@ export default function KegiatanForm({
                 </select>
             </div>
             <div>
-                <label>Nama Kegiatan</label>
+                <label>Nama Sub Kegiatan</label>
                 <input
                     type="text"
                     value={namaKegiatan}
@@ -109,7 +125,7 @@ export default function KegiatanForm({
                 />
             </div>
             <button type="submit">
-                {editKegiatan ? "Update Kegiatan" : "Simpan Kegiatan"}
+                {editKegiatan ? "Update Sub Kegiatan" : "Simpan Sub Kegiatan"}
             </button>
         </form>
     );

@@ -11,29 +11,30 @@ use Inertia\Inertia;
 
 class AnggaranController extends Controller
 {
-    public function index()
-    {
-        // Ambil semua program, subprogram, kegiatan, dan anggaran
-        $programs = Program::all();
-        $subprograms = Subprogram::all();
-        $kegiatans = Kegiatan::all();
-        $anggarans = Anggaran::with('program', 'subprogram', 'kegiatan')->get();
+public function index()
+{
+    // Ambil semua program, subprogram, kegiatan, anggaran, dan rekening
+    $programs = Program::with('subprograms')->get(); 
+    $subprograms = Subprogram::with('kegiatans')->get();
+    $kegiatans = Kegiatan::with(['subprogram.program', 'rekening'])->get(); // Tambahkan relasi rekening
+    $anggarans = Anggaran::with(['program', 'subprogram', 'kegiatan.rekening'])->get(); // Tambahkan relasi rekening
 
-        // Kirim data ke view Inertia
-        return Inertia::render('Anggaran/Index', [
-            'anggarans' => $anggarans,
-            'programs' => $programs,
-            'subprograms' => $subprograms,
-            'kegiatans' => $kegiatans,
-        ]);
-    }
+    // Kirim data ke view Inertia
+    return Inertia::render('Anggaran/Index', [
+        'anggarans' => $anggarans,
+        'programs' => $programs,
+        'subprograms' => $subprograms,
+        'kegiatans' => $kegiatans,
+    ]);
+}
+
 
     public function store(Request $request)
     {
         $request->validate([
             'program_id' => 'required|uuid|exists:programs,id',
             'sub_program_id' => 'required|uuid|exists:subprograms,id',
-            'kegiatan_id' => 'required|uuid|exists:kegiatans,id',
+            'kegiatan_id' => 'required|uuid|exists:kegiatan,id', // Ubah ke 'kegiatan'
             'anggaran_murni' => 'required|numeric',
             'pergeseran' => 'nullable|numeric',
             'perubahan' => 'nullable|numeric',
@@ -56,7 +57,7 @@ class AnggaranController extends Controller
         $request->validate([
             'program_id' => 'required|uuid|exists:programs,id',
             'sub_program_id' => 'required|uuid|exists:subprograms,id',
-            'kegiatan_id' => 'required|uuid|exists:kegiatans,id',
+            'kegiatan_id' => 'required|uuid|exists:kegiatan,id', // Ubah ke 'kegiatan'
             'anggaran_murni' => 'required|numeric',
             'pergeseran' => 'nullable|numeric',
             'perubahan' => 'nullable|numeric',
@@ -75,11 +76,22 @@ class AnggaranController extends Controller
         return redirect()->back()->with('success', 'Anggaran berhasil diperbarui!');
     }
 
-    public function destroy($id)
-    {
+
+public function destroy($id)
+{
+    try {
+        // Cari anggaran berdasarkan ID
         $anggaran = Anggaran::findOrFail($id);
+        
+        // Hapus anggaran
         $anggaran->delete();
 
+        // Berikan respons sukses setelah penghapusan
         return redirect()->back()->with('success', 'Anggaran berhasil dihapus!');
+    } catch (\Exception $e) {
+        // Berikan respons error jika ada masalah
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat menghapus anggaran: ' . $e->getMessage());
     }
+}
+
 }

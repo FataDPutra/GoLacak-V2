@@ -17,8 +17,8 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
             <thead>
                 <tr>
                     <th>Nama Sub Kegiatan</th>
-                    <th>Program</th>
                     <th>Kegiatan</th>
+                    <th>Program</th>
                     <th>No Rekening</th>
                     <th>Aksi</th>
                 </tr>
@@ -27,8 +27,8 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
                 {kegiatans.map((kegiatan, index) => (
                     <tr key={kegiatan.id || index}>
                         <td>{kegiatan.nama_kegiatan}</td>
-                        <td>{kegiatan.program?.nama_program}</td>
                         <td>{kegiatan.subprogram?.nama_subprogram}</td>
+                        <td>{kegiatan.program?.nama_program}</td>
                         <td>{kegiatan.rekening?.no_rekening}</td>
                         <td>
                             <button onClick={() => setEditKegiatan(kegiatan)}>

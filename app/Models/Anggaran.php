@@ -11,7 +11,7 @@ class Anggaran extends Model
     use HasFactory;
 
     protected $table = 'anggaran'; // Nama tabel
-    protected $fillable = ['anggaran_murni', 'pergeseran', 'perubahan', 'kegiatan_id', 'program_id', 'sub_program_id'];
+    protected $fillable = ['anggaran_murni', 'pergeseran', 'perubahan', 'program_id','sub_program_id','kegiatan_id'];
     public $incrementing = false; // Nonaktifkan auto-increment
     protected $keyType = 'string'; // Gunakan string untuk UUID
 
@@ -22,7 +22,14 @@ class Anggaran extends Model
             $model->id = (string) Str::uuid(); // Buat UUID untuk primary key
         });
     }
-
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
+    public function subprogram()
+    {
+    return $this->belongsTo(Subprogram::class, 'sub_program_id');
+}
 
     public function kegiatan()
     {
