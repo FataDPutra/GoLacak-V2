@@ -11,15 +11,14 @@ class Program extends Model
     use HasFactory;
 
     protected $fillable = ['nama_program', 'rekening_id'];
-
-    public $incrementing = false; // Nonaktifkan auto-increment
-    protected $keyType = 'string'; // Gunakan string untuk UUID
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected static function boot()
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->id = (string) Str::uuid(); // Buat UUID untuk primary key
+            $model->id = (string) Str::uuid();
         });
     }
 
@@ -31,5 +30,10 @@ class Program extends Model
     public function subprograms()
     {
         return $this->hasMany(Subprogram::class);
+    }
+
+    public function kegiatans()
+    {
+        return $this->hasMany(Kegiatan::class);
     }
 }

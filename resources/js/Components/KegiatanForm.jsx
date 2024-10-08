@@ -39,17 +39,20 @@ export default function KegiatanForm({
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const data = {
-            nama_kegiatan: namaKegiatan,
-            program_id: programId,
-            subprogram_id: subprogramId,
-            no_rekening: noRekening,
-        };
-
         if (editKegiatan) {
-            Inertia.put(`/subkegiatan/${editKegiatan.id}`, data);
+            Inertia.put(`/subkegiatan/${editKegiatan.id}`, {
+                nama_kegiatan: namaKegiatan, // Mengirim nama_kegiatan
+                program_id: programId, // Mengirim program_id
+                subprogram_id: subprogramId, // Mengirim subprogram_id
+                no_rekening: noRekening, // Mengirim no_rekening
+            });
         } else {
-            Inertia.post("/subkegiatan", data);
+            Inertia.post("/subkegiatan", {
+                nama_kegiatan: namaKegiatan, // Mengirim nama_kegiatan
+                program_id: programId, // Mengirim program_id
+                subprogram_id: subprogramId, // Mengirim subprogram_id
+                no_rekening: noRekening, // Mengirim no_rekening
+            });
         }
     };
 

@@ -3,7 +3,7 @@ import AnggaranForm from "../../Components/AnggaranForm";
 import AnggaranList from "../../Components/AnggaranList";
 import Sidebar from "../../Components/Sidebar";
 
-const Index = ({ anggarans, kegiatan }) => {
+const Index = ({ anggarans, kegiatans }) => {
     const [editAnggaran, setEditAnggaran] = useState(null); // State untuk edit anggaran
 
     return (
@@ -12,7 +12,10 @@ const Index = ({ anggarans, kegiatan }) => {
             <div style={{ marginLeft: "20px", padding: "20px", flexGrow: 1 }}>
                 <h1>Daftar Anggaran</h1>
 
-                <AnggaranForm editAnggaran={editAnggaran} kegiatan={kegiatan} />
+                <AnggaranForm
+                    editAnggaran={editAnggaran}
+                    kegiatan={kegiatans}
+                />
                 <AnggaranList
                     anggarans={anggarans}
                     setEditAnggaran={setEditAnggaran}

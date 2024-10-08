@@ -11,15 +11,14 @@ class Subprogram extends Model
     use HasFactory;
 
     protected $fillable = ['nama_subprogram', 'program_id', 'rekening_id'];
-
-    public $incrementing = false; // Nonaktifkan auto-increment
-    protected $keyType = 'string'; // Gunakan string untuk UUID
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected static function boot()
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->id = (string) Str::uuid(); // Buat UUID untuk primary key
+            $model->id = (string) Str::uuid();
         });
     }
 
@@ -28,10 +27,11 @@ class Subprogram extends Model
         return $this->belongsTo(Program::class);
     }
 
-    public function kegiatan()
+    public function kegiatans()
     {
         return $this->hasMany(Kegiatan::class);
     }
+
     public function rekening()
     {
         return $this->belongsTo(Rekening::class);

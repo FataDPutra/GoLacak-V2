@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+
 class Rekening extends Model
 {
     use HasFactory;
@@ -28,5 +29,13 @@ class Rekening extends Model
     public function programs()
     {
         return $this->hasMany(Program::class);
+    }
+    public function subprograms()
+    {
+        return $this->hasMany(Subprogram::class);
+    }
+    public function kegiatan()
+    {
+        return $this->hasMany(Kegiatan::class);
     }
 }

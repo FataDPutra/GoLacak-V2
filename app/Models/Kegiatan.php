@@ -10,18 +10,16 @@ class Kegiatan extends Model
 {
     use HasFactory;
 
-    protected $table = 'kegiatan'; // Nama tabel
-
-    protected $fillable = ['nama_kegiatan', 'subprogram_id', 'rekening_id'];
-
-    public $incrementing = false; // Nonaktifkan auto-increment
-    protected $keyType = 'string'; // Gunakan string untuk UUID
+    protected $table = 'kegiatan'; 
+    protected $fillable = ['nama_kegiatan', 'program_id', 'subprogram_id', 'rekening_id'];
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected static function boot()
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->id = (string) Str::uuid(); // Buat UUID untuk primary key
+            $model->id = (string) Str::uuid();
         });
     }
 
@@ -33,5 +31,15 @@ class Kegiatan extends Model
     public function rekening()
     {
         return $this->belongsTo(Rekening::class);
+    }
+
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
+
+    public function anggaran()
+    {
+        return $this->hasMany(Anggaran::class);
     }
 }

@@ -13,11 +13,15 @@ class KegiatanController extends Controller
 {
     public function index()
     {
-        $kegiatans = Kegiatan::with('subprogram.program', 'rekening')->get();
+        // Ambil kegiatan dengan program, subprogram, dan rekening
+        $kegiatans = Kegiatan::with('program', 'subprogram.program', 'rekening')->get();
+        
+        // Ambil subprogram dan program untuk dropdown atau relasi lainnya
         $subprograms = Subprogram::with('program')->get();
         $programs = Program::with('subprograms')->get();
         $rekenings = Rekening::all();
 
+        // Kirim data ke view Inertia
         return Inertia::render('Kegiatan/Index', [
             'kegiatans' => $kegiatans,
             'subprograms' => $subprograms,
@@ -36,8 +40,10 @@ class KegiatanController extends Controller
         ]);
 
         try {
+            // Cari atau buat rekening berdasarkan nomor rekening
             $rekening = Rekening::firstOrCreate(['no_rekening' => $request->no_rekening]);
 
+            // Buat kegiatan baru
             Kegiatan::create([
                 'nama_kegiatan' => $request->nama_kegiatan,
                 'program_id' => $request->program_id,
@@ -61,6 +67,7 @@ class KegiatanController extends Controller
         ]);
 
         try {
+            // Temukan kegiatan dan update datanya
             $kegiatan = Kegiatan::findOrFail($id);
             $rekening = Rekening::firstOrCreate(['no_rekening' => $request->no_rekening]);
 
@@ -79,6 +86,7 @@ class KegiatanController extends Controller
 
     public function destroy($id)
     {
+        // Temukan kegiatan dan hapus
         $kegiatan = Kegiatan::findOrFail($id);
         $kegiatan->delete();
 
