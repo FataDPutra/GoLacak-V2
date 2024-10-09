@@ -20,6 +20,9 @@ class SubprogramController extends Controller
         return Inertia::render('Subprogram/Index', [
             'subprograms' => $subprograms,
             'programs' => $programs,
+        'auth' => [
+            'user' => auth()->user(),
+        ],
         ]);
     }
 

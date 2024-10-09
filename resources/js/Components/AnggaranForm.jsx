@@ -11,7 +11,8 @@ const formatRupiah = (value) => {
 };
 
 export default function AnggaranForm({
-    editAnggaran, // data anggaran yang sedang diedit
+    editAnggaran,
+    setEditAnggaran, // Tambahkan prop ini untuk handle cancel
     programs,
     subprograms,
     kegiatans,
@@ -23,7 +24,7 @@ export default function AnggaranForm({
     const [programId, setProgramId] = useState("");
     const [subprogramId, setSubprogramId] = useState("");
     const [filteredKegiatans, setFilteredKegiatans] = useState([]);
-    const [rekening, setRekening] = useState(""); // Tambahkan state untuk rekening
+    const [rekening, setRekening] = useState("");
 
     // Efek untuk mengisi form jika editAnggaran ada
     useEffect(() => {
@@ -47,11 +48,11 @@ export default function AnggaranForm({
             if (editAnggaran && selectedSubprogram) {
                 setKegiatanId(editAnggaran.kegiatan_id);
             } else {
-                setKegiatanId(""); // Reset kegiatan ketika subprogram berubah
+                setKegiatanId("");
             }
         } else {
             setFilteredKegiatans([]);
-            setKegiatanId(""); // Reset kegiatan jika subprogram kosong
+            setKegiatanId("");
         }
     }, [subprogramId, subprograms, editAnggaran]);
 
@@ -60,7 +61,7 @@ export default function AnggaranForm({
         const selectedKegiatan = kegiatans.find(
             (kegiatan) => kegiatan.id === kegiatanId
         );
-        setRekening(selectedKegiatan?.rekening?.no_rekening || ""); // Set rekening berdasarkan kegiatan
+        setRekening(selectedKegiatan?.rekening?.no_rekening || "");
     }, [kegiatanId, kegiatans]);
 
     const handleSubmit = (e) => {
@@ -87,19 +88,14 @@ export default function AnggaranForm({
         }
     };
 
-    const handleChangeAnggaranMurni = (e) => {
-        const value = e.target.value.replace(/\D/g, ""); // Hanya angka
-        setAnggaranMurni(value);
-    };
-
-    const handleChangePergeseran = (e) => {
-        const value = e.target.value.replace(/\D/g, ""); // Hanya angka
-        setPergeseran(value);
-    };
-
-    const handleChangePerubahan = (e) => {
-        const value = e.target.value.replace(/\D/g, ""); // Hanya angka
-        setPerubahan(value);
+    const handleCancel = () => {
+        setEditAnggaran(null); // Reset form state
+        setAnggaranMurni("");
+        setPergeseran(0);
+        setPerubahan(0);
+        setProgramId("");
+        setSubprogramId("");
+        setKegiatanId("");
     };
 
     return (
@@ -110,7 +106,7 @@ export default function AnggaranForm({
                     value={programId}
                     onChange={(e) => {
                         setProgramId(e.target.value);
-                        setSubprogramId(""); // Reset subprogram ketika program berubah
+                        setSubprogramId("");
                     }}
                     required
                 >
@@ -173,7 +169,9 @@ export default function AnggaranForm({
                 <input
                     type="text"
                     value={formatRupiah(anggaranMurni)}
-                    onChange={handleChangeAnggaranMurni}
+                    onChange={(e) =>
+                        setAnggaranMurni(e.target.value.replace(/\D/g, ""))
+                    }
                     required
                 />
             </div>
@@ -182,7 +180,9 @@ export default function AnggaranForm({
                 <input
                     type="text"
                     value={formatRupiah(pergeseran)}
-                    onChange={handleChangePergeseran}
+                    onChange={(e) =>
+                        setPergeseran(e.target.value.replace(/\D/g, ""))
+                    }
                 />
             </div>
             <div>
@@ -190,12 +190,23 @@ export default function AnggaranForm({
                 <input
                     type="text"
                     value={formatRupiah(perubahan)}
-                    onChange={handleChangePerubahan}
+                    onChange={(e) =>
+                        setPerubahan(e.target.value.replace(/\D/g, ""))
+                    }
                 />
             </div>
             <button type="submit">
                 {editAnggaran ? "Update Anggaran" : "Simpan Anggaran"}
             </button>
+            {editAnggaran && (
+                <button
+                    type="button"
+                    onClick={handleCancel}
+                    className="ml-4 p-2 bg-red-600 text-white rounded-md"
+                >
+                    Cancel
+                </button>
+            )}
         </form>
     );
 }

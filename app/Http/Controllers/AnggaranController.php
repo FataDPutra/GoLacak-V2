@@ -25,7 +25,9 @@ public function index()
         'programs' => $programs,
         'subprograms' => $subprograms,
         'kegiatans' => $kegiatans,
-    ]);
+        'auth' => [
+            'user' => auth()->user(),
+        ],    ]);
 }
 
 

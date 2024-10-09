@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import ProgramForm from "../../Components/ProgramForm";
-import ProgramList from "../../Components/ProgramList";
+import BidangForm from "../../Components/BidangForm";
+import BidangList from "../../Components/BidangList";
 import Sidebar from "../../Components/Sidebar";
 import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
 
-const Index = ({ programs, auth }) => {
-    const [editProgram, setEditProgram] = useState(null);
+const Index = ({ bidangs, auth }) => {
+    const [editBidang, setEditBidang] = useState(null);
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -13,16 +13,15 @@ const Index = ({ programs, auth }) => {
                 <Sidebar />
                 <div className="lg:ml-20 lg:mr-10 p-6 flex-grow bg-white shadow-lg rounded-md">
                     <h1 className="text-3xl font-bold text-gray-700 mb-6">
-                        Daftar Program
+                        Daftar Bidang
                     </h1>
-                    {/* Pass setEditProgram as a prop */}
-                    <ProgramForm
-                        editProgram={editProgram}
-                        setEditProgram={setEditProgram}
+                    <BidangForm
+                        editBidang={editBidang}
+                        setEditBidang={setEditBidang}
                     />
-                    <ProgramList
-                        programs={programs}
-                        setEditProgram={setEditProgram}
+                    <BidangList
+                        bidangs={bidangs}
+                        setEditBidang={setEditBidang}
                     />
                 </div>
             </div>

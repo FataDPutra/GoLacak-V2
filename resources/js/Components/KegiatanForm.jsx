@@ -2,28 +2,30 @@ import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 
 export default function KegiatanForm({
-    editKegiatan, // Data kegiatan yang akan diedit
+    editKegiatan,
     programs,
     subprograms,
     rekenings,
+    bidangs,
+    setEditKegiatan,
 }) {
     const [namaKegiatan, setNamaKegiatan] = useState("");
     const [programId, setProgramId] = useState("");
     const [subprogramId, setSubprogramId] = useState("");
     const [noRekening, setNoRekening] = useState("");
+    const [bidangId, setBidangId] = useState("");
     const [filteredSubprograms, setFilteredSubprograms] = useState([]);
 
-    // Efek untuk mengisi form jika ada data yang sedang diedit
     useEffect(() => {
         if (editKegiatan) {
             setNamaKegiatan(editKegiatan.nama_kegiatan);
             setProgramId(editKegiatan.program_id);
             setSubprogramId(editKegiatan.subprogram_id);
             setNoRekening(editKegiatan.rekening?.no_rekening || "");
+            setBidangId(editKegiatan.bidang_id || "");
         }
     }, [editKegiatan]);
 
-    // Efek untuk filter subprograms berdasarkan program yang dipilih
     useEffect(() => {
         if (programId) {
             const selectedProgram = programs.find(
@@ -31,46 +33,43 @@ export default function KegiatanForm({
             );
             setFilteredSubprograms(selectedProgram?.subprograms || []);
         } else {
-            setFilteredSubprograms([]); // Reset jika tidak ada program yang dipilih
+            setFilteredSubprograms([]);
         }
     }, [programId, programs]);
-
-    // Efek untuk memastikan subprogram terisi otomatis saat edit
-    useEffect(() => {
-        if (editKegiatan && programId && subprograms) {
-            const selectedSubprograms = subprograms.filter(
-                (subprogram) => subprogram.program_id === programId
-            );
-            setFilteredSubprograms(selectedSubprograms || []);
-            setSubprogramId(editKegiatan.subprogram_id); // Set otomatis subprogramId sesuai edit data
-        }
-    }, [editKegiatan, programId, subprograms]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (editKegiatan) {
-            // Jika mengedit kegiatan, gunakan metode PUT
             Inertia.put(`/subkegiatan/${editKegiatan.id}`, {
-                nama_kegiatan: namaKegiatan, // Mengirim nama_kegiatan
-                program_id: programId, // Mengirim program_id
-                subprogram_id: subprogramId, // Mengirim subprogram_id
-                no_rekening: noRekening, // Mengirim no_rekening
+                nama_kegiatan: namaKegiatan,
+                program_id: programId,
+                subprogram_id: subprogramId,
+                no_rekening: noRekening,
+                bidang_id: bidangId,
             });
         } else {
-            // Jika menambah kegiatan baru, gunakan metode POST
             Inertia.post("/subkegiatan", {
-                nama_kegiatan: namaKegiatan, // Mengirim nama_kegiatan
-                program_id: programId, // Mengirim program_id
-                subprogram_id: subprogramId, // Mengirim subprogram_id
-                no_rekening: noRekening, // Mengirim no_rekening
+                nama_kegiatan: namaKegiatan,
+                program_id: programId,
+                subprogram_id: subprogramId,
+                no_rekening: noRekening,
+                bidang_id: bidangId,
             });
         }
     };
 
+    const handleCancel = () => {
+        setEditKegiatan(null);
+        setNamaKegiatan("");
+        setProgramId("");
+        setSubprogramId("");
+        setNoRekening("");
+        setBidangId("");
+    };
+
     return (
         <form onSubmit={handleSubmit}>
-            {/* Jika sedang mengedit, kirim hidden field dengan nilai _method PUT */}
             {editKegiatan && <input type="hidden" name="_method" value="PUT" />}
             <div>
                 <label>Program</label>
@@ -78,7 +77,7 @@ export default function KegiatanForm({
                     value={programId}
                     onChange={(e) => {
                         setProgramId(e.target.value);
-                        setSubprogramId(""); // Reset subprogram ketika program berubah
+                        setSubprogramId("");
                     }}
                     required
                 >
@@ -96,7 +95,7 @@ export default function KegiatanForm({
                     value={subprogramId}
                     onChange={(e) => setSubprogramId(e.target.value)}
                     required
-                    disabled={!programId} // Disable jika tidak ada program yang dipilih
+                    disabled={!programId}
                 >
                     <option value="">Pilih Kegiatan</option>
                     {filteredSubprograms.map((subprogram) => (
@@ -120,13 +119,42 @@ export default function KegiatanForm({
                 <input
                     type="text"
                     value={noRekening}
-                    onChange={(e) => setNoRekening(e.target.value)}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        if (/^\d*$/.test(value)) {
+                            setNoRekening(value);
+                        }
+                    }}
                     required
                 />
             </div>
+            <div>
+                <label>Bidang</label>
+                <select
+                    value={bidangId}
+                    onChange={(e) => setBidangId(e.target.value)}
+                    required
+                >
+                    <option value="">Pilih Bidang</option>
+                    {bidangs.map((bidang) => (
+                        <option key={bidang.id} value={bidang.id}>
+                            {bidang.nama_bidang}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <button type="submit">
-                {editKegiatan ? "Update Sub Kegiatan" : "Simpan Sub Kegiatan"}
+                {editKegiatan ? "Update Kegiatan" : "Simpan Kegiatan"}
             </button>
+            {editKegiatan && (
+                <button
+                    type="button"
+                    onClick={handleCancel}
+                    style={{ marginLeft: "10px" }}
+                >
+                    Cancel
+                </button>
+            )}
         </form>
     );
 }

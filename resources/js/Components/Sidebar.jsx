@@ -1,50 +1,128 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "@inertiajs/inertia-react";
+import {
+    FaTasks,
+    FaListAlt,
+    FaMoneyCheckAlt,
+    FaClipboardList,
+    FaFolder, // Ikon baru untuk Bidang
+} from "react-icons/fa"; // Mengimpor ikon dari react-icons
 
 const Sidebar = () => {
+    const [isOpen, setIsOpen] = useState(false); // State untuk mengontrol dropdown pada mobile
+
     return (
-        <div
-            style={{
-                width: "200px",
-                borderRight: "1px solid #ccc",
-                padding: "20px",
-            }}
-        >
-            <h2>Menu</h2>
-            <ul style={{ listStyleType: "none", padding: 0 }}>
-                <li>
+        <div>
+            {/* Mobile dropdown toggle */}
+            <div className="lg:hidden bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4 shadow-md">
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="w-full flex justify-between items-center text-lg font-bold focus:outline-none"
+                >
+                    Menu
+                    <svg
+                        className={`h-6 w-6 transform ${
+                            isOpen ? "rotate-180" : "rotate-0"
+                        } transition-transform`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M19 9l-7 7-7-7"
+                        />
+                    </svg>
+                </button>
+
+                {/* Dropdown menu for mobile */}
+                <div
+                    className={`${isOpen ? "block" : "hidden"} mt-4 space-y-2`}
+                >
                     <Link
                         href="/programs"
-                        style={{ textDecoration: "none", color: "black" }}
+                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
                     >
-                        Program
+                        <FaTasks className="mr-2" /> Program
                     </Link>
-                </li>
-                <li>
                     <Link
                         href="/kegiatan"
-                        style={{ textDecoration: "none", color: "black" }}
+                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
                     >
-                        Kegiatan
+                        <FaClipboardList className="mr-2" /> Kegiatan
                     </Link>
-                </li>
-                <li>
                     <Link
                         href="/subkegiatan"
-                        style={{ textDecoration: "none", color: "black" }}
+                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
                     >
-                        Sub Kegiatan
+                        <FaListAlt className="mr-2" /> Sub Kegiatan
                     </Link>
-                </li>
-                <li>
                     <Link
                         href="/anggaran"
-                        style={{ textDecoration: "none", color: "black" }}
+                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
                     >
-                        Anggaran
+                        <FaMoneyCheckAlt className="mr-2" /> Anggaran
                     </Link>
-                </li>
-            </ul>
+                    {/* New Link for Bidang */}
+                    <Link
+                        href="/bidang"
+                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
+                    >
+                        <FaFolder className="mr-2" /> Bidang
+                    </Link>
+                </div>
+            </div>
+
+            {/* Sidebar for desktop */}
+            <div className="hidden lg:block w-64 bg-gradient-to-r from-blue-600 to-blue-800 text-white p-6 shadow-lg rounded-lg">
+                <h2 className="text-2xl font-bold mb-6">Menu</h2>
+                <ul className="space-y-4">
+                    <li>
+                        <Link
+                            href="/programs"
+                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                        >
+                            <FaTasks className="mr-2" /> Program
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/kegiatan"
+                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                        >
+                            <FaClipboardList className="mr-2" /> Kegiatan
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/subkegiatan"
+                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                        >
+                            <FaListAlt className="mr-2" /> Sub Kegiatan
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/anggaran"
+                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                        >
+                            <FaMoneyCheckAlt className="mr-2" /> Anggaran
+                        </Link>
+                    </li>
+                    {/* New Link for Bidang */}
+                    <li>
+                        <Link
+                            href="/bidang"
+                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                        >
+                            <FaFolder className="mr-2" /> Bidang
+                        </Link>
+                    </li>
+                </ul>
+            </div>
         </div>
     );
 };

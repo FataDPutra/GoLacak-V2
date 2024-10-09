@@ -11,7 +11,7 @@ class Kegiatan extends Model
     use HasFactory;
 
     protected $table = 'kegiatan'; 
-    protected $fillable = ['nama_kegiatan', 'program_id', 'subprogram_id', 'rekening_id'];
+    protected $fillable = ['nama_kegiatan', 'program_id', 'subprogram_id', 'rekening_id', 'bidang_id'];
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -42,4 +42,10 @@ class Kegiatan extends Model
     {
         return $this->hasMany(Anggaran::class);
     }
+
+    public function bidang()
+    {
+    return $this->belongsTo(Bidang::class);
+}
+
 }

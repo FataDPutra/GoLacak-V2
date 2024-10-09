@@ -12,7 +12,10 @@ class ProgramController extends Controller
     public function index()
     {
         $programs = Program::with('rekening')->get();
-        return Inertia::render('Program/Index', ['programs' => $programs]);
+        return Inertia::render('Program/Index', ['programs' => $programs,
+        'auth' => [
+            'user' => auth()->user(),
+        ],]);
     }
 
 public function store(Request $request)

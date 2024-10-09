@@ -16,10 +16,11 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
         <table>
             <thead>
                 <tr>
-                    <th>Nama Sub Kegiatan</th>
-                    <th>Kegiatan</th>
+                    <th>Nama Kegiatan</th>
+                    <th>Sub Kegiatan</th>
                     <th>Program</th>
                     <th>No Rekening</th>
+                    <th>Bidang</th> {/* Tambahkan kolom untuk bidang */}
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -30,6 +31,8 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
                         <td>{kegiatan.subprogram?.nama_subprogram}</td>
                         <td>{kegiatan.program?.nama_program}</td>
                         <td>{kegiatan.rekening?.no_rekening}</td>
+                        <td>{kegiatan.bidang?.nama_bidang}</td>{" "}
+                        {/* Tampilkan bidang */}
                         <td>
                             <button onClick={() => setEditKegiatan(kegiatan)}>
                                 Edit

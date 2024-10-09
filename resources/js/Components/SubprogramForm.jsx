@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 
-export default function SubprogramForm({ editSubprogram, programs }) {
+export default function SubprogramForm({
+    editSubprogram,
+    programs,
+    setEditSubprogram,
+}) {
     const [namaSubprogram, setNamaSubprogram] = useState("");
     const [programId, setProgramId] = useState("");
     const [noRekening, setNoRekening] = useState("");
@@ -10,7 +14,7 @@ export default function SubprogramForm({ editSubprogram, programs }) {
         if (editSubprogram) {
             setNamaSubprogram(editSubprogram.nama_subprogram);
             setProgramId(editSubprogram.program_id);
-            setNoRekening(editSubprogram.rekening.no_rekening); // Isi no_rekening dari subprogram yang sedang diedit
+            setNoRekening(editSubprogram.rekening.no_rekening);
         }
     }, [editSubprogram]);
 
@@ -18,25 +22,29 @@ export default function SubprogramForm({ editSubprogram, programs }) {
         e.preventDefault();
 
         if (editSubprogram) {
-            Inertia.put(`/kegiatan/${editSubprogram.id}`, {
+            Inertia.put(`/subprograms/${editSubprogram.id}`, {
                 nama_subprogram: namaSubprogram,
                 program_id: programId,
-                no_rekening: noRekening, // Kirim no_rekening ke server
+                no_rekening: noRekening,
             });
         } else {
-            Inertia.post("/kegiatan", {
+            Inertia.post("/subprograms", {
                 nama_subprogram: namaSubprogram,
                 program_id: programId,
-                no_rekening: noRekening, // Kirim no_rekening ke server
+                no_rekening: noRekening,
             });
         }
     };
 
+    const handleCancel = () => {
+        setEditSubprogram(null);
+        setNamaSubprogram("");
+        setProgramId("");
+        setNoRekening("");
+    };
+
     return (
         <form onSubmit={handleSubmit}>
-            {editSubprogram && (
-                <input type="hidden" name="_method" value="PUT" />
-            )}
             <div>
                 <label>Program</label>
                 <select
@@ -53,7 +61,7 @@ export default function SubprogramForm({ editSubprogram, programs }) {
                 </select>
             </div>
             <div>
-                <label>Nama Kegiatan</label>
+                <label>Nama Subprogram</label>
                 <input
                     type="text"
                     value={namaSubprogram}
@@ -66,13 +74,27 @@ export default function SubprogramForm({ editSubprogram, programs }) {
                 <input
                     type="text"
                     value={noRekening}
-                    onChange={(e) => setNoRekening(e.target.value)}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        if (/^\d*$/.test(value)) {
+                            setNoRekening(value);
+                        }
+                    }}
                     required
                 />
             </div>
             <button type="submit">
-                {editSubprogram ? "Update Kegiatan" : "Simpan Kegiatan"}
+                {editSubprogram ? "Update Subprogram" : "Simpan Subprogram"}
             </button>
+            {editSubprogram && (
+                <button
+                    type="button"
+                    onClick={handleCancel}
+                    className="ml-4 p-2 bg-red-600 text-white rounded-md"
+                >
+                    Cancel
+                </button>
+            )}
         </form>
     );
 }
