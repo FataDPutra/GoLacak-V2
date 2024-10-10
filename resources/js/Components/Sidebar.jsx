@@ -43,6 +43,12 @@ const Sidebar = () => {
                     className={`${isOpen ? "block" : "hidden"} mt-4 space-y-2`}
                 >
                     <Link
+                        href="/bidang"
+                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
+                    >
+                        <FaFolder className="mr-2" /> Bidang
+                    </Link>
+                    <Link
                         href="/programs"
                         className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
                     >
@@ -67,12 +73,6 @@ const Sidebar = () => {
                         <FaMoneyCheckAlt className="mr-2" /> Anggaran
                     </Link>
                     {/* New Link for Bidang */}
-                    <Link
-                        href="/bidang"
-                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
-                    >
-                        <FaFolder className="mr-2" /> Bidang
-                    </Link>
                 </div>
             </div>
 
@@ -80,6 +80,14 @@ const Sidebar = () => {
             <div className="hidden lg:block w-64 bg-gradient-to-r from-blue-600 to-blue-800 text-white p-6 shadow-lg rounded-lg">
                 <h2 className="text-2xl font-bold mb-6">Menu</h2>
                 <ul className="space-y-4">
+                    <li>
+                        <Link
+                            href="/bidang"
+                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                        >
+                            <FaFolder className="mr-2" /> Bidang
+                        </Link>
+                    </li>
                     <li>
                         <Link
                             href="/programs"
@@ -110,15 +118,6 @@ const Sidebar = () => {
                             className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
                         >
                             <FaMoneyCheckAlt className="mr-2" /> Anggaran
-                        </Link>
-                    </li>
-                    {/* New Link for Bidang */}
-                    <li>
-                        <Link
-                            href="/bidang"
-                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
-                        >
-                            <FaFolder className="mr-2" /> Bidang
                         </Link>
                     </li>
                 </ul>

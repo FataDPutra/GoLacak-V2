@@ -15,7 +15,7 @@ export default function Authenticated({ user, header, children }) {
     return (
         <div className="min-h-screen bg-gray-100">
             {/* Navigation Bar */}
-            <nav className="bg-blue-700 shadow-lg">
+            <nav className="bg-[#003049] shadow-lg">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16 items-center">
                         <div className="flex items-center">
@@ -28,7 +28,7 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink
                                     href={route("dashboard")}
                                     active={route().current("dashboard")}
-                                    className="text-white hover:text-gray-200 transition-all"
+                                    className="text-white hover:text-[#c1121f] transition-all"
                                 >
                                     Dashboard
                                 </NavLink>
@@ -43,7 +43,7 @@ export default function Authenticated({ user, header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 transition-all"
+                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#669bbc] hover:bg-[#c1121f] transition-all"
                                             >
                                                 {userName}
                                                 <svg
@@ -80,88 +80,6 @@ export default function Authenticated({ user, header, children }) {
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
-                        </div>
-
-                        {/* Mobile Menu Button */}
-                        <div className="-mr-2 flex items-center sm:hidden">
-                            <button
-                                onClick={() =>
-                                    setShowingNavigationDropdown(
-                                        !showingNavigationDropdown
-                                    )
-                                }
-                                className="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-blue-600 transition-all"
-                            >
-                                <svg
-                                    className="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        className={
-                                            !showingNavigationDropdown
-                                                ? "inline-flex"
-                                                : "hidden"
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        className={
-                                            showingNavigationDropdown
-                                                ? "inline-flex"
-                                                : "hidden"
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Mobile Navigation */}
-                <div
-                    className={`${
-                        showingNavigationDropdown ? "block" : "hidden"
-                    } sm:hidden bg-white`}
-                >
-                    <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                            className="text-blue-700 hover:text-blue-500 transition-all"
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-                    <div className="pt-4 pb-1 border-t border-gray-200">
-                        <div className="px-4">
-                            <div className="font-medium text-base text-gray-800">
-                                {userName}
-                            </div>
-                            <div className="font-medium text-sm text-gray-500">
-                                {userEmail}
-                            </div>
-                        </div>
-                        <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route("profile.edit")}>
-                                Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                method="post"
-                                href={route("logout")}
-                                as="button"
-                                className="hover:bg-red-500 text-red-700 transition-all"
-                            >
-                                Log Out
-                            </ResponsiveNavLink>
                         </div>
                     </div>
                 </div>
