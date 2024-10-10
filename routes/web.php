@@ -8,6 +8,7 @@ use App\Http\Controllers\SubprogramController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\AnggaranController;
 use App\Http\Controllers\RekeningController;
+use App\Http\Controllers\PenyerapanController;
 use App\Http\Controllers\BidangController;
 use Inertia\Inertia;
 
@@ -42,11 +43,15 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::resource('programs', ProgramController::class);
-Route::resource('kegiatan', SubprogramController::class);   
-Route::resource('subkegiatan', KegiatanController::class);
-Route::resource('anggaran', AnggaranController::class);
-Route::resource('bidang', BidangController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::resource('programs', ProgramController::class);
+    Route::resource('kegiatan', SubprogramController::class);   
+    Route::resource('subkegiatan', KegiatanController::class);
+    Route::resource('anggaran', AnggaranController::class);
+    Route::resource('bidang', BidangController::class);
+    Route::resource('penyerapan', PenyerapanController::class);
+});
+
 
 
 

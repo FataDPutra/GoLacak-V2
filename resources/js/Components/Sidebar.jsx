@@ -5,11 +5,12 @@ import {
     FaListAlt,
     FaMoneyCheckAlt,
     FaClipboardList,
-    FaFolder, // Ikon baru untuk Bidang
-} from "react-icons/fa"; // Mengimpor ikon dari react-icons
+    FaFolder,
+    FaChartPie, // New icon for Absorption
+} from "react-icons/fa";
 
 const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(false); // State untuk mengontrol dropdown pada mobile
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
         <div>
@@ -38,7 +39,6 @@ const Sidebar = () => {
                     </svg>
                 </button>
 
-                {/* Dropdown menu for mobile */}
                 <div
                     className={`${isOpen ? "block" : "hidden"} mt-4 space-y-2`}
                 >
@@ -72,7 +72,12 @@ const Sidebar = () => {
                     >
                         <FaMoneyCheckAlt className="mr-2" /> Anggaran
                     </Link>
-                    {/* New Link for Bidang */}
+                    <Link
+                        href="/penyerapan" // New route for absorption
+                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
+                    >
+                        <FaChartPie className="mr-2" /> Penyerapan
+                    </Link>
                 </div>
             </div>
 
@@ -118,6 +123,14 @@ const Sidebar = () => {
                             className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
                         >
                             <FaMoneyCheckAlt className="mr-2" /> Anggaran
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/penyerapan" // New route for absorption
+                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                        >
+                            <FaChartPie className="mr-2" /> Penyerapan
                         </Link>
                     </li>
                 </ul>
