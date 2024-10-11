@@ -13,22 +13,22 @@ export default function Authenticated({ user, header, children }) {
     const userEmail = user?.email || "";
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-[#fbfef9]">
             {/* Navigation Bar */}
-            <nav className="bg-[#003049] shadow-lg">
+            <nav className="bg-[#c1292e] shadow-lg">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16 items-center">
                         <div className="flex items-center">
                             <div className="shrink-0">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-white" />
+                                    <ApplicationLogo className="block h-9 w-auto fill-current text-[#fbfef9]" />
                                 </Link>
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink
                                     href={route("dashboard")}
                                     active={route().current("dashboard")}
-                                    className="text-white hover:text-[#c1121f] transition-all"
+                                    className="text-[#fbfef9] hover:text-[#f39237] transition-all"
                                 >
                                     Dashboard
                                 </NavLink>
@@ -43,7 +43,7 @@ export default function Authenticated({ user, header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#669bbc] hover:bg-[#c1121f] transition-all"
+                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-[#fbfef9] bg-[#c1292e] hover:bg-[#f39237] transition-all"
                                             >
                                                 {userName}
                                                 <svg

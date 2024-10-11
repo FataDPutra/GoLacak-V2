@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
+import { FaSave, FaTimes, FaEdit } from "react-icons/fa"; // Import icons
 
 export default function ProgramForm({ editProgram, setEditProgram }) {
     const [namaProgram, setNamaProgram] = useState("");
@@ -26,6 +27,9 @@ export default function ProgramForm({ editProgram, setEditProgram }) {
                 no_rekening: noRekening,
             });
         }
+
+        setNamaProgram("");
+        setNoRekening("");
     };
 
     const handleCancel = () => {
@@ -65,21 +69,37 @@ export default function ProgramForm({ editProgram, setEditProgram }) {
                     className="w-full p-2 border border-gray-300 rounded-md"
                 />
             </div>
-            <button
-                type="submit"
-                className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all"
-            >
-                {editProgram ? "Update Program" : "Simpan Program"}
-            </button>
-            {editProgram && (
+
+            {/* Submit Button with Icons */}
+            <div className="flex gap-4">
                 <button
-                    type="button"
-                    onClick={handleCancel}
-                    className="ml-4 p-2 bg-red-600 text-white rounded-md"
+                    type="submit"
+                    className="flex items-center justify-center w-full p-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#f39237] transition-all"
                 >
-                    Cancel
+                    {editProgram ? (
+                        <>
+                            <FaEdit className="mr-2" />
+                            Update Program
+                        </>
+                    ) : (
+                        <>
+                            <FaSave className="mr-2" />
+                            Simpan Program
+                        </>
+                    )}
                 </button>
-            )}
+
+                {editProgram && (
+                    <button
+                        type="button"
+                        onClick={handleCancel}
+                        className="flex items-center justify-center w-full p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all"
+                    >
+                        <FaTimes className="mr-2" />
+                        Cancel
+                    </button>
+                )}
+            </div>
         </form>
     );
 }

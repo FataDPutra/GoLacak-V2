@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
+import { FaSave, FaTimes, FaEdit } from "react-icons/fa"; // Import icons
 
 // Fungsi untuk format Rupiah
 const formatRupiah = (value) => {
@@ -99,9 +100,11 @@ export default function AnggaranForm({
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Program</label>
+        <form onSubmit={handleSubmit} className="mb-6">
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Program
+                </label>
                 <select
                     value={programId}
                     onChange={(e) => {
@@ -109,6 +112,7 @@ export default function AnggaranForm({
                         setSubprogramId("");
                     }}
                     required
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 >
                     <option value="">Pilih Program</option>
                     {programs.map((program) => (
@@ -118,13 +122,17 @@ export default function AnggaranForm({
                     ))}
                 </select>
             </div>
-            <div>
-                <label>Kegiatan</label>
+
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Kegiatan
+                </label>
                 <select
                     value={subprogramId}
                     onChange={(e) => setSubprogramId(e.target.value)}
                     required
                     disabled={!programId}
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 >
                     <option value="">Pilih Kegiatan</option>
                     {subprograms
@@ -138,13 +146,17 @@ export default function AnggaranForm({
                         ))}
                 </select>
             </div>
-            <div>
-                <label>Sub Kegiatan</label>
+
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Sub Kegiatan
+                </label>
                 <select
                     value={kegiatanId}
                     onChange={(e) => setKegiatanId(e.target.value)}
                     required
                     disabled={!subprogramId}
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 >
                     <option value="">Pilih Sub Kegiatan</option>
                     {filteredKegiatans.length > 0 ? (
@@ -160,12 +172,23 @@ export default function AnggaranForm({
                     )}
                 </select>
             </div>
-            <div>
-                <label>No Rekening</label>
-                <input type="text" value={rekening} readOnly />
+
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    No Rekening
+                </label>
+                <input
+                    type="text"
+                    value={rekening}
+                    readOnly
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                />
             </div>
-            <div>
-                <label>Anggaran Murni (Rp)</label>
+
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Anggaran Murni (Rp)
+                </label>
                 <input
                     type="text"
                     value={formatRupiah(anggaranMurni)}
@@ -173,40 +196,64 @@ export default function AnggaranForm({
                         setAnggaranMurni(e.target.value.replace(/\D/g, ""))
                     }
                     required
+                    className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
                 />
             </div>
-            <div>
-                <label>Pergeseran (Rp)</label>
+
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Pergeseran (Rp)
+                </label>
                 <input
                     type="text"
                     value={formatRupiah(pergeseran)}
                     onChange={(e) =>
                         setPergeseran(e.target.value.replace(/\D/g, ""))
                     }
+                    className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
                 />
             </div>
-            <div>
-                <label>Perubahan (Rp)</label>
+
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Perubahan (Rp)
+                </label>
                 <input
                     type="text"
                     value={formatRupiah(perubahan)}
                     onChange={(e) =>
                         setPerubahan(e.target.value.replace(/\D/g, ""))
                     }
+                    className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
                 />
             </div>
-            <button type="submit">
-                {editAnggaran ? "Update Anggaran" : "Simpan Anggaran"}
-            </button>
-            {editAnggaran && (
+
+            <div className="flex gap-4">
                 <button
-                    type="button"
-                    onClick={handleCancel}
-                    className="ml-4 p-2 bg-red-600 text-white rounded-md"
+                    type="submit"
+                    className="flex items-center justify-center w-full p-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#f39237] transition-all"
                 >
-                    Cancel
+                    {editAnggaran ? (
+                        <>
+                            <FaEdit className="mr-2" /> Update Anggaran
+                        </>
+                    ) : (
+                        <>
+                            <FaSave className="mr-2" /> Simpan Anggaran
+                        </>
+                    )}
                 </button>
-            )}
+
+                {editAnggaran && (
+                    <button
+                        type="button"
+                        onClick={handleCancel}
+                        className="flex items-center justify-center w-full p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all"
+                    >
+                        <FaTimes className="mr-2" /> Cancel
+                    </button>
+                )}
+            </div>
         </form>
     );
 }

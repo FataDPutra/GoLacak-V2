@@ -36,6 +36,7 @@ const PenyerapanForm = ({
     const [filteredSubprograms, setFilteredSubprograms] = useState([]);
     const [filteredKegiatans, setFilteredKegiatans] = useState([]);
 
+    // Mengisi form jika editPenyerapan ada (mode edit)
     useEffect(() => {
         if (editPenyerapan) {
             setSelectedProgram(editPenyerapan.program_id);
@@ -116,8 +117,13 @@ const PenyerapanForm = ({
         setPenyerapanAnggaran(value);
 
         // Hitung persentase penyerapan setiap kali nilai penyerapan berubah
-        const calculatedPersentase = calculatePersentase(anggaranDetail, value);
-        setPersentasePenyerapan(calculatedPersentase);
+        if (anggaranDetail.id) {
+            const calculatedPersentase = calculatePersentase(
+                anggaranDetail,
+                value
+            );
+            setPersentasePenyerapan(calculatedPersentase);
+        }
     };
 
     const handleSubmit = (e) => {
@@ -222,7 +228,7 @@ const PenyerapanForm = ({
                 <p>Anggaran Murni: Rp {anggaranDetail.anggaran_murni}</p>
                 <p>Pergeseran: Rp {anggaranDetail.pergeseran}</p>
                 <p>Perubahan: Rp {anggaranDetail.perubahan}</p>
-                <p>Persentase Penyerapan:{persentasePenyerapan.toFixed(2)}%</p>
+                <p>Persentase Penyerapan: {persentasePenyerapan.toFixed(2)}%</p>
             </div>
 
             <div>

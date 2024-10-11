@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
+import { FaSave, FaTimes } from "react-icons/fa"; // Import icons
 
 export default function BidangForm({ editBidang, setEditBidang }) {
     const [namaBidang, setNamaBidang] = useState("");
@@ -34,7 +35,10 @@ export default function BidangForm({ editBidang, setEditBidang }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="mb-6">
+        <form
+            onSubmit={handleSubmit}
+            className="mb-6 bg-[#fbfef9] p-6 rounded-lg shadow-lg"
+        >
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
                     Nama Bidang
@@ -44,24 +48,28 @@ export default function BidangForm({ editBidang, setEditBidang }) {
                     value={namaBidang}
                     onChange={(e) => setNamaBidang(e.target.value)}
                     required
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
                 />
             </div>
-            <button
-                type="submit"
-                className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all"
-            >
-                {editBidang ? "Update Bidang" : "Simpan Bidang"}
-            </button>
-            {editBidang && (
+            <div className="flex gap-3">
                 <button
-                    type="button"
-                    onClick={handleCancel}
-                    className="w-full p-2 mt-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all"
+                    type="submit"
+                    className="flex-1 flex justify-center items-center p-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#f39237] transition-all shadow-md"
                 >
-                    Cancel
+                    <FaSave className="mr-2" />
+                    {editBidang ? "Update Bidang" : "Simpan Bidang"}
                 </button>
-            )}
+                {editBidang && (
+                    <button
+                        type="button"
+                        onClick={handleCancel}
+                        className="flex-1 flex justify-center items-center p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all shadow-md"
+                    >
+                        <FaTimes className="mr-2" />
+                        Cancel
+                    </button>
+                )}
+            </div>
         </form>
     );
 }

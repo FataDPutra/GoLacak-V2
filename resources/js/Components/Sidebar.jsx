@@ -6,7 +6,7 @@ import {
     FaMoneyCheckAlt,
     FaClipboardList,
     FaFolder,
-    FaChartPie, // New icon for Absorption
+    FaChartPie,
 } from "react-icons/fa";
 
 const Sidebar = () => {
@@ -15,7 +15,7 @@ const Sidebar = () => {
     return (
         <div>
             {/* Mobile dropdown toggle */}
-            <div className="lg:hidden bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4 shadow-md">
+            <div className="lg:hidden bg-[#c1292e] text-white p-4 shadow-md rounded-md">
                 <button
                     onClick={() => setIsOpen(!isOpen)}
                     className="w-full flex justify-between items-center text-lg font-bold focus:outline-none"
@@ -44,37 +44,37 @@ const Sidebar = () => {
                 >
                     <Link
                         href="/bidang"
-                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
+                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
                     >
                         <FaFolder className="mr-2" /> Bidang
                     </Link>
                     <Link
                         href="/programs"
-                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
+                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
                     >
                         <FaTasks className="mr-2" /> Program
                     </Link>
                     <Link
                         href="/kegiatan"
-                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
+                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
                     >
                         <FaClipboardList className="mr-2" /> Kegiatan
                     </Link>
                     <Link
                         href="/subkegiatan"
-                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
+                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
                     >
                         <FaListAlt className="mr-2" /> Sub Kegiatan
                     </Link>
                     <Link
                         href="/anggaran"
-                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
+                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
                     >
                         <FaMoneyCheckAlt className="mr-2" /> Anggaran
                     </Link>
                     <Link
-                        href="/penyerapan" // New route for absorption
-                        className="flex items-center py-2 px-4 bg-blue-600 rounded hover:bg-blue-500 transition-all"
+                        href="/penyerapan"
+                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
                     >
                         <FaChartPie className="mr-2" /> Penyerapan
                     </Link>
@@ -82,13 +82,13 @@ const Sidebar = () => {
             </div>
 
             {/* Sidebar for desktop */}
-            <div className="hidden lg:block w-64 bg-gradient-to-r from-blue-600 to-blue-800 text-white p-6 shadow-lg rounded-lg">
+            <div className="hidden lg:block w-60 bg-[#c1292e] text-white p-5 shadow-lg rounded-md">
                 <h2 className="text-2xl font-bold mb-6">Menu</h2>
-                <ul className="space-y-4">
+                <ul className="space-y-3">
                     <li>
                         <Link
                             href="/bidang"
-                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
                         >
                             <FaFolder className="mr-2" /> Bidang
                         </Link>
@@ -96,7 +96,7 @@ const Sidebar = () => {
                     <li>
                         <Link
                             href="/programs"
-                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
                         >
                             <FaTasks className="mr-2" /> Program
                         </Link>
@@ -104,7 +104,7 @@ const Sidebar = () => {
                     <li>
                         <Link
                             href="/kegiatan"
-                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
                         >
                             <FaClipboardList className="mr-2" /> Kegiatan
                         </Link>
@@ -112,7 +112,7 @@ const Sidebar = () => {
                     <li>
                         <Link
                             href="/subkegiatan"
-                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
                         >
                             <FaListAlt className="mr-2" /> Sub Kegiatan
                         </Link>
@@ -120,15 +120,15 @@ const Sidebar = () => {
                     <li>
                         <Link
                             href="/anggaran"
-                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
                         >
                             <FaMoneyCheckAlt className="mr-2" /> Anggaran
                         </Link>
                     </li>
                     <li>
                         <Link
-                            href="/penyerapan" // New route for absorption
-                            className="flex items-center py-2 px-4 bg-blue-600 hover:bg-blue-500 transition-all rounded shadow-md"
+                            href="/penyerapan"
+                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
                         >
                             <FaChartPie className="mr-2" /> Penyerapan
                         </Link>

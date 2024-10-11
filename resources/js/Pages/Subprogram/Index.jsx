@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import SubprogramForm from "../../Components/SubprogramForm";
-import SubprogramList from "../../Components/SubprogramList";
+import SubprogramForm from "../../Components/SubPrograms/SubprogramForm";
+import SubprogramList from "../../Components/SubPrograms/SubprogramList";
 import Sidebar from "../../Components/Sidebar";
 import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout"; // Import layout
 
@@ -9,21 +9,30 @@ const Index = ({ subprograms, programs, auth }) => {
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <div style={{ display: "flex" }}>
+            <div className="flex flex-col lg:flex-row bg-gray-100 min-h-screen">
                 <Sidebar />
-                <div
-                    style={{ marginLeft: "20px", padding: "20px", flexGrow: 1 }}
-                >
-                    <h1>Daftar Subprogram</h1>
-                    <SubprogramForm
-                        editSubprogram={editSubprogram}
-                        setEditSubprogram={setEditSubprogram} // Pass setEditSubprogram as prop
-                        programs={programs}
-                    />
-                    <SubprogramList
-                        subprograms={subprograms}
-                        setEditSubprogram={setEditSubprogram}
-                    />
+                <div className="lg:ml-20 lg:mr-10 p-8 flex-grow bg-white shadow-lg rounded-md">
+                    <div className="mb-8">
+                        <h1 className="text-3xl font-bold text-[#191923] mb-4">
+                            Daftar Kegiatan
+                        </h1>
+                    </div>
+
+                    <div className="space-y-6">
+                        <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
+                            <SubprogramForm
+                                editSubprogram={editSubprogram}
+                                setEditSubprogram={setEditSubprogram}
+                                programs={programs}
+                            />
+                        </div>
+                        <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
+                            <SubprogramList
+                                subprograms={subprograms}
+                                setEditSubprogram={setEditSubprogram}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

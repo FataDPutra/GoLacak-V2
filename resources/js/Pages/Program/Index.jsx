@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ProgramForm from "../../Components/ProgramForm";
-import ProgramList from "../../Components/ProgramList";
+import ProgramForm from "../../Components/Programs/ProgramForm";
+import ProgramList from "../../Components/Programs/ProgramList";
 import Sidebar from "../../Components/Sidebar";
 import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
 
@@ -9,17 +9,18 @@ const Index = ({ programs, auth }) => {
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <div className="flex flex-col lg:flex-row bg-gray-100 min-h-screen">
+            <div className="flex flex-col lg:flex-row bg-[#fbfef9] min-h-screen">
                 <Sidebar />
                 <div className="lg:ml-20 lg:mr-10 p-6 flex-grow bg-white shadow-lg rounded-md">
-                    <h1 className="text-3xl font-bold text-gray-700 mb-6">
+                    <h1 className="text-3xl font-bold text-[#191923] mb-6">
                         Daftar Program
                     </h1>
-                    {/* Pass setEditProgram as a prop */}
+                    {/* Formulir Program */}
                     <ProgramForm
                         editProgram={editProgram}
                         setEditProgram={setEditProgram}
                     />
+                    {/* Daftar Program */}
                     <ProgramList
                         programs={programs}
                         setEditProgram={setEditProgram}
