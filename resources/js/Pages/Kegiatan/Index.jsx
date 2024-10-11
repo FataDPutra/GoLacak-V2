@@ -4,14 +4,7 @@ import KegiatanList from "../../Components/Kegiatan/KegiatanList";
 import Sidebar from "../../Components/Sidebar";
 import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
 
-const Index = ({
-    kegiatans,
-    programs,
-    subprograms,
-    rekenings,
-    bidangs,
-    auth,
-}) => {
+const Index = ({ kegiatans, programs, subprograms, rekenings, auth }) => {
     const [editKegiatan, setEditKegiatan] = useState(null);
 
     return (
@@ -33,7 +26,6 @@ const Index = ({
                                 programs={programs}
                                 subprograms={subprograms}
                                 rekenings={rekenings}
-                                bidangs={bidangs}
                             />
                         </div>
                         <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">

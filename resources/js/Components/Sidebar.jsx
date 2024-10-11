@@ -12,6 +12,12 @@ import {
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
+    // Dapatkan path URL saat ini
+    const currentPath = window.location.pathname;
+
+    // Fungsi untuk menentukan apakah link aktif
+    const isActive = (path) => currentPath === path;
+
     return (
         <div>
             {/* Mobile dropdown toggle */}
@@ -44,37 +50,61 @@ const Sidebar = () => {
                 >
                     <Link
                         href="/bidang"
-                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
+                        className={`flex items-center py-3 px-4 ${
+                            isActive("/bidang")
+                                ? "bg-[#0e79b2] shadow-md"
+                                : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                        } rounded-md transition-all`}
                     >
                         <FaFolder className="mr-2" /> Bidang
                     </Link>
                     <Link
                         href="/programs"
-                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
+                        className={`flex items-center py-3 px-4 ${
+                            isActive("/programs")
+                                ? "bg-[#0e79b2] shadow-md"
+                                : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                        } rounded-md transition-all`}
                     >
                         <FaTasks className="mr-2" /> Program
                     </Link>
                     <Link
                         href="/kegiatan"
-                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
+                        className={`flex items-center py-3 px-4 ${
+                            isActive("/kegiatan")
+                                ? "bg-[#0e79b2] shadow-md"
+                                : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                        } rounded-md transition-all`}
                     >
                         <FaClipboardList className="mr-2" /> Kegiatan
                     </Link>
                     <Link
                         href="/subkegiatan"
-                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
+                        className={`flex items-center py-3 px-4 ${
+                            isActive("/subkegiatan")
+                                ? "bg-[#0e79b2] shadow-md"
+                                : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                        } rounded-md transition-all`}
                     >
                         <FaListAlt className="mr-2" /> Sub Kegiatan
                     </Link>
                     <Link
                         href="/anggaran"
-                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
+                        className={`flex items-center py-3 px-4 ${
+                            isActive("/anggaran")
+                                ? "bg-[#0e79b2] shadow-md"
+                                : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                        } rounded-md transition-all`}
                     >
                         <FaMoneyCheckAlt className="mr-2" /> Anggaran
                     </Link>
                     <Link
                         href="/penyerapan"
-                        className="flex items-center py-3 px-4 bg-[#f39237] rounded-md hover:bg-[#0e79b2] hover:shadow-md transition-all"
+                        className={`flex items-center py-3 px-4 ${
+                            isActive("/penyerapan")
+                                ? "bg-[#0e79b2] shadow-md"
+                                : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                        } rounded-md transition-all`}
                     >
                         <FaChartPie className="mr-2" /> Penyerapan
                     </Link>
@@ -88,7 +118,11 @@ const Sidebar = () => {
                     <li>
                         <Link
                             href="/bidang"
-                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
+                            className={`flex items-center py-3 px-4 ${
+                                isActive("/bidang")
+                                    ? "bg-[#0e79b2] shadow-md"
+                                    : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                            } transition-all rounded-md shadow-sm`}
                         >
                             <FaFolder className="mr-2" /> Bidang
                         </Link>
@@ -96,7 +130,11 @@ const Sidebar = () => {
                     <li>
                         <Link
                             href="/programs"
-                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
+                            className={`flex items-center py-3 px-4 ${
+                                isActive("/programs")
+                                    ? "bg-[#0e79b2] shadow-md"
+                                    : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                            } transition-all rounded-md shadow-sm`}
                         >
                             <FaTasks className="mr-2" /> Program
                         </Link>
@@ -104,7 +142,11 @@ const Sidebar = () => {
                     <li>
                         <Link
                             href="/kegiatan"
-                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
+                            className={`flex items-center py-3 px-4 ${
+                                isActive("/kegiatan")
+                                    ? "bg-[#0e79b2] shadow-md"
+                                    : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                            } transition-all rounded-md shadow-sm`}
                         >
                             <FaClipboardList className="mr-2" /> Kegiatan
                         </Link>
@@ -112,7 +154,11 @@ const Sidebar = () => {
                     <li>
                         <Link
                             href="/subkegiatan"
-                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
+                            className={`flex items-center py-3 px-4 ${
+                                isActive("/subkegiatan")
+                                    ? "bg-[#0e79b2] shadow-md"
+                                    : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                            } transition-all rounded-md shadow-sm`}
                         >
                             <FaListAlt className="mr-2" /> Sub Kegiatan
                         </Link>
@@ -120,7 +166,11 @@ const Sidebar = () => {
                     <li>
                         <Link
                             href="/anggaran"
-                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
+                            className={`flex items-center py-3 px-4 ${
+                                isActive("/anggaran")
+                                    ? "bg-[#0e79b2] shadow-md"
+                                    : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                            } transition-all rounded-md shadow-sm`}
                         >
                             <FaMoneyCheckAlt className="mr-2" /> Anggaran
                         </Link>
@@ -128,7 +178,11 @@ const Sidebar = () => {
                     <li>
                         <Link
                             href="/penyerapan"
-                            className="flex items-center py-3 px-4 bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md transition-all rounded-md shadow-sm"
+                            className={`flex items-center py-3 px-4 ${
+                                isActive("/penyerapan")
+                                    ? "bg-[#0e79b2] shadow-md"
+                                    : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                            } transition-all rounded-md shadow-sm`}
                         >
                             <FaChartPie className="mr-2" /> Penyerapan
                         </Link>

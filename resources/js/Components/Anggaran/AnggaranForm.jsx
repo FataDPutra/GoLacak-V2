@@ -17,6 +17,7 @@ export default function AnggaranForm({
     programs,
     subprograms,
     kegiatans,
+    bidangs,
 }) {
     const [anggaranMurni, setAnggaranMurni] = useState("");
     const [pergeseran, setPergeseran] = useState(0);
@@ -25,7 +26,8 @@ export default function AnggaranForm({
     const [programId, setProgramId] = useState("");
     const [subprogramId, setSubprogramId] = useState("");
     const [filteredKegiatans, setFilteredKegiatans] = useState([]);
-    const [rekening, setRekening] = useState("");
+    const [bidangId, setBidangId] = useState("");
+    const [rekening, setRekening] = useState(""); // State untuk No Rekening
 
     // Efek untuk mengisi form jika editAnggaran ada
     useEffect(() => {
@@ -36,6 +38,7 @@ export default function AnggaranForm({
             setProgramId(editAnggaran.program_id);
             setSubprogramId(editAnggaran.sub_program_id);
             setKegiatanId(editAnggaran.kegiatan_id);
+            setBidangId(editAnggaran.bidang_id);
         }
     }, [editAnggaran]);
 
@@ -46,23 +49,17 @@ export default function AnggaranForm({
                 (subprogram) => subprogram.id === subprogramId
             );
             setFilteredKegiatans(selectedSubprogram?.kegiatans || []);
-            if (editAnggaran && selectedSubprogram) {
-                setKegiatanId(editAnggaran.kegiatan_id);
-            } else {
-                setKegiatanId("");
-            }
         } else {
             setFilteredKegiatans([]);
-            setKegiatanId("");
         }
-    }, [subprogramId, subprograms, editAnggaran]);
+    }, [subprogramId, subprograms]);
 
-    // Efek untuk set rekening ketika kegiatan dipilih
+    // Efek untuk set No Rekening ketika kegiatan dipilih
     useEffect(() => {
         const selectedKegiatan = kegiatans.find(
             (kegiatan) => kegiatan.id === kegiatanId
         );
-        setRekening(selectedKegiatan?.rekening?.no_rekening || "");
+        setRekening(selectedKegiatan?.rekening?.no_rekening || ""); // Set No Rekening
     }, [kegiatanId, kegiatans]);
 
     const handleSubmit = (e) => {
@@ -76,6 +73,7 @@ export default function AnggaranForm({
                 kegiatan_id: kegiatanId,
                 program_id: programId,
                 sub_program_id: subprogramId,
+                bidang_id: bidangId,
             });
         } else {
             Inertia.post("/anggaran", {
@@ -85,6 +83,7 @@ export default function AnggaranForm({
                 kegiatan_id: kegiatanId,
                 program_id: programId,
                 sub_program_id: subprogramId,
+                bidang_id: bidangId,
             });
         }
     };
@@ -97,6 +96,8 @@ export default function AnggaranForm({
         setProgramId("");
         setSubprogramId("");
         setKegiatanId("");
+        setBidangId("");
+        setRekening(""); // Reset No Rekening
     };
 
     return (
@@ -173,6 +174,7 @@ export default function AnggaranForm({
                 </select>
             </div>
 
+            {/* Tampilkan No Rekening */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
                     No Rekening
@@ -181,8 +183,27 @@ export default function AnggaranForm({
                     type="text"
                     value={rekening}
                     readOnly
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
                 />
+            </div>
+
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Bidang
+                </label>
+                <select
+                    value={bidangId}
+                    onChange={(e) => setBidangId(e.target.value)}
+                    required
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
+                >
+                    <option value="">Pilih Bidang</option>
+                    {bidangs.map((bidang) => (
+                        <option key={bidang.id} value={bidang.id}>
+                            {bidang.nama_bidang}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             <div className="mb-4">

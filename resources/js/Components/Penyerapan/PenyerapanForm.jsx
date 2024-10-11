@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
+import { FaSave, FaTimes } from "react-icons/fa";
 
-// Fungsi untuk menghitung persentase penyerapan
+// Function to calculate absorption percentage
 const calculatePersentase = (anggaran, penyerapan) => {
     const totalAnggaran =
         anggaran.perubahan > 0
             ? anggaran.perubahan + anggaran.pergeseran
             : anggaran.anggaran_murni;
 
-    // Pastikan totalAnggaran tidak nol untuk menghindari pembagian dengan nol
     if (totalAnggaran > 0) {
         return (penyerapan / totalAnggaran) * 100;
     }
@@ -36,7 +36,6 @@ const PenyerapanForm = ({
     const [filteredSubprograms, setFilteredSubprograms] = useState([]);
     const [filteredKegiatans, setFilteredKegiatans] = useState([]);
 
-    // Mengisi form jika editPenyerapan ada (mode edit)
     useEffect(() => {
         if (editPenyerapan) {
             setSelectedProgram(editPenyerapan.program_id);
@@ -63,7 +62,6 @@ const PenyerapanForm = ({
         }
     }, [editPenyerapan, anggarans]);
 
-    // Filter subprograms berdasarkan program yang dipilih
     useEffect(() => {
         if (selectedProgram) {
             const program = programs.find((p) => p.id === selectedProgram);
@@ -73,7 +71,6 @@ const PenyerapanForm = ({
         }
     }, [selectedProgram, programs]);
 
-    // Filter kegiatan berdasarkan subprogram yang dipilih
     useEffect(() => {
         if (selectedSubprogram) {
             const subprogram = filteredSubprograms.find(
@@ -85,7 +82,6 @@ const PenyerapanForm = ({
         }
     }, [selectedSubprogram, filteredSubprograms]);
 
-    // Set detail anggaran saat kegiatan dipilih
     useEffect(() => {
         const selectedKegiatanData = anggarans.find(
             (anggaran) => anggaran.kegiatan_id === selectedKegiatan
@@ -111,42 +107,41 @@ const PenyerapanForm = ({
         }
     }, [selectedKegiatan, anggarans]);
 
-    // Fungsi untuk menangani perubahan jumlah penyerapan
     const handlePenyerapanChange = (e) => {
-        const value = parseFloat(e.target.value) || 0;
-        setPenyerapanAnggaran(value);
-
-        // Hitung persentase penyerapan setiap kali nilai penyerapan berubah
-        if (anggaranDetail.id) {
-            const calculatedPersentase = calculatePersentase(
-                anggaranDetail,
-                value
-            );
-            setPersentasePenyerapan(calculatedPersentase);
+        const value = e.target.value;
+        if (value === "") {
+            setPenyerapanAnggaran("");
+            setPersentasePenyerapan(0);
+        } else {
+            const parsedValue = parseFloat(value);
+            if (!isNaN(parsedValue)) {
+                setPenyerapanAnggaran(parsedValue);
+                const calculatedPersentase = calculatePersentase(
+                    anggaranDetail,
+                    parsedValue
+                );
+                setPersentasePenyerapan(calculatedPersentase);
+            }
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if (!anggaranDetail.id) {
             alert("Pilih kegiatan yang valid dengan anggaran terkait.");
             return;
         }
-
         const data = {
             anggaran_id: anggaranDetail.id,
             kegiatan_id: selectedKegiatan,
             penyerapan_anggaran: penyerapanAnggaran,
             persentase_penyerapan: persentasePenyerapan,
         };
-
         if (editPenyerapan) {
             Inertia.put(`/penyerapan/${editPenyerapan.id}`, data);
         } else {
             Inertia.post("/penyerapan", data);
         }
-
         resetForm();
         setEditPenyerapan(null);
     };
@@ -167,13 +162,16 @@ const PenyerapanForm = ({
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Pilih Program:</label>
+        <form onSubmit={handleSubmit} className="mb-6 space-y-4">
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Program
+                </label>
                 <select
                     value={selectedProgram}
                     onChange={(e) => setSelectedProgram(e.target.value)}
                     required
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 >
                     <option value="">Pilih Program</option>
                     {programs.map((program) => (
@@ -183,16 +181,18 @@ const PenyerapanForm = ({
                     ))}
                 </select>
             </div>
-
-            <div>
-                <label>Pilih Subprogram:</label>
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Kegiatan
+                </label>
                 <select
                     value={selectedSubprogram}
                     onChange={(e) => setSelectedSubprogram(e.target.value)}
                     required
                     disabled={!selectedProgram}
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 >
-                    <option value="">Pilih Subprogram</option>
+                    <option value="">Pilih Kegiatan</option>
                     {filteredSubprograms.map((subprogram) => (
                         <option key={subprogram.id} value={subprogram.id}>
                             {subprogram.nama_subprogram}
@@ -200,16 +200,18 @@ const PenyerapanForm = ({
                     ))}
                 </select>
             </div>
-
-            <div>
-                <label>Pilih Kegiatan:</label>
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Sub Kegiatan
+                </label>
                 <select
                     value={selectedKegiatan}
                     onChange={(e) => setSelectedKegiatan(e.target.value)}
                     required
                     disabled={!selectedSubprogram}
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 >
-                    <option value="">Pilih Kegiatan</option>
+                    <option value="">Pilih Sub Kegiatan</option>
                     {filteredKegiatans.map((kegiatan) => (
                         <option key={kegiatan.id} value={kegiatan.id}>
                             {kegiatan.nama_kegiatan}
@@ -217,33 +219,84 @@ const PenyerapanForm = ({
                     ))}
                 </select>
             </div>
-
-            <div>
-                <label>No Rekening:</label>
-                <input type="text" value={selectedRekening} readOnly />
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    No Rekening
+                </label>
+                <input
+                    type="text"
+                    value={selectedRekening}
+                    readOnly
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                />
             </div>
-
-            <div>
-                <h3>Detail Anggaran:</h3>
-                <p>Anggaran Murni: Rp {anggaranDetail.anggaran_murni}</p>
-                <p>Pergeseran: Rp {anggaranDetail.pergeseran}</p>
-                <p>Perubahan: Rp {anggaranDetail.perubahan}</p>
-                <p>Persentase Penyerapan: {persentasePenyerapan.toFixed(2)}%</p>
+            <div className="mb-4">
+                <h3 className="text-gray-700 font-bold mb-2">
+                    Detail Anggaran
+                </h3>
+                <div className="space-y-2">
+                    <p>
+                        Anggaran Murni{" "}
+                        <strong>
+                            Rp {anggaranDetail.anggaran_murni.toLocaleString()}
+                        </strong>
+                    </p>
+                    <p>
+                        Pergeseran{" "}
+                        <strong>
+                            Rp {anggaranDetail.pergeseran.toLocaleString()}
+                        </strong>
+                    </p>
+                    <p>
+                        Perubahan{" "}
+                        <strong>
+                            Rp {anggaranDetail.perubahan.toLocaleString()}
+                        </strong>
+                    </p>
+                    <p>
+                        Persentase Penyerapan{" "}
+                        <strong>{persentasePenyerapan.toFixed(2)}%</strong>
+                    </p>
+                </div>
             </div>
-
-            <div>
-                <label>Jumlah Penyerapan (Rp):</label>
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Jumlah Penyerapan (Rp)
+                </label>
                 <input
                     type="number"
-                    value={penyerapanAnggaran}
+                    value={penyerapanAnggaran === 0 ? "" : penyerapanAnggaran}
                     onChange={handlePenyerapanChange}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
+                    min="0"
                     required
                 />
             </div>
-
-            <button type="submit">
-                {editPenyerapan ? "Update Penyerapan" : "Tambah Penyerapan"}
-            </button>
+            <div className="flex gap-4">
+                <button
+                    type="submit"
+                    className="flex items-center justify-center w-full p-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#f39237] transition-all"
+                >
+                    {editPenyerapan ? (
+                        <>
+                            <FaSave className="mr-2" /> Update Penyerapan
+                        </>
+                    ) : (
+                        <>
+                            <FaSave className="mr-2" /> Simpan Penyerapan
+                        </>
+                    )}
+                </button>
+                {editPenyerapan && (
+                    <button
+                        type="button"
+                        onClick={resetForm}
+                        className="flex items-center justify-center w-full p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all"
+                    >
+                        <FaTimes className="mr-2" /> Batal
+                    </button>
+                )}
+            </div>
         </form>
     );
 };

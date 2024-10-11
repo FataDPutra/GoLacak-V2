@@ -30,9 +30,6 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
                         No Rekening
                     </th>
                     <th className="py-3 px-6 text-left border-r border-white">
-                        Bidang
-                    </th>
-                    <th className="py-3 px-6 text-left border-r border-white">
                         Aksi
                     </th>
                 </tr>
@@ -54,9 +51,6 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
                         </td>
                         <td className="py-3 px-6 border-r border-gray-300">
                             {kegiatan.rekening?.no_rekening}
-                        </td>
-                        <td className="py-3 px-6 border-r border-gray-300">
-                            {kegiatan.bidang?.nama_bidang}
                         </td>
                         <td className="py-3 px-6 flex gap-2">
                             <button

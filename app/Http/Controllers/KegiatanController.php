@@ -6,22 +6,21 @@ use App\Models\Kegiatan;
 use App\Models\Subprogram;
 use App\Models\Program;
 use App\Models\Rekening;
-use App\Models\Bidang; // Import Bidang model
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class KegiatanController extends Controller
 {
+    // Menampilkan halaman index kegiatan
     public function index()
     {
-        // Ambil kegiatan dengan program, subprogram, rekening, dan bidang
-        $kegiatans = Kegiatan::with('program', 'subprogram.program', 'rekening', 'bidang')->get();
+        // Ambil kegiatan dengan relasi program, subprogram, dan rekening
+        $kegiatans = Kegiatan::with('program', 'subprogram.program', 'rekening')->get();
         
-        // Ambil subprogram, program, rekening, dan bidang untuk dropdown
+        // Ambil subprogram, program, dan rekening untuk dropdown
         $subprograms = Subprogram::with('program')->get();
         $programs = Program::with('subprograms')->get();
         $rekenings = Rekening::all();
-        $bidangs = Bidang::all(); // Ambil semua bidang untuk dropdown
 
         // Kirim data ke view Inertia
         return Inertia::render('Kegiatan/Index', [
@@ -29,21 +28,21 @@ class KegiatanController extends Controller
             'subprograms' => $subprograms,
             'programs' => $programs,
             'rekenings' => $rekenings,
-            'bidangs' => $bidangs, // Kirim data bidang
             'auth' => [
                 'user' => auth()->user(),
             ],
         ]);
     }
 
+    // Menyimpan kegiatan baru
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
             'nama_kegiatan' => 'required|string',
             'program_id' => 'required|uuid|exists:programs,id',
             'subprogram_id' => 'required|uuid|exists:subprograms,id',
             'no_rekening' => 'required|string',
-            'bidang_id' => 'required|uuid|exists:bidang,id', // Validasi bidang_id
         ]);
 
         try {
@@ -56,7 +55,6 @@ class KegiatanController extends Controller
                 'program_id' => $request->program_id,
                 'subprogram_id' => $request->subprogram_id,
                 'rekening_id' => $rekening->id,
-                'bidang_id' => $request->bidang_id, // Simpan bidang_id
             ]);
 
             return redirect()->back()->with('success', 'Kegiatan berhasil dibuat!');
@@ -65,14 +63,15 @@ class KegiatanController extends Controller
         }
     }
 
+    // Memperbarui kegiatan yang sudah ada
     public function update(Request $request, $id)
     {
+        // Validasi input
         $request->validate([
             'nama_kegiatan' => 'required|string',
             'program_id' => 'required|uuid|exists:programs,id',
             'subprogram_id' => 'required|uuid|exists:subprograms,id',
             'no_rekening' => 'required|string',
-            'bidang_id' => 'required|uuid|exists:bidang,id', // Validasi bidang_id
         ]);
 
         try {
@@ -85,7 +84,6 @@ class KegiatanController extends Controller
                 'program_id' => $request->program_id,
                 'subprogram_id' => $request->subprogram_id,
                 'rekening_id' => $rekening->id,
-                'bidang_id' => $request->bidang_id, // Update bidang_id
             ]);
 
             return redirect()->back()->with('success', 'Kegiatan berhasil diperbarui!');
@@ -94,12 +92,17 @@ class KegiatanController extends Controller
         }
     }
 
+    // Menghapus kegiatan
     public function destroy($id)
     {
-        // Temukan kegiatan dan hapus
-        $kegiatan = Kegiatan::findOrFail($id);
-        $kegiatan->delete();
+        try {
+            // Temukan kegiatan dan hapus
+            $kegiatan = Kegiatan::findOrFail($id);
+            $kegiatan->delete();
 
-        return redirect()->back()->with('success', 'Kegiatan berhasil dihapus!');
+            return redirect()->back()->with('success', 'Kegiatan berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

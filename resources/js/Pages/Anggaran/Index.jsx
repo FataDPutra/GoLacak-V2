@@ -4,7 +4,14 @@ import AnggaranList from "../../Components/Anggaran/AnggaranList";
 import Sidebar from "../../Components/Sidebar";
 import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
 
-const Index = ({ anggarans, programs, subprograms, kegiatans, auth }) => {
+const Index = ({
+    anggarans,
+    programs,
+    subprograms,
+    kegiatans,
+    bidangs,
+    auth,
+}) => {
     const [editAnggaran, setEditAnggaran] = useState(null);
 
     return (
@@ -26,6 +33,7 @@ const Index = ({ anggarans, programs, subprograms, kegiatans, auth }) => {
                                 programs={programs}
                                 subprograms={subprograms}
                                 kegiatans={kegiatans}
+                                bidangs={bidangs}
                             />
                         </div>
                         <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">

@@ -7,14 +7,12 @@ export default function KegiatanForm({
     programs,
     subprograms,
     rekenings,
-    bidangs,
     setEditKegiatan,
 }) {
     const [namaKegiatan, setNamaKegiatan] = useState("");
     const [programId, setProgramId] = useState("");
     const [subprogramId, setSubprogramId] = useState("");
     const [noRekening, setNoRekening] = useState("");
-    const [bidangId, setBidangId] = useState("");
     const [filteredSubprograms, setFilteredSubprograms] = useState([]);
 
     useEffect(() => {
@@ -23,7 +21,6 @@ export default function KegiatanForm({
             setProgramId(editKegiatan.program_id);
             setSubprogramId(editKegiatan.subprogram_id);
             setNoRekening(editKegiatan.rekening?.no_rekening || "");
-            setBidangId(editKegiatan.bidang_id || "");
         }
     }, [editKegiatan]);
 
@@ -47,7 +44,6 @@ export default function KegiatanForm({
                 program_id: programId,
                 subprogram_id: subprogramId,
                 no_rekening: noRekening,
-                bidang_id: bidangId,
             });
         } else {
             Inertia.post("/subkegiatan", {
@@ -55,7 +51,6 @@ export default function KegiatanForm({
                 program_id: programId,
                 subprogram_id: subprogramId,
                 no_rekening: noRekening,
-                bidang_id: bidangId,
             });
         }
     };
@@ -66,7 +61,6 @@ export default function KegiatanForm({
         setProgramId("");
         setSubprogramId("");
         setNoRekening("");
-        setBidangId("");
     };
 
     return (
@@ -142,25 +136,6 @@ export default function KegiatanForm({
                     required
                     className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
                 />
-            </div>
-
-            <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">
-                    Bidang
-                </label>
-                <select
-                    value={bidangId}
-                    onChange={(e) => setBidangId(e.target.value)}
-                    required
-                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
-                >
-                    <option value="">Pilih Bidang</option>
-                    {bidangs.map((bidang) => (
-                        <option key={bidang.id} value={bidang.id}>
-                            {bidang.nama_bidang}
-                        </option>
-                    ))}
-                </select>
             </div>
 
             <div className="flex gap-4">

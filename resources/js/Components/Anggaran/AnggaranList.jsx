@@ -31,10 +31,10 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
                         Program
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
-                        Kegiatan
+                        Sub Program
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
-                        Nama Sub Kegiatan
+                        Sub Kegiatan
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
                         No Rekening
@@ -47,6 +47,9 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
                         Perubahan
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
+                        Bidang
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
                         Aksi
@@ -79,6 +82,9 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
                             {formatRupiahTanpaDesimal(anggaran.perubahan)}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {anggaran.bidang?.nama_bidang || "N/A"}
                         </td>
                         <td className="py-2 px-3 flex gap-2">
                             <button

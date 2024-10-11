@@ -15,7 +15,6 @@ const Index = ({ penyerapanList, anggaran, programs, auth }) => {
                     <h1 className="text-3xl font-bold text-[#191923] mb-6">
                         Daftar Penyerapan
                     </h1>
-
                     <div className="space-y-6">
                         <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
                             <PenyerapanForm
@@ -25,7 +24,6 @@ const Index = ({ penyerapanList, anggaran, programs, auth }) => {
                                 anggarans={anggaran}
                             />
                         </div>
-
                         <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
                             <PenyerapanList
                                 penyerapanList={penyerapanList}

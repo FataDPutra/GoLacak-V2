@@ -2,16 +2,14 @@ import React from "react";
 import { Inertia } from "@inertiajs/inertia";
 
 const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
-    // Fungsi untuk menangani pengeditan
     const handleEdit = (penyerapan) => {
         setEditPenyerapan({
             ...penyerapan,
-            program_id: penyerapan.kegiatan.program_id, // Tambahkan ID program
-            subprogram_id: penyerapan.kegiatan.subprogram_id, // Tambahkan ID subprogram
+            program_id: penyerapan.kegiatan.program_id,
+            subprogram_id: penyerapan.kegiatan.subprogram_id,
         });
     };
 
-    // Fungsi untuk menangani penghapusan
     const handleDelete = (id) => {
         if (confirm("Apakah Anda yakin ingin menghapus penyerapan ini?")) {
             Inertia.delete(`/penyerapan/${id}`, {
@@ -23,32 +21,56 @@ const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
     };
 
     return (
-        <table>
-            <thead>
+        <table className="min-w-full bg-[#fbfef9] shadow-lg rounded-lg border-collapse border border-gray-300 text-sm">
+            <thead className="bg-[#0e79b2] text-white">
                 <tr>
-                    <th>Kegiatan</th>
-                    <th>Penyerapan Anggaran</th>
-                    <th>Persentase Penyerapan</th>
-                    <th>Aksi</th>
+                    <th className="py-2 px-3 text-left border-r border-white">
+                        Kegiatan
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
+                        Penyerapan Anggaran (Rp)
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
+                        Persentase Penyerapan (%)
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
+                        Aksi
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 {penyerapanList.map((penyerapan) => (
-                    <tr key={penyerapan.id}>
-                        <td>{penyerapan.kegiatan.nama_kegiatan}</td>
-                        <td>Rp {penyerapan.penyerapan_anggaran}</td>
-                        <td>
+                    <tr
+                        key={penyerapan.id}
+                        className="hover:bg-gray-100 transition-all border-b border-gray-300"
+                    >
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {penyerapan.kegiatan.nama_kegiatan}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            Rp{" "}
+                            {penyerapan.penyerapan_anggaran.toLocaleString(
+                                "id-ID"
+                            )}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
                             {typeof penyerapan.persentase_penyerapan ===
                             "number"
                                 ? penyerapan.persentase_penyerapan.toFixed(2)
                                 : "N/A"}{" "}
                             %
                         </td>
-                        <td>
-                            <button onClick={() => handleEdit(penyerapan)}>
+                        <td className="py-2 px-3 flex gap-2">
+                            <button
+                                onClick={() => handleEdit(penyerapan)}
+                                className="flex items-center justify-center p-2 bg-[#f39237] text-white rounded-md hover:bg-[#0e79b2] transition-all"
+                            >
                                 Edit
                             </button>
-                            <button onClick={() => handleDelete(penyerapan.id)}>
+                            <button
+                                onClick={() => handleDelete(penyerapan.id)}
+                                className="flex items-center justify-center p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all"
+                            >
                                 Hapus
                             </button>
                         </td>
