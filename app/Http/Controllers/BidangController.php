@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Bidang;
@@ -11,17 +10,31 @@ class BidangController extends Controller
     // Menampilkan semua bidang
     public function index()
     {
-        $bidangs = Bidang::all();
+        if (auth()->user()->role === 'admin') {
+            // Jika admin, tampilkan semua bidang
+            $bidangs = Bidang::all();
+            return Inertia::render('Bidang/Index', [
+                'bidangs' => $bidangs,
+                'auth' => [
+                    'user' => auth()->user(),
+                ],
+            ]);
+        } elseif (auth()->user()->role === 'user') {
+            // Jika user, tampilkan bidang milik mereka dan arahkan ke Page/User/Bidang
+            $bidangs = Bidang::where('id', auth()->user()->bidang_id)->get();
+            return Inertia::render('Users/Bidang/Index', [
+                'bidangs' => $bidangs,
+                'auth' => [
+                    'user' => auth()->user(),
+                ],
+            ]);
+        }
 
-        return Inertia::render('Bidang/Index', [
-            'bidangs' => $bidangs,
-            'auth' => [
-                'user' => auth()->user(),
-            ],
-        ]);
+        // Jika role lain, arahkan ke dashboard
+        return redirect('/dashboard');
     }
 
-    // Menyimpan bidang baru
+    // Menyimpan bidang baru (hanya admin yang bisa menyimpan)
     public function store(Request $request)
     {
         $request->validate([
@@ -39,9 +52,13 @@ class BidangController extends Controller
         }
     }
 
-    // Mengedit bidang yang ada
+    // Mengedit bidang (hanya admin yang bisa mengedit)
     public function edit($id)
     {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('bidang.index')->with('error', 'Anda tidak memiliki akses untuk mengedit.');
+        }
+
         $bidang = Bidang::findOrFail($id);
 
         return Inertia::render('Bidang/Edit', [
@@ -55,6 +72,10 @@ class BidangController extends Controller
     // Memperbarui bidang
     public function update(Request $request, $id)
     {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('bidang.index')->with('error', 'Anda tidak memiliki akses untuk memperbarui.');
+        }
+
         $request->validate([
             'nama_bidang' => 'required|string|max:255',
         ]);
@@ -74,6 +95,10 @@ class BidangController extends Controller
     // Menghapus bidang
     public function destroy($id)
     {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('bidang.index')->with('error', 'Anda tidak memiliki akses untuk menghapus.');
+        }
+
         try {
             $bidang = Bidang::findOrFail($id);
             $bidang->delete();

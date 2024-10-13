@@ -11,6 +11,7 @@ export default function Authenticated({ user, header, children }) {
 
     const userName = user?.name || "Guest";
     const userEmail = user?.email || "";
+    const userRole = user?.role || "guest"; // assuming role is part of the user object
 
     return (
         <div className="min-h-screen bg-[#fbfef9]">
@@ -26,11 +27,11 @@ export default function Authenticated({ user, header, children }) {
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink
-                                    href={route("dashboard")}
-                                    active={route().current("dashboard")}
+                                    href={route("bidang.index")}
+                                    active={route().current("bidang.index")}
                                     className="text-[#fbfef9] hover:text-[#f39237] transition-all"
                                 >
-                                    Dashboard
+                                    Go-Lacak
                                 </NavLink>
                             </div>
                         </div>
@@ -69,6 +70,17 @@ export default function Authenticated({ user, header, children }) {
                                         >
                                             Profile
                                         </Dropdown.Link>
+
+                                        {/* Conditional Register Link for Admin */}
+                                        {userRole === "admin" && (
+                                            <Dropdown.Link
+                                                href={route("register")}
+                                                className="hover:bg-gray-100 transition-all"
+                                            >
+                                                Add New User
+                                            </Dropdown.Link>
+                                        )}
+
                                         <Dropdown.Link
                                             href={route("logout")}
                                             method="post"

@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('programs.index'));
+        return redirect()->intended(route('bidang.index'));
     }
 
     /**

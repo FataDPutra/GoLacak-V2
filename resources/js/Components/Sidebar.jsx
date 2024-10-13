@@ -187,6 +187,18 @@ const Sidebar = () => {
                             <FaChartPie className="mr-2" /> Penyerapan
                         </Link>
                     </li>
+                    <li>
+                        <Link
+                            href="/register"
+                            className={`flex items-center py-3 px-4 ${
+                                isActive("../layouts/register")
+                                    ? "bg-[#0e79b2] shadow-md"
+                                    : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                            } transition-all rounded-md shadow-sm`}
+                        >
+                            <FaChartPie className="mr-2" /> Register
+                        </Link>
+                    </li>
                 </ul>
             </div>
         </div>
