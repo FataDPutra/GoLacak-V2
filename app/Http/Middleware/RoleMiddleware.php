@@ -4,18 +4,34 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-
+use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, $role)
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string  $role
+     * @return mixed
+     */
+    public function handle(Request $request, Closure $next, string $role)
     {
-        // Cek apakah user memiliki role admin atau role yang diberikan
-        if (auth()->check() && (auth()->user()->role === $role || auth()->user()->role === 'admin')) {
+        // Pastikan pengguna sudah login
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
+        // Dapatkan role user saat ini
+        $user = Auth::user();
+
+        // Jika user memiliki role yang sesuai atau role admin, lanjutkan
+        if ($user->role === $role || $user->role === 'user' || $user->role === 'admin') {
             return $next($request);
         }
 
-        return redirect()->route('dashboard')->with('error', 'You do not have access to this resource');
+        // Jika role tidak sesuai, arahkan kembali ke dashboard atau halaman lain yang ditentukan
+        return redirect()->route('dashboard')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
 }

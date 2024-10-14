@@ -1,11 +1,16 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import BidangForm from "../../../Components/Bidang/BidangForm";
 import BidangList from "../../../Components/Bidang/BidangList";
-import Sidebar from "../../../Components/Sidebar";
+import Sidebar from "../../../Components/Users/Sidebar";
 import AuthenticatedLayout from "../../../Layouts/AuthenticatedLayout";
-
 const Index = ({ bidangs, auth }) => {
     const [editBidang, setEditBidang] = useState(null);
+
+    useEffect(() => {
+        console.log("User yang sedang login:", auth.user); // Cetak seluruh informasi user, termasuk role
+        console.log("Role pengguna:", auth.user.role); // Cetak role spesifik
+    }, [auth.user]); // Hanya dijalankan saat auth.user berubah
 
     return (
         <AuthenticatedLayout user={auth.user}>

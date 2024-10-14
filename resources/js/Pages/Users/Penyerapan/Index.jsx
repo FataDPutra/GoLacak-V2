@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import PenyerapanForm from "../../Components/Penyerapan/PenyerapanForm";
-import PenyerapanList from "../../Components/Penyerapan/PenyerapanList";
-import Sidebar from "../../Components/Sidebar";
-import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
+import PenyerapanForm from "../../../Components/Penyerapan/PenyerapanForm";
+import PenyerapanList from "../../../Components/Penyerapan/PenyerapanList";
+import Sidebar from "../../../Components/Users/Sidebar";
+import AuthenticatedLayout from "../../../Layouts/AuthenticatedLayout";
 
 const Index = ({ penyerapanList, anggaran, programs, auth }) => {
     const [editPenyerapan, setEditPenyerapan] = useState(null);

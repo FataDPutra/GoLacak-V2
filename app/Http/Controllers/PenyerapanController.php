@@ -12,30 +12,49 @@ use Inertia\Inertia;
 class PenyerapanController extends Controller
 {
     // Display a listing of the penyerapan
+
     public function index()
-    {
-        // Fetch penyerapan with related anggaran and kegiatan
+{
+    if (auth()->user()->role === 'admin') {
+        // Jika admin, arahkan ke Penyerapan/Index
         $penyerapan = Penyerapan::with(['anggaran', 'kegiatan'])->get();
-
-        // Fetch programs along with their subprograms, kegiatans, and rekening
         $programs = Program::with([
-            'subprograms.kegiatans.rekening', // Relasi subprogram dengan kegiatannya dan rekening
-            'subprograms.rekening', // Relasi subprogram dengan rekening
+            'subprograms.kegiatans.rekening',
+            'subprograms.rekening',
         ])->get();
+        $anggaran = Anggaran::with(['kegiatan.rekening'])->get();
 
-        // Fetch all anggaran data
-        $anggaran = Anggaran::with(['kegiatan.rekening'])->get(); // Termasuk relasi rekening pada kegiatan
-
-        // Send data to the view
         return Inertia::render('Penyerapan/Index', [
             'penyerapanList' => $penyerapan,
             'anggaran' => $anggaran,
-            'programs' => $programs, // Send programs with related data
+            'programs' => $programs,
+            'auth' => [
+                'user' => auth()->user(),
+            ],
+        ]);
+    } elseif (auth()->user()->role === 'user') {
+        // Jika user, arahkan ke Users/Penyerapan/Index
+        $penyerapan = Penyerapan::with(['anggaran', 'kegiatan'])->get();
+        $programs = Program::with([
+            'subprograms.kegiatans.rekening',
+            'subprograms.rekening',
+        ])->get();
+        $anggaran = Anggaran::with(['kegiatan.rekening'])->get();
+
+        return Inertia::render('Users/Penyerapan/Index', [
+            'penyerapanList' => $penyerapan,
+            'anggaran' => $anggaran,
+            'programs' => $programs,
             'auth' => [
                 'user' => auth()->user(),
             ],
         ]);
     }
+
+    // Jika peran tidak dikenali, arahkan ke dashboard atau halaman default
+    return redirect('/dashboard');
+}
+
 
     // Store a newly created penyerapan in storage
 public function store(Request $request)
