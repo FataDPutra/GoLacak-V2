@@ -1,20 +1,12 @@
 import React from "react";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { Inertia } from "@inertiajs/inertia";
-import { FaEdit, FaTrashAlt } from "react-icons/fa"; // Import icons
 
-const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
-    const handleEdit = (penyerapan) => {
-        setEditPenyerapan({
-            ...penyerapan,
-            program_id: penyerapan.kegiatan.program_id,
-            subprogram_id: penyerapan.kegiatan.subprogram_id,
-        });
-    };
-
+const UserList = ({ users, setEditUser }) => {
     const handleDelete = (id) => {
-        if (confirm("Apakah Anda yakin ingin menghapus penyerapan ini?")) {
-            Inertia.delete(`/penyerapan/${id}`, {
-                onSuccess: () => alert("Penyerapan berhasil dihapus!"),
+        if (confirm("Apakah Anda yakin ingin menghapus user ini?")) {
+            Inertia.delete(`/users/${id}`, {
+                onSuccess: () => alert("User berhasil dihapus!"),
                 onError: (error) =>
                     alert("Terjadi kesalahan: " + error.message),
             });
@@ -26,13 +18,16 @@ const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
             <thead className="bg-[#0e79b2] text-white">
                 <tr>
                     <th className="py-2 px-3 text-left border-r border-white">
-                        Kegiatan
+                        Nama
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
-                        Penyerapan Anggaran (Rp)
+                        Email
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
-                        Persentase Penyerapan (%)
+                        Role
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
+                        Bidang
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
                         Aksi
@@ -40,39 +35,35 @@ const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
                 </tr>
             </thead>
             <tbody>
-                {penyerapanList.map((penyerapan) => (
+                {users.map((user) => (
                     <tr
-                        key={penyerapan.id}
+                        key={user.id}
                         className="hover:bg-gray-100 transition-all border-b border-gray-300"
                     >
                         <td className="py-2 px-3 border-r border-gray-300">
-                            {penyerapan.kegiatan.nama_kegiatan}
+                            {user.name}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
-                            Rp{" "}
-                            {penyerapan.penyerapan_anggaran.toLocaleString(
-                                "id-ID"
-                            )}
+                            {user.email}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
-                            {typeof penyerapan.persentase_penyerapan ===
-                            "number"
-                                ? penyerapan.persentase_penyerapan.toFixed(2)
-                                : "N/A"}{" "}
-                            %
+                            {user.role}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {user.bidang ? user.bidang.nama_bidang : "-"}
                         </td>
                         <td className="py-2 px-3 flex gap-2">
                             <button
-                                onClick={() => handleEdit(penyerapan)}
+                                onClick={() => setEditUser(user)}
                                 className="flex items-center justify-center p-2 bg-[#f39237] text-white rounded-md hover:bg-[#0e79b2] transition-all"
                             >
-                                <FaEdit className="w-4 h-4" /> Edit
+                                <FaEdit className="mr-2" /> Edit
                             </button>
                             <button
-                                onClick={() => handleDelete(penyerapan.id)}
+                                onClick={() => handleDelete(user.id)}
                                 className="flex items-center justify-center p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all"
                             >
-                                <FaTrashAlt className="w-4 h-4" /> Hapus
+                                <FaTrashAlt className="mr-2" /> Hapus
                             </button>
                         </td>
                     </tr>
@@ -82,4 +73,4 @@ const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
     );
 };
 
-export default PenyerapanList;
+export default UserList;

@@ -189,14 +189,14 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <Link
-                            href="/register"
+                            href="/users"
                             className={`flex items-center py-3 px-4 ${
-                                isActive("../layouts/register")
+                                isActive("/users")
                                     ? "bg-[#0e79b2] shadow-md"
                                     : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
                             } transition-all rounded-md shadow-sm`}
                         >
-                            <FaChartPie className="mr-2" /> Register
+                            <FaChartPie className="mr-2" /> Pengguna
                         </Link>
                     </li>
                 </ul>

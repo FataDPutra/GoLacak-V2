@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import BidangForm from "../../../Components/Bidang/BidangForm";
-import BidangList from "../../../Components/Bidang/BidangList";
 import Sidebar from "../../../Components/Users/Sidebar";
 import AuthenticatedLayout from "../../../Layouts/AuthenticatedLayout";
 const Index = ({ bidangs, auth }) => {

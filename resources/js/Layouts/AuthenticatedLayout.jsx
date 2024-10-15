@@ -72,14 +72,14 @@ export default function Authenticated({ user, header, children }) {
                                         </Dropdown.Link>
 
                                         {/* Conditional Register Link for Admin */}
-                                        {userRole === "admin" && (
+                                        {/* {userRole === "admin" && (
                                             <Dropdown.Link
-                                                href={route("register")}
+                                                href={route("/")}
                                                 className="hover:bg-gray-100 transition-all"
                                             >
                                                 Add New User
                                             </Dropdown.Link>
-                                        )}
+                                        )} */}
 
                                         <Dropdown.Link
                                             href={route("logout")}

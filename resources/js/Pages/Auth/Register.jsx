@@ -1,42 +1,34 @@
-import { useEffect } from "react";
-import GuestLayout from "@/Layouts/GuestLayout";
-import InputError from "@/Components/InputError";
+import React from "react";
+import { useForm } from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
-import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import InputError from "@/Components/InputError";
+import PrimaryButton from "@/Components/PrimaryButton";
+import { Head } from "@inertiajs/react";
 
-export default function Register() {
-    const { bidangs, roles } = usePage().props; // Ambil bidang dan role dari server
-
-    const { data, setData, post, processing, errors, reset } = useForm({
+const Register = ({ bidangs = [], roles = [] }) => {
+    const { data, setData, post, processing, errors } = useForm({
         name: "",
         email: "",
         password: "",
         password_confirmation: "",
-        role: "user", // Default role adalah user
-        bidang_id: "", // Default bidang kosong
+        role: "",
+        bidang_id: "",
     });
 
-    useEffect(() => {
-        return () => {
-            reset("password", "password_confirmation");
-        };
-    }, []);
-
-    const submit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         post(route("register"));
     };
 
     return (
-        <GuestLayout>
+        <div className="max-w-2xl mx-auto bg-white p-8 rounded-md shadow-md">
             <Head title="Register" />
 
-            <form onSubmit={submit}>
+            <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Name Input */}
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value="Nama" />
                     <TextInput
                         id="name"
                         name="name"
@@ -86,7 +78,7 @@ export default function Register() {
                 <div className="mt-4">
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value="Konfirmasi Password"
                     />
                     <TextInput
                         id="password_confirmation"
@@ -113,13 +105,14 @@ export default function Register() {
                         id="role"
                         name="role"
                         value={data.role}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-white"
                         onChange={(e) => setData("role", e.target.value)}
                         required
                     >
+                        <option value="">-- Pilih Role --</option>
                         {roles.map((role) => (
                             <option key={role} value={role}>
-                                {role}
+                                {role.charAt(0).toUpperCase() + role.slice(1)}
                             </option>
                         ))}
                     </select>
@@ -133,9 +126,8 @@ export default function Register() {
                         id="bidang_id"
                         name="bidang_id"
                         value={data.bidang_id}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-white"
                         onChange={(e) => setData("bidang_id", e.target.value)}
-                        required={data.role === "user"} // Bidang harus dipilih jika role user
                     >
                         <option value="">-- Pilih Bidang --</option>
                         {bidangs.map((bidang) => (
@@ -148,18 +140,13 @@ export default function Register() {
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
-                    <Link
-                        href={route("login")}
-                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        Already registered?
-                    </Link>
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
+                    <PrimaryButton className="w-full" disabled={processing}>
+                        Daftar
                     </PrimaryButton>
                 </div>
             </form>
-        </GuestLayout>
+        </div>
     );
-}
+};
+
+export default Register;

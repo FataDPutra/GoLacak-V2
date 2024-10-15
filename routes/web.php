@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\RekeningController;
 use App\Http\Controllers\PenyerapanController;
 use App\Http\Controllers\BidangController;
+use App\Http\Controllers\UserController;
 use Inertia\Inertia;
 
 // Halaman utama
@@ -37,6 +38,7 @@ Route::get('/dashboard', function () {
 //     Route::post('/register', [RegisteredUserController::class, 'store']);
 // });
 // Rute profil user
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -57,16 +59,17 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
 // Rute untuk role admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    // Route::get('/register', [RegisteredUserController::class, 'create'])->name('admin.register.index');
+    // Route::post('/register', [RegisteredUserController::class, 'store'])->name('admin.register.store');
     Route::resource('bidang', BidangController::class)->except(['index']);
+    Route::resource('users', UserController::class);
     Route::resource('programs', ProgramController::class);
     Route::resource('subkegiatan', KegiatanController::class);
     Route::resource('kegiatan', SubprogramController::class);
     Route::resource('anggaran', AnggaranController::class);
     Route::resource('penyerapan', PenyerapanController::class);
 
-    // Rute untuk registrasi user baru oleh admin
-    Route::get('/register', [RegisteredUserController::class, 'create'])->name('registerindex');
-    Route::post('/register', [RegisteredUserController::class, 'store']);
+
 });
 
 require __DIR__.'/auth.php';
