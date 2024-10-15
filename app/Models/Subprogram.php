@@ -9,8 +9,7 @@ use Illuminate\Support\Str;
 class Subprogram extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['nama_subprogram', 'program_id', 'rekening_id'];
+    protected $fillable = ['nama_subprogram', 'program_id', 'rekening_id', 'target', 'satuan', 'indikator_kinerja'];
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -21,6 +20,7 @@ class Subprogram extends Model
             $model->id = (string) Str::uuid();
         });
     }
+
 
     public function program()
     {

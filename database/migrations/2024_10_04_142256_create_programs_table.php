@@ -11,6 +11,9 @@ class CreateProgramsTable extends Migration
         Schema::create('programs', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('nama_program');
+            $table->string('target');
+            $table->string('satuan');
+            $table->string('indikator_kinerja');
             $table->uuid('rekening_id'); // Foreign key ke tabel rekening
             $table->timestamps();
 

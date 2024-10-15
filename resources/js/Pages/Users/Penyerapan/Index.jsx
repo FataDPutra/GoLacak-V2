@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import PenyerapanForm from "../../../Components/Penyerapan/PenyerapanForm";
-import PenyerapanList from "../../../Components/Penyerapan/PenyerapanList";
+import PenyerapanForm from "../../../Components/Realisasi/RealisasiForm";
+import PenyerapanList from "../../../Components/Realisasi/RealisasiList";
 import Sidebar from "../../../Components/Users/Sidebar";
 import AuthenticatedLayout from "../../../Layouts/AuthenticatedLayout";
 

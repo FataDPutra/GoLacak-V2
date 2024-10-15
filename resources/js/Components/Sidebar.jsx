@@ -106,7 +106,7 @@ const Sidebar = () => {
                                 : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
                         } rounded-md transition-all`}
                     >
-                        <FaChartPie className="mr-2" /> Penyerapan
+                        <FaChartPie className="mr-2" /> Realisasi
                     </Link>
                 </div>
             </div>
@@ -177,14 +177,14 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <Link
-                            href="/penyerapan"
+                            href="/realisasi"
                             className={`flex items-center py-3 px-4 ${
-                                isActive("/penyerapan")
+                                isActive("/realisasi")
                                     ? "bg-[#0e79b2] shadow-md"
                                     : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
                             } transition-all rounded-md shadow-sm`}
                         >
-                            <FaChartPie className="mr-2" /> Penyerapan
+                            <FaChartPie className="mr-2" /> Realisasi
                         </Link>
                     </li>
                     <li>

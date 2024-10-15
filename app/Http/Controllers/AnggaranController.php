@@ -18,7 +18,12 @@ class AnggaranController extends Controller
         $programs = Program::with('subprograms')->get(); 
         $subprograms = Subprogram::with('kegiatans')->get();
         $kegiatans = Kegiatan::with(['subprogram.program', 'rekening'])->get();
-        $anggarans = Anggaran::with(['program', 'subprogram', 'kegiatan.rekening', 'bidang'])->get(); // Tambahkan relasi bidang
+        
+        // Ambil anggaran terbaru di atas
+        $anggarans = Anggaran::with(['program', 'subprogram', 'kegiatan.rekening', 'bidang'])
+            ->latest() // Sortir berdasarkan created_at, yang terbaru di atas
+            ->get();
+
         $bidangs = Bidang::all(); // Ambil semua bidang
 
         // Kirim data ke view Inertia

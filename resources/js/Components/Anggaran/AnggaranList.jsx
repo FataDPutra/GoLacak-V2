@@ -1,6 +1,7 @@
 import React from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { FaEdit, FaTrashAlt } from "react-icons/fa"; // Import icons
+import moment from "moment"; // Import moment for date formatting
 
 // Fungsi format Rupiah tanpa desimal khusus untuk tampilan tabel
 const formatRupiahTanpaDesimal = (value) => {
@@ -28,16 +29,16 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
             <thead className="bg-[#0e79b2] text-white">
                 <tr>
                     <th className="py-2 px-3 text-left border-r border-white">
+                        No Rekening
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
                         Program
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
-                        Sub Program
+                        Kegiatan
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
                         Sub Kegiatan
-                    </th>
-                    <th className="py-2 px-3 text-left border-r border-white">
-                        No Rekening
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
                         Anggaran Murni
@@ -52,6 +53,9 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
                         Bidang
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
+                        Bulan
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
                         Aksi
                     </th>
                 </tr>
@@ -63,6 +67,9 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
                         className="hover:bg-gray-100 transition-all border-b border-gray-300"
                     >
                         <td className="py-2 px-3 border-r border-gray-300">
+                            {anggaran.kegiatan?.rekening?.no_rekening || "N/A"}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
                             {anggaran.program?.nama_program || "N/A"}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
@@ -70,9 +77,6 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
                             {anggaran.kegiatan?.nama_kegiatan || "N/A"}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {anggaran.kegiatan?.rekening?.no_rekening || "N/A"}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
                             {formatRupiahTanpaDesimal(anggaran.anggaran_murni)}
@@ -85,6 +89,10 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
                             {anggaran.bidang?.nama_bidang || "N/A"}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {moment(anggaran.updated_at).format("MMMM YYYY") ||
+                                "N/A"}
                         </td>
                         <td className="py-2 px-3 flex gap-2">
                             <button

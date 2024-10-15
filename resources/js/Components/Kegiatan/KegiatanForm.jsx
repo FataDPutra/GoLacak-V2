@@ -13,6 +13,9 @@ export default function KegiatanForm({
     const [programId, setProgramId] = useState("");
     const [subprogramId, setSubprogramId] = useState("");
     const [noRekening, setNoRekening] = useState("");
+    const [target, setTarget] = useState(""); // New state for target
+    const [satuan, setSatuan] = useState(""); // New state for satuan
+    const [indikatorKinerja, setIndikatorKinerja] = useState(""); // New state for indikator kinerja
     const [filteredSubprograms, setFilteredSubprograms] = useState([]);
 
     useEffect(() => {
@@ -21,6 +24,9 @@ export default function KegiatanForm({
             setProgramId(editKegiatan.program_id);
             setSubprogramId(editKegiatan.subprogram_id);
             setNoRekening(editKegiatan.rekening?.no_rekening || "");
+            setTarget(editKegiatan.target || ""); // Set target if editing
+            setSatuan(editKegiatan.satuan || ""); // Set satuan if editing
+            setIndikatorKinerja(editKegiatan.indikator_kinerja || ""); // Set indikator kinerja if editing
         }
     }, [editKegiatan]);
 
@@ -38,20 +44,20 @@ export default function KegiatanForm({
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        const data = {
+            nama_kegiatan: namaKegiatan,
+            program_id: programId,
+            subprogram_id: subprogramId,
+            no_rekening: noRekening,
+            target: target || null, // Include target
+            satuan: satuan || null, // Include satuan
+            indikator_kinerja: indikatorKinerja || null, // Include indikator kinerja
+        };
+
         if (editKegiatan) {
-            Inertia.put(`/subkegiatan/${editKegiatan.id}`, {
-                nama_kegiatan: namaKegiatan,
-                program_id: programId,
-                subprogram_id: subprogramId,
-                no_rekening: noRekening,
-            });
+            Inertia.put(`/subkegiatan/${editKegiatan.id}`, data);
         } else {
-            Inertia.post("/subkegiatan", {
-                nama_kegiatan: namaKegiatan,
-                program_id: programId,
-                subprogram_id: subprogramId,
-                no_rekening: noRekening,
-            });
+            Inertia.post("/subkegiatan", data);
         }
     };
 
@@ -61,6 +67,9 @@ export default function KegiatanForm({
         setProgramId("");
         setSubprogramId("");
         setNoRekening("");
+        setTarget(""); // Reset target
+        setSatuan(""); // Reset satuan
+        setIndikatorKinerja(""); // Reset indikator kinerja
     };
 
     return (
@@ -73,7 +82,7 @@ export default function KegiatanForm({
                     value={programId}
                     onChange={(e) => {
                         setProgramId(e.target.value);
-                        setSubprogramId("");
+                        setSubprogramId(""); // Reset subprogram when program changes
                     }}
                     required
                     className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
@@ -134,6 +143,42 @@ export default function KegiatanForm({
                         }
                     }}
                     required
+                    className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
+                />
+            </div>
+
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Target
+                </label>
+                <input
+                    type="number"
+                    value={target}
+                    onChange={(e) => setTarget(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
+                />
+            </div>
+
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Satuan
+                </label>
+                <input
+                    type="text"
+                    value={satuan}
+                    onChange={(e) => setSatuan(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
+                />
+            </div>
+
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Indikator Kinerja
+                </label>
+                <input
+                    type="text"
+                    value={indikatorKinerja}
+                    onChange={(e) => setIndikatorKinerja(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
                 />
             </div>

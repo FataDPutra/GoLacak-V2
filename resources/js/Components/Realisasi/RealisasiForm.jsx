@@ -15,7 +15,7 @@ const calculatePersentase = (anggaran, penyerapan) => {
     return 0;
 };
 
-const PenyerapanForm = ({
+const RealisasiForm = ({
     editPenyerapan,
     setEditPenyerapan,
     programs,
@@ -36,12 +36,18 @@ const PenyerapanForm = ({
     const [filteredSubprograms, setFilteredSubprograms] = useState([]);
     const [filteredKegiatans, setFilteredKegiatans] = useState([]);
 
+    // New state variables for target fisik and realisasi fisik
+    const [targetFisik, setTargetFisik] = useState("");
+    const [realisasiFisik, setRealisasiFisik] = useState("");
+
     useEffect(() => {
         if (editPenyerapan) {
             setSelectedProgram(editPenyerapan.program_id);
             setSelectedSubprogram(editPenyerapan.subprogram_id);
             setSelectedKegiatan(editPenyerapan.kegiatan_id);
             setPenyerapanAnggaran(editPenyerapan.penyerapan_anggaran);
+            setTargetFisik(editPenyerapan.target_fisik || "");
+            setRealisasiFisik(editPenyerapan.realisasi_fisik || "");
 
             const anggaran = anggarans.find(
                 (item) => item.id === editPenyerapan.anggaran_id
@@ -110,7 +116,7 @@ const PenyerapanForm = ({
     const handlePenyerapanChange = (e) => {
         const value = e.target.value;
         if (value === "") {
-            setPenyerapanAnggaran("");
+            setPenyerapanAnggaran(0);
             setPersentasePenyerapan(0);
         } else {
             const parsedValue = parseFloat(value);
@@ -125,6 +131,18 @@ const PenyerapanForm = ({
         }
     };
 
+    const handleFocus = () => {
+        if (penyerapanAnggaran === 0) {
+            setPenyerapanAnggaran(""); // Clear the field when focused
+        }
+    };
+
+    const handleBlur = () => {
+        if (penyerapanAnggaran === "") {
+            setPenyerapanAnggaran(0); // Reset to 0 if field is empty
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!anggaranDetail.id) {
@@ -136,11 +154,13 @@ const PenyerapanForm = ({
             kegiatan_id: selectedKegiatan,
             penyerapan_anggaran: penyerapanAnggaran,
             persentase_penyerapan: persentasePenyerapan,
+            target_fisik: targetFisik || 0, // Ensure target_fisik is not empty
+            realisasi_fisik: realisasiFisik || 0, // Ensure realisasi_fisik is not empty
         };
         if (editPenyerapan) {
-            Inertia.put(`/penyerapan/${editPenyerapan.id}`, data);
+            Inertia.put(`/realisasi/${editPenyerapan.id}`, data);
         } else {
-            Inertia.post("/penyerapan", data);
+            Inertia.post("/realisasi", data);
         }
         resetForm();
         setEditPenyerapan(null);
@@ -153,6 +173,8 @@ const PenyerapanForm = ({
         setSelectedRekening("");
         setPenyerapanAnggaran(0);
         setPersentasePenyerapan(0);
+        setTargetFisik(""); // Reset target fisik to empty
+        setRealisasiFisik(""); // Reset realisasi fisik to empty
         setAnggaranDetail({
             anggaran_murni: 0,
             pergeseran: 0,
@@ -163,6 +185,7 @@ const PenyerapanForm = ({
 
     return (
         <form onSubmit={handleSubmit} className="mb-6 space-y-4">
+            {/* Program Selector */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
                     Program
@@ -181,9 +204,11 @@ const PenyerapanForm = ({
                     ))}
                 </select>
             </div>
+
+            {/* Subprogram Selector */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
-                    Kegiatan
+                    Subprogram
                 </label>
                 <select
                     value={selectedSubprogram}
@@ -192,7 +217,7 @@ const PenyerapanForm = ({
                     disabled={!selectedProgram}
                     className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 >
-                    <option value="">Pilih Kegiatan</option>
+                    <option value="">Pilih Subprogram</option>
                     {filteredSubprograms.map((subprogram) => (
                         <option key={subprogram.id} value={subprogram.id}>
                             {subprogram.nama_subprogram}
@@ -200,9 +225,11 @@ const PenyerapanForm = ({
                     ))}
                 </select>
             </div>
+
+            {/* Kegiatan Selector */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
-                    Sub Kegiatan
+                    Kegiatan
                 </label>
                 <select
                     value={selectedKegiatan}
@@ -211,7 +238,7 @@ const PenyerapanForm = ({
                     disabled={!selectedSubprogram}
                     className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 >
-                    <option value="">Pilih Sub Kegiatan</option>
+                    <option value="">Pilih Kegiatan</option>
                     {filteredKegiatans.map((kegiatan) => (
                         <option key={kegiatan.id} value={kegiatan.id}>
                             {kegiatan.nama_kegiatan}
@@ -219,6 +246,8 @@ const PenyerapanForm = ({
                     ))}
                 </select>
             </div>
+
+            {/* Rekening Input */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
                     No Rekening
@@ -230,75 +259,81 @@ const PenyerapanForm = ({
                     className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
                 />
             </div>
-            <div className="mb-4">
-                <h3 className="text-gray-700 font-bold mb-2">
-                    Detail Anggaran
-                </h3>
-                <div className="space-y-2">
-                    <p>
-                        Anggaran Murni{" "}
-                        <strong>
-                            Rp {anggaranDetail.anggaran_murni.toLocaleString()}
-                        </strong>
-                    </p>
-                    <p>
-                        Pergeseran{" "}
-                        <strong>
-                            Rp {anggaranDetail.pergeseran.toLocaleString()}
-                        </strong>
-                    </p>
-                    <p>
-                        Perubahan{" "}
-                        <strong>
-                            Rp {anggaranDetail.perubahan.toLocaleString()}
-                        </strong>
-                    </p>
-                    <p>
-                        Persentase Penyerapan{" "}
-                        <strong>{persentasePenyerapan.toFixed(2)}%</strong>
-                    </p>
-                </div>
-            </div>
+
+            {/* Penyerapan Anggaran Input */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
-                    Jumlah Penyerapan (Rp)
+                    Penyerapan Anggaran
                 </label>
                 <input
                     type="number"
-                    value={penyerapanAnggaran === 0 ? "" : penyerapanAnggaran}
+                    value={penyerapanAnggaran}
                     onChange={handlePenyerapanChange}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
-                    min="0"
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
                     required
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 />
             </div>
-            <div className="flex gap-4">
+
+            {/* Target Fisik Input */}
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Target Fisik
+                </label>
+                <input
+                    type="text"
+                    value={targetFisik}
+                    onChange={(e) => setTargetFisik(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
+                />
+            </div>
+
+            {/* Realisasi Fisik Input */}
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Realisasi Fisik
+                </label>
+                <input
+                    type="text"
+                    value={realisasiFisik}
+                    onChange={(e) => setRealisasiFisik(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
+                />
+            </div>
+
+            {/* Percentage Display */}
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Persentase Penyerapan
+                </label>
+                <input
+                    type="text"
+                    value={`${persentasePenyerapan.toFixed(2)}%`}
+                    readOnly
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                />
+            </div>
+
+            {/* Buttons */}
+            <div className="flex justify-end mt-4">
                 <button
                     type="submit"
-                    className="flex items-center justify-center w-full p-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#f39237] transition-all"
+                    className="flex items-center px-4 py-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#f39237] transition-all"
                 >
-                    {editPenyerapan ? (
-                        <>
-                            <FaSave className="mr-2" /> Update Penyerapan
-                        </>
-                    ) : (
-                        <>
-                            <FaSave className="mr-2" /> Simpan Penyerapan
-                        </>
-                    )}
+                    <FaSave className="mr-2" />
+                    Simpan Anggaran
                 </button>
-                {editPenyerapan && (
-                    <button
-                        type="button"
-                        onClick={resetForm}
-                        className="flex items-center justify-center w-full p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all"
-                    >
-                        <FaTimes className="mr-2" /> Batal
-                    </button>
-                )}
+                <button
+                    type="button"
+                    onClick={() => setEditPenyerapan(null)}
+                    className="flex items-center px-4 py-2 ml-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition-all"
+                >
+                    <FaTimes className="mr-2" /> Batal
+                </button>
             </div>
         </form>
     );
 };
 
-export default PenyerapanForm;
+export default RealisasiForm;

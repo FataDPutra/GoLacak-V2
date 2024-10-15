@@ -11,6 +11,9 @@ class CreateSubprogramsTable extends Migration
         Schema::create('subprograms', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('nama_subprogram');
+            $table->string('target');
+            $table->string('satuan');
+            $table->string('indikator_kinerja');
             $table->uuid('program_id');  // Foreign key ke tabel programs
             $table->uuid('rekening_id'); // Foreign key ke tabel rekening
             $table->timestamps();

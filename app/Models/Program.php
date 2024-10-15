@@ -9,10 +9,10 @@ use Illuminate\Support\Str;
 class Program extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['nama_program', 'rekening_id'];
+    protected $fillable = ['nama_program', 'rekening_id', 'target', 'satuan', 'indikator_kinerja'];
     public $incrementing = false;
     protected $keyType = 'string';
+
 
     protected static function boot()
     {

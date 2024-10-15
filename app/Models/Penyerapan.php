@@ -18,6 +18,8 @@ class Penyerapan extends Model
     'persentase_penyerapan' => 'float',];
 
 
+
+
     protected static function boot()
     {
         parent::boot();

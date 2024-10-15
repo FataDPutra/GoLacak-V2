@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import PenyerapanForm from "../../Components/Realisasi/RealisasiForm";
-import PenyerapanList from "../../Components/Realisasi/RealisasiList";
+import RealisasiForm from "../../Components/Realisasi/RealisasiForm";
+import RealisasiList from "../../Components/Realisasi/RealisasiList";
 import Sidebar from "../../Components/Sidebar";
 import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
 
@@ -13,11 +13,11 @@ const Index = ({ penyerapanList, anggaran, programs, auth }) => {
                 <Sidebar />
                 <div className="lg:ml-20 lg:mr-10 p-8 flex-grow bg-white shadow-lg rounded-md">
                     <h1 className="text-3xl font-bold text-[#191923] mb-6">
-                        Daftar Penyerapan
+                        Daftar Realisasi
                     </h1>
                     <div className="space-y-6">
                         <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
-                            <PenyerapanForm
+                            <RealisasiForm
                                 editPenyerapan={editPenyerapan}
                                 setEditPenyerapan={setEditPenyerapan}
                                 programs={programs}
@@ -25,7 +25,7 @@ const Index = ({ penyerapanList, anggaran, programs, auth }) => {
                             />
                         </div>
                         <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
-                            <PenyerapanList
+                            <RealisasiList
                                 penyerapanList={penyerapanList}
                                 setEditPenyerapan={setEditPenyerapan}
                             />

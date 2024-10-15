@@ -11,6 +11,9 @@ class CreateKegiatanTable extends Migration
         Schema::create('kegiatan', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('nama_kegiatan');
+            $table->string('target');
+            $table->string('satuan');
+            $table->string('indikator_kinerja');
             $table->uuid('subprogram_id');  // Foreign key ke tabel subprograms
             $table->uuid('program_id');     // Foreign key ke tabel programs
             $table->uuid('rekening_id');    // Foreign key ke tabel rekening

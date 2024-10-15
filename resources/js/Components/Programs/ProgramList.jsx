@@ -1,6 +1,7 @@
 import React from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import moment from "moment"; // Make sure moment is installed
 
 const ProgramList = ({ programs, setEditProgram }) => {
     const handleDelete = (id) => {
@@ -15,10 +16,22 @@ const ProgramList = ({ programs, setEditProgram }) => {
                 <thead className="bg-[#0e79b2] text-white">
                     <tr>
                         <th className="py-2 px-4 border-r border-white text-left">
+                            No Rekening
+                        </th>
+                        <th className="py-2 px-4 border-r border-white text-left">
                             Nama Program
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
-                            No Rekening
+                            Target
+                        </th>
+                        <th className="py-2 px-4 border-r border-white text-left">
+                            Satuan
+                        </th>
+                        <th className="py-2 px-4 border-r border-white text-left">
+                            Indikator Kinerja
+                        </th>
+                        <th className="py-2 px-4 border-r border-white text-left">
+                            Diperbarui
                         </th>
                         <th className="py-2 px-4 text-left">Aksi</th>
                     </tr>
@@ -30,10 +43,23 @@ const ProgramList = ({ programs, setEditProgram }) => {
                             className="hover:bg-gray-100 transition-all border-b border-gray-300"
                         >
                             <td className="py-2 px-4 border-r border-gray-300">
+                                {program.rekening.no_rekening}
+                            </td>
+                            <td className="py-2 px-4 border-r border-gray-300">
                                 {program.nama_program}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
-                                {program.rekening.no_rekening}
+                                {program.target}
+                            </td>
+                            <td className="py-2 px-4 border-r border-gray-300">
+                                {program.satuan}
+                            </td>
+                            <td className="py-2 px-4 border-r border-gray-300">
+                                {program.indikator_kinerja}
+                            </td>
+                            <td className="py-2 px-4 border-r border-gray-300">
+                                {moment(program.updated_at).format("MMMM YYYY")}{" "}
+                                {/* Display month and year */}
                             </td>
                             <td className="py-2 px-4">
                                 <div className="flex justify-start gap-2">

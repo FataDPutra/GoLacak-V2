@@ -2,7 +2,7 @@ import React from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { FaEdit, FaTrashAlt } from "react-icons/fa"; // Import icons
 
-const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
+const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
     const handleEdit = (penyerapan) => {
         setEditPenyerapan({
             ...penyerapan,
@@ -12,9 +12,9 @@ const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
     };
 
     const handleDelete = (id) => {
-        if (confirm("Apakah Anda yakin ingin menghapus penyerapan ini?")) {
-            Inertia.delete(`/penyerapan/${id}`, {
-                onSuccess: () => alert("Penyerapan berhasil dihapus!"),
+        if (confirm("Apakah Anda yakin ingin menghapus realisasi ini?")) {
+            Inertia.delete(`/realisasi/${id}`, {
+                onSuccess: () => alert("Realisasi berhasil dihapus!"),
                 onError: (error) =>
                     alert("Terjadi kesalahan: " + error.message),
             });
@@ -26,6 +26,15 @@ const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
             <thead className="bg-[#0e79b2] text-white">
                 <tr>
                     <th className="py-2 px-3 text-left border-r border-white">
+                        No Rekening
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
+                        Program
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
+                        Subprogram
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
                         Kegiatan
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
@@ -33,6 +42,15 @@ const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
                         Persentase Penyerapan (%)
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
+                        Target Fisik
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
+                        Realisasi Fisik
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
+                        Bulan
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
                         Aksi
@@ -46,7 +64,18 @@ const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
                         className="hover:bg-gray-100 transition-all border-b border-gray-300"
                     >
                         <td className="py-2 px-3 border-r border-gray-300">
-                            {penyerapan.kegiatan.nama_kegiatan}
+                            {penyerapan.no_rekening || "N/A"}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {penyerapan.kegiatan?.program?.nama_program ||
+                                "N/A"}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {penyerapan.kegiatan?.subprogram?.nama_subprogram ||
+                                "N/A"}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {penyerapan.kegiatan?.nama_kegiatan || "N/A"}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
                             Rp{" "}
@@ -60,6 +89,15 @@ const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
                                 ? penyerapan.persentase_penyerapan.toFixed(2)
                                 : "N/A"}{" "}
                             %
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {penyerapan.target_fisik || "N/A"}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {penyerapan.realisasi_fisik || "N/A"}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {penyerapan.bulan || "N/A"}
                         </td>
                         <td className="py-2 px-3 flex gap-2">
                             <button
@@ -82,4 +120,4 @@ const PenyerapanList = ({ penyerapanList, setEditPenyerapan }) => {
     );
 };
 
-export default PenyerapanList;
+export default RealisasiList;
