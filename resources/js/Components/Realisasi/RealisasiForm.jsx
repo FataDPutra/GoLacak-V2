@@ -2,6 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { FaSave, FaTimes } from "react-icons/fa";
 
+const formatRupiah = (value) => {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+    }).format(value);
+};
+
 // Function to calculate absorption percentage
 const calculatePersentase = (anggaran, penyerapan) => {
     const totalAnggaran =
@@ -36,9 +44,9 @@ const RealisasiForm = ({
     const [filteredSubprograms, setFilteredSubprograms] = useState([]);
     const [filteredKegiatans, setFilteredKegiatans] = useState([]);
 
-    // New state variables for target fisik and realisasi fisik
-    const [targetFisik, setTargetFisik] = useState("");
-    const [realisasiFisik, setRealisasiFisik] = useState("");
+    // New state variables for realisasi_capaian and capaian_fisik
+    const [realisasiCapaian, setRealisasiCapaian] = useState("");
+    const [capaianFisik, setCapaianFisik] = useState("");
 
     useEffect(() => {
         if (editPenyerapan) {
@@ -46,8 +54,8 @@ const RealisasiForm = ({
             setSelectedSubprogram(editPenyerapan.subprogram_id);
             setSelectedKegiatan(editPenyerapan.kegiatan_id);
             setPenyerapanAnggaran(editPenyerapan.penyerapan_anggaran);
-            setTargetFisik(editPenyerapan.target_fisik || "");
-            setRealisasiFisik(editPenyerapan.realisasi_fisik || "");
+            setRealisasiCapaian(editPenyerapan.realisasi_capaian || "");
+            setCapaianFisik(editPenyerapan.capaian_fisik || "");
 
             const anggaran = anggarans.find(
                 (item) => item.id === editPenyerapan.anggaran_id
@@ -154,8 +162,8 @@ const RealisasiForm = ({
             kegiatan_id: selectedKegiatan,
             penyerapan_anggaran: penyerapanAnggaran,
             persentase_penyerapan: persentasePenyerapan,
-            target_fisik: targetFisik || 0, // Ensure target_fisik is not empty
-            realisasi_fisik: realisasiFisik || 0, // Ensure realisasi_fisik is not empty
+            realisasi_capaian: realisasiCapaian || 0, // Ensure realisasi_capaian is not empty
+            capaian_fisik: capaianFisik || 0, // Ensure capaian_fisik is not empty
         };
         if (editPenyerapan) {
             Inertia.put(`/realisasi/${editPenyerapan.id}`, data);
@@ -173,8 +181,8 @@ const RealisasiForm = ({
         setSelectedRekening("");
         setPenyerapanAnggaran(0);
         setPersentasePenyerapan(0);
-        setTargetFisik(""); // Reset target fisik to empty
-        setRealisasiFisik(""); // Reset realisasi fisik to empty
+        setRealisasiCapaian(""); // Reset realisasi_capaian to empty
+        setCapaianFisik(""); // Reset capaian_fisik to empty
         setAnggaranDetail({
             anggaran_murni: 0,
             pergeseran: 0,
@@ -247,19 +255,6 @@ const RealisasiForm = ({
                 </select>
             </div>
 
-            {/* Rekening Input */}
-            <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">
-                    No Rekening
-                </label>
-                <input
-                    type="text"
-                    value={selectedRekening}
-                    readOnly
-                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
-                />
-            </div>
-
             {/* Penyerapan Anggaran Input */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
@@ -271,65 +266,96 @@ const RealisasiForm = ({
                     onChange={handlePenyerapanChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    required
                     className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 />
             </div>
 
-            {/* Target Fisik Input */}
-            <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">
-                    Target Fisik
-                </label>
-                <input
-                    type="text"
-                    value={targetFisik}
-                    onChange={(e) => setTargetFisik(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
-                />
-            </div>
-
-            {/* Realisasi Fisik Input */}
-            <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">
-                    Realisasi Fisik
-                </label>
-                <input
-                    type="text"
-                    value={realisasiFisik}
-                    onChange={(e) => setRealisasiFisik(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
-                />
-            </div>
-
-            {/* Percentage Display */}
+            {/* Persentase Penyerapan Display */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
                     Persentase Penyerapan
                 </label>
                 <input
                     type="text"
-                    value={`${persentasePenyerapan.toFixed(2)}%`}
+                    value={persentasePenyerapan.toFixed(2) + "%"}
                     readOnly
-                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
                 />
             </div>
 
-            {/* Buttons */}
-            <div className="flex justify-end mt-4">
+            {/* Realisasi Capaian Input */}
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Realisasi Capaian
+                </label>
+                <input
+                    type="text"
+                    value={realisasiCapaian}
+                    onChange={(e) => setRealisasiCapaian(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
+                />
+            </div>
+
+            {/* Capaian Fisik Input */}
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Capaian Fisik
+                </label>
+                <input
+                    type="text"
+                    value={capaianFisik}
+                    onChange={(e) => setCapaianFisik(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
+                />
+            </div>
+
+            {/* Anggaran Detail Display */}
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Anggaran
+                </label>
+                <input
+                    type="text"
+                    value={formatRupiah(
+                        anggaranDetail.perubahan > 0
+                            ? anggaranDetail.perubahan +
+                                  anggaranDetail.pergeseran
+                            : anggaranDetail.anggaran_murni
+                    )}
+                    readOnly
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+                />
+            </div>
+
+            {/* Rekening Display */}
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    No Rekening
+                </label>
+                <input
+                    type="text"
+                    value={selectedRekening}
+                    readOnly
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+                />
+            </div>
+
+            {/* Form Action Buttons */}
+            <div className="flex justify-between items-center">
                 <button
                     type="submit"
-                    className="flex items-center px-4 py-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#f39237] transition-all"
+                    className="px-4 py-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#0c6a9c] transition-all flex items-center"
                 >
                     <FaSave className="mr-2" />
-                    Simpan Anggaran
+                    Simpan
                 </button>
                 <button
                     type="button"
-                    onClick={() => setEditPenyerapan(null)}
-                    className="flex items-center px-4 py-2 ml-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition-all"
+                    onClick={resetForm}
+                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-all flex items-center"
                 >
-                    <FaTimes className="mr-2" /> Batal
+                    <FaTimes className="mr-2" />
+                    Reset
                 </button>
             </div>
         </form>

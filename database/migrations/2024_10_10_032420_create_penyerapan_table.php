@@ -17,8 +17,8 @@ class CreatePenyerapanTable extends Migration
             $table->uuid('id')->primary(); // UUID sebagai primary key
             $table->decimal('penyerapan_anggaran', 15, 2); // Penyerapan anggaran, dengan skala desimal untuk jumlah uang
             $table->decimal('persentase_penyerapan', 5, 2); // Persentase penyerapan
-            $table->float('target_fisik')->nullable(); // Target fisik
-            $table->float('realisasi_fisik')->nullable(); // Realisasi fisik
+            $table->float('realisasi_kinerja')->nullable(); // Target fisik
+            $table->float('capaian_fisik')->nullable(); // Realisasi fisik
             $table->uuid('kegiatan_id'); // Foreign key ke tabel kegiatan
             $table->uuid('anggaran_id'); // Foreign key ke tabel anggaran
             $table->timestamps();

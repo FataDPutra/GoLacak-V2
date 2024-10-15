@@ -1,6 +1,7 @@
 import React from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { FaEdit, FaTrashAlt } from "react-icons/fa"; // Import icons
+import moment from "moment"; // Import moment.js
 
 const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
     const handleEdit = (penyerapan) => {
@@ -44,10 +45,10 @@ const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
                         Persentase Penyerapan (%)
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
-                        Target Fisik
+                        Realisasi Capaian
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
-                        Realisasi Fisik
+                        Capaian Fisik
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
                         Bulan
@@ -91,13 +92,15 @@ const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
                             %
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
-                            {penyerapan.target_fisik || "N/A"}
+                            {penyerapan.realisasi_capaian || "N/A"}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
-                            {penyerapan.realisasi_fisik || "N/A"}
+                            {penyerapan.capaian_fisik || "N/A"}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
-                            {penyerapan.bulan || "N/A"}
+                            {penyerapan.bulan
+                                ? moment(penyerapan.bulan).format("MMMM YYYY")
+                                : "N/A"}
                         </td>
                         <td className="py-2 px-3 flex gap-2">
                             <button

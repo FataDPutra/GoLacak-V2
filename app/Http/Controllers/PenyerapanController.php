@@ -61,8 +61,7 @@ class PenyerapanController extends Controller
             'anggaran_id' => 'required|exists:anggaran,id',
             'kegiatan_id' => 'required|exists:kegiatan,id',
             'penyerapan_anggaran' => 'required|numeric|min:1',
-            'target_fisik' => 'nullable|numeric', // Validasi untuk target fisik
-            'realisasi_fisik' => 'nullable|numeric', // Validasi untuk realisasi fisik
+            'target_fisirealisasi_kinerja' => 'nullable|numeric', // Validasi untuk tarcapaian_fisik' => 'nullable|numeric', // Validasi untuk realisasi fisik
         ]);
 
         $anggaran = Anggaran::findOrFail($request->anggaran_id);
@@ -86,8 +85,7 @@ class PenyerapanController extends Controller
             'kegiatan_id' => $request->kegiatan_id,
             'penyerapan_anggaran' => $request->penyerapan_anggaran,
             'persentase_penyerapan' => $persentase_penyerapan,
-            'target_fisik' => $request->target_fisik, // Store target_fisik
-            'realisasi_fisik' => $request->realisasi_fisik, // Store realisasi_fisik
+            'realisasi_kinerja' => $request->realisasi_kinerja, // Store realisascapaian_fisik'capaian_fisik, // Store
         ]);
 
         return redirect()->route('realisasi.index')->with('success', 'Penyerapan berhasil disimpan!');
@@ -100,8 +98,8 @@ class PenyerapanController extends Controller
             'anggaran_id' => 'required|exists:anggaran,id',
             'kegiatan_id' => 'required|exists:kegiatan,id',
             'penyerapan_anggaran' => 'required|numeric|min:1',
-            'target_fisik' => 'nullable|numeric', // Validasi untuk target fisik
-            'realisasi_fisik' => 'nullable|numeric', // Validasi untuk realisasi fisik
+            'realisasi_kinerja' => 'nullable|numeric', // Validasi untuk target fisik
+            'capaian_fisik' => 'nullable|numeric', // Validasi untuk realisasi fisik
         ]);
 
         $anggaran = Anggaran::findOrFail($request->anggaran_id);
@@ -121,8 +119,7 @@ class PenyerapanController extends Controller
             'kegiatan_id' => $request->kegiatan_id,
             'penyerapan_anggaran' => $request->penyerapan_anggaran,
             'persentase_penyerapan' => $persentase_penyerapan,
-            'target_fisik' => $request->target_fisik, // Update target_fisik
-            'realisasi_fisik' => $request->realisasi_fisik, // Update realisasi_fisik
+            'realisasi_kinerja' => $request->realisasi_kinerja, // Update realisascapaian_fisik'capaian_fisik, // Update
         ]);
 
         return redirect()->route('realisasi.index')->with('success', 'Penyerapan berhasil diupdate!');

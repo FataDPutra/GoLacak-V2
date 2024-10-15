@@ -11,7 +11,7 @@ class Penyerapan extends Model
     use HasFactory;
 
     protected $table = 'penyerapan';
-    protected $fillable = ['penyerapan_anggaran', 'persentase_penyerapan', 'kegiatan_id', 'anggaran_id'];
+    protected $fillable = ['penyerapan_anggaran', 'persentase_penyerapan','realisasi_kinerja', 'capaian_fisik', 'kegiatan_id', 'anggaran_id'];
     public $incrementing = false;
     protected $keyType = 'string';
     protected $casts = [
