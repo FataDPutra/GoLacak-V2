@@ -15,8 +15,8 @@ class CreatePenyerapanTable extends Migration
     {
         Schema::create('penyerapan', function (Blueprint $table) {
             $table->uuid('id')->primary(); // UUID sebagai primary key
-            $table->decimal('penyerapan_anggaran', 15, 2); // Penyerapan anggaran, dengan skala desimal untuk jumlah uang
-            $table->decimal('persentase_penyerapan', 5, 2); // Persentase penyerapan
+            $table->decimal('penyerapan_anggaran', 20, 2); // Penyerapan anggaran, dengan skala desimal untuk jumlah uang
+            $table->decimal('persentase_penyerapan', 20, 2); // Persentase penyerapan
             $table->float('realisasi_kinerja')->nullable(); // Target fisik
             $table->float('capaian_fisik')->nullable(); // Realisasi fisik
             $table->uuid('kegiatan_id'); // Foreign key ke tabel kegiatan

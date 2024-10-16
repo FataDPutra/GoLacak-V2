@@ -10,9 +10,9 @@ class CreateAnggaranTable extends Migration
     {
         Schema::create('anggaran', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->decimal('anggaran_murni', 15, 2);
-            $table->decimal('pergeseran', 15, 2)->default(0); // Default ke 0
-            $table->decimal('perubahan', 15, 2)->default(0); // Default ke 0
+            $table->decimal('anggaran_murni', 20, 2);
+            $table->decimal('pergeseran', 20, 2)->default(0); // Default ke 0
+            $table->decimal('perubahan', 20, 2)->default(0); // Default ke 0
             $table->uuid('kegiatan_id'); // Foreign key ke tabel rekening
             $table->foreign('kegiatan_id')->references('id')->on('kegiatan')->onDelete('cascade');
             $table->timestamps();
