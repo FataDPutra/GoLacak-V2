@@ -19,6 +19,8 @@ export default function AnggaranForm({
     kegiatans,
     bidangs,
 }) {
+    const [error, setError] = useState(null);
+
     const [anggaranMurni, setAnggaranMurni] = useState("");
     const [pergeseran, setPergeseran] = useState(0);
     const [perubahan, setPerubahan] = useState(0);
@@ -65,6 +67,8 @@ export default function AnggaranForm({
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        setError(null);
+
         if (editAnggaran) {
             Inertia.put(`/anggaran/${editAnggaran.id}`, {
                 anggaran_murni: anggaranMurni,
@@ -99,6 +103,23 @@ export default function AnggaranForm({
         setBidangId("");
         setRekening(""); // Reset No Rekening
     };
+
+    // Fungsi untuk handle error dari server-side
+    const handleError = (error) => {
+        if (error.response.data.error) {
+            setError(error.response.data.error);
+        } else {
+            // Handle error lainnya jika diperlukan
+            console.error(error);
+        }
+    };
+
+    // Gunakan useEffect untuk memantau perubahan pada response Inertia
+    useEffect(() => {
+        return Inertia.on("error", (error) => {
+            handleError(error);
+        });
+    }, []);
 
     return (
         <form onSubmit={handleSubmit} className="mb-6">
@@ -248,6 +269,16 @@ export default function AnggaranForm({
                     className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
                 />
             </div>
+
+            {/* Tampilkan pesan error jika ada */}
+            {error && (
+                <div
+                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+                    role="alert"
+                >
+                    <span className="block sm:inline">{error}</span>
+                </div>
+            )}
 
             <div className="flex gap-4">
                 <button

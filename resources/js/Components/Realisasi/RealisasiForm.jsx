@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
-import { FaSave, FaTimes } from "react-icons/fa";
+import { FaSave, FaEdit, FaTimes } from "react-icons/fa";
 
 // Function to calculate absorption percentage
 const calculatePersentase = (anggaran, penyerapan) => {
-    const totalAnggaran =
+    const anggaranYangDigunakan =
         anggaran.perubahan > 0
-            ? anggaran.perubahan + anggaran.pergeseran
+            ? anggaran.perubahan
+            : anggaran.pergeseran > 0
+            ? anggaran.pergeseran
             : anggaran.anggaran_murni;
 
-    if (totalAnggaran > 0) {
-        return (penyerapan / totalAnggaran) * 100;
+    if (anggaranYangDigunakan > 0) {
+        return (penyerapan / anggaranYangDigunakan) * 100;
     }
     return 0;
 };
@@ -68,8 +70,6 @@ const RealisasiForm = ({
         }
     }, [editPenyerapan, anggarans]);
 
-    console.log("Data di RealisasiForm:", editPenyerapan);
-
     useEffect(() => {
         if (selectedProgram) {
             const program = programs.find((p) => p.id === selectedProgram);
@@ -115,6 +115,15 @@ const RealisasiForm = ({
         }
     }, [selectedKegiatan, anggarans]);
 
+    useEffect(() => {
+        // Calculate persentase_penyerapan when penyerapanAnggaran changes
+        const calculatedPersentase = calculatePersentase(
+            anggaranDetail,
+            penyerapanAnggaran
+        );
+        setPersentasePenyerapan(calculatedPersentase);
+    }, [penyerapanAnggaran, anggaranDetail]);
+
     const handlePenyerapanChange = (e) => {
         const value = e.target.value;
         if (value === "") {
@@ -124,11 +133,6 @@ const RealisasiForm = ({
             const parsedValue = parseFloat(value);
             if (!isNaN(parsedValue)) {
                 setPenyerapanAnggaran(parsedValue);
-                const calculatedPersentase = calculatePersentase(
-                    anggaranDetail,
-                    parsedValue
-                );
-                setPersentasePenyerapan(calculatedPersentase);
             }
         }
     };
@@ -262,6 +266,51 @@ const RealisasiForm = ({
                 />
             </div>
 
+            {/* Anggaran Details Display */}
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Detail Anggaran
+                </label>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="text-gray-700">
+                            {" "}
+                            Anggaran Murni:
+                        </label>
+                        <span className="ml-2">
+                            Rp {anggaranDetail.anggaran_murni.toLocaleString()}
+                        </span>
+                    </div>
+                    <div>
+                        <label className="text-gray-700">Perubahan:</label>
+                        <span className="ml-2">
+                            Rp {anggaranDetail.perubahan.toLocaleString()}
+                        </span>
+                    </div>
+                    <div>
+                        <label className="text-gray-700">Pergeseran:</label>
+                        <span className="ml-2">
+                            Rp {anggaranDetail.pergeseran.toLocaleString()}
+                        </span>
+                    </div>
+
+                    <div>
+                        <label className="text-gray-700">
+                            Anggaran yang Digunakan:
+                        </label>
+                        <span className="ml-2 font-bold">
+                            Rp{" "}
+                            {(anggaranDetail.perubahan > 0
+                                ? anggaranDetail.perubahan
+                                : anggaranDetail.pergeseran > 0
+                                ? anggaranDetail.pergeseran
+                                : anggaranDetail.anggaran_murni
+                            ).toLocaleString()}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             {/* Penyerapan Anggaran Input */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
@@ -277,6 +326,7 @@ const RealisasiForm = ({
                     className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 />
             </div>
+
             {/* Realisasi Fisik Input */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
@@ -304,7 +354,7 @@ const RealisasiForm = ({
             </div>
 
             {/* Percentage Display */}
-            <div className="mb-4">
+            <div className="mb- 4">
                 <label className="block text-gray-700 font-bold mb-2">
                     Persentase Penyerapan
                 </label>
@@ -317,21 +367,31 @@ const RealisasiForm = ({
             </div>
 
             {/* Buttons */}
-            <div className="flex justify-end mt-4">
+            <div className="flex gap-4">
                 <button
                     type="submit"
-                    className="flex items-center px-4 py-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#f39237] transition-all"
+                    className="flex items-center justify-center w-full p-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#f39237] transition-all"
                 >
-                    <FaSave className="mr-2" />
-                    Simpan Realisasi
+                    {editPenyerapan ? (
+                        <>
+                            <FaEdit className="mr-2" /> Update Realisasi
+                        </>
+                    ) : (
+                        <>
+                            <FaSave className="mr-2" /> Simpan Realisasi
+                        </>
+                    )}
                 </button>
-                <button
-                    type="button"
-                    onClick={() => setEditPenyerapan(null)}
-                    className="flex items-center px-4 py-2 ml-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition-all"
-                >
-                    <FaTimes className="mr-2" /> Batal
-                </button>
+                {/* Tombol Cancel (jika diperlukan) */}
+                {editPenyerapan && (
+                    <button
+                        type="button"
+                        onClick={() => setEditPenyerapan(null)}
+                        className="flex items-center justify-center w-full p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all"
+                    >
+                        <FaTimes className="mr-2" /> Cancel
+                    </button>
+                )}
             </div>
         </form>
     );

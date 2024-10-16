@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
-import { FaEdit, FaTrashAlt } from "react-icons/fa"; // Import icons
+import { FaEdit, FaTrashAlt, FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import icons
 import moment from "moment"; // Make sure moment is installed
 
 const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
+    const itemsPerPage = 12; // Set jumlah data per halaman
+    const [currentPage, setCurrentPage] = useState(0);
+
     const handleDelete = (id) => {
         if (confirm("Apakah Anda yakin ingin menghapus kegiatan ini?")) {
             Inertia.delete(`/subkegiatan/${id}`, {
@@ -13,6 +16,22 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
             });
         }
     };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if ((currentPage + 1) * itemsPerPage < kegiatans.length) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedKegiatans = kegiatans.slice(startIndex, endIndex);
 
     return (
         <div className="overflow-x-auto">
@@ -47,7 +66,7 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {kegiatans.map((kegiatan) => (
+                    {paginatedKegiatans.map((kegiatan) => (
                         <tr
                             key={kegiatan.id}
                             className="hover:bg-gray-100 transition-all border-b border-gray-300"
@@ -77,7 +96,6 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
                                 {moment(kegiatan.updated_at).format(
                                     "MMMM YYYY"
                                 )}{" "}
-                                {/* Display month and year */}
                             </td>
                             <td className="py-2 px-4">
                                 <div className="flex justify-start gap-2">
@@ -103,6 +121,28 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
                     ))}
                 </tbody>
             </table>
+
+            {/* Pagination Controls */}
+            <div className="flex justify-between mt-4">
+                {currentPage > 0 && (
+                    <button
+                        onClick={handlePreviousPage}
+                        className="flex items-center px-3 py-1 bg-[#0e79b2] text-white rounded-md transition-colors duration-300 hover:bg-[#095d7a]"
+                    >
+                        <FaArrowLeft className="mr-1" /> Previous
+                    </button>
+                )}
+
+                <button
+                    onClick={handleNextPage}
+                    className="flex items-center px-3 py-1 bg-[#0e79b2] text-white rounded-md transition-colors duration-300 hover:bg-[#095d7a]"
+                    disabled={
+                        (currentPage + 1) * itemsPerPage >= kegiatans.length
+                    }
+                >
+                    Next <FaArrowRight className="ml-1" />
+                </button>
+            </div>
         </div>
     );
 };

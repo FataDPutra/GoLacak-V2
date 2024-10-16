@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
-import { FaEdit, FaTrashAlt } from "react-icons/fa"; // Import icons
+import { FaEdit, FaTrashAlt, FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import icons
 
 const BidangList = ({ bidangs, setEditBidang }) => {
+    const itemsPerPage = 10; // Number of items to display per page
+    const [currentPage, setCurrentPage] = useState(0); // Current page index
+
+    // Calculate the start and end indices for slicing the bidangs array
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedBidangs = bidangs.slice(startIndex, endIndex); // Sliced array
+
     const handleDelete = (id) => {
         if (confirm("Apakah Anda yakin ingin menghapus bidang ini?")) {
             Inertia.delete(`/bidang/${id}`);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if ((currentPage + 1) * itemsPerPage < bidangs.length) {
+            setCurrentPage(currentPage + 1);
         }
     };
 
@@ -21,7 +41,7 @@ const BidangList = ({ bidangs, setEditBidang }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {bidangs.map((bidang) => (
+                    {paginatedBidangs.map((bidang) => (
                         <tr
                             key={bidang.id}
                             className="hover:bg-gray-100 transition-all border-b border-gray-200"
@@ -51,6 +71,31 @@ const BidangList = ({ bidangs, setEditBidang }) => {
                     ))}
                 </tbody>
             </table>
+            <div className="flex justify-between mt-4">
+                {/* Hanya tampilkan tombol Previous jika bukan di halaman pertama */}
+                {currentPage > 0 && (
+                    <button
+                        onClick={handlePreviousPage}
+                        className={`flex items-center justify-center px-3 py-1.5 bg-[#0e79b2] text-white 
+                        rounded-md text-sm transition-colors duration-300 hover:bg-[#095d7a]`}
+                    >
+                        <FaArrowLeft className="mr-1" />
+                        Previous
+                    </button>
+                )}
+
+                <button
+                    onClick={handleNextPage}
+                    className={`flex items-center justify-center px-3 py-1.5 bg-[#0e79b2] text-white 
+                    rounded-md text-sm transition-colors duration-300 hover:bg-[#095d7a]`}
+                    disabled={
+                        (currentPage + 1) * itemsPerPage >= bidangs.length
+                    }
+                >
+                    Next
+                    <FaArrowRight className="ml-1" />
+                </button>
+            </div>
         </div>
     );
 };

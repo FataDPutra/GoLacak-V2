@@ -1,14 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import moment from "moment"; // Make sure moment is installed
 
 const ProgramList = ({ programs, setEditProgram }) => {
+    const itemsPerPage = 12; // Set jumlah data per halaman
+    const [currentPage, setCurrentPage] = useState(0);
+
     const handleDelete = (id) => {
         if (confirm("Apakah Anda yakin ingin menghapus program ini?")) {
             Inertia.delete(`/programs/${id}`);
         }
     };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if ((currentPage + 1) * itemsPerPage < programs.length) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedPrograms = programs.slice(startIndex, endIndex);
 
     return (
         <div className="overflow-x-auto">
@@ -30,7 +49,6 @@ const ProgramList = ({ programs, setEditProgram }) => {
                         <th className="py-2 px-4 border-r border-white text-left">
                             Satuan
                         </th>
-
                         <th className="py-2 px-4 border-r border-white text-left">
                             Diperbarui
                         </th>
@@ -38,7 +56,7 @@ const ProgramList = ({ programs, setEditProgram }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {programs.map((program) => (
+                    {paginatedPrograms.map((program) => (
                         <tr
                             key={program.id}
                             className="hover:bg-gray-100 transition-all border-b border-gray-300"
@@ -59,8 +77,7 @@ const ProgramList = ({ programs, setEditProgram }) => {
                                 {program.satuan}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
-                                {moment(program.updated_at).format("MMMM YYYY")}{" "}
-                                {/* Display month and year */}
+                                {moment(program.updated_at).format("MMMM YYYY")}
                             </td>
                             <td className="py-2 px-4">
                                 <div className="flex justify-start gap-2">
@@ -82,6 +99,28 @@ const ProgramList = ({ programs, setEditProgram }) => {
                     ))}
                 </tbody>
             </table>
+
+            {/* Pagination Controls */}
+            <div className="flex justify-between mt-4">
+                {currentPage > 0 && (
+                    <button
+                        onClick={handlePreviousPage}
+                        className="flex items-center px-3 py-1 bg-[#0e79b2] text-white rounded-md transition-colors duration-300 hover:bg-[#095d7a]"
+                    >
+                        <FaArrowLeft className="mr-1" /> Previous
+                    </button>
+                )}
+
+                <button
+                    onClick={handleNextPage}
+                    className="flex items-center px-3 py-1 bg-[#0e79b2] text-white rounded-md transition-colors duration-300 hover:bg-[#095d7a]"
+                    disabled={
+                        (currentPage + 1) * itemsPerPage >= programs.length
+                    }
+                >
+                    Next <FaArrowRight className="ml-1" />
+                </button>
+            </div>
         </div>
     );
 };

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
-import { FaEdit, FaTrashAlt } from "react-icons/fa"; // Import icons
+import { FaEdit, FaTrashAlt, FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import icons
 import moment from "moment"; // Import moment for date formatting
 
 // Fungsi format Rupiah tanpa desimal khusus untuk tampilan tabel
@@ -14,6 +14,9 @@ const formatRupiahTanpaDesimal = (value) => {
 };
 
 const AnggaranList = ({ anggarans, setEditAnggaran }) => {
+    const itemsPerPage = 12; // Set jumlah data per halaman
+    const [currentPage, setCurrentPage] = useState(0);
+
     const handleDelete = (id) => {
         if (confirm("Apakah Anda yakin ingin menghapus anggaran ini?")) {
             Inertia.delete(`/anggaran/${id}`, {
@@ -24,94 +27,138 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
         }
     };
 
+    const handlePreviousPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if ((currentPage + 1) * itemsPerPage < anggarans.length) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedAnggarans = anggarans.slice(startIndex, endIndex);
+
     return (
-        <table className="min-w-full bg-[#fbfef9] shadow-lg rounded-lg border-collapse border border-gray-300 text-sm">
-            <thead className="bg-[#0e79b2] text-white">
-                <tr>
-                    <th className="py-2 px-3 text-left border-r border-white">
-                        Bidang
-                    </th>
-                    <th className="py-2 px-3 text-left border-r border-white">
-                        No Rekening
-                    </th>
-                    <th className="py-2 px-3 text-left border-r border-white">
-                        Program
-                    </th>
-                    <th className="py-2 px-3 text-left border-r border-white">
-                        Kegiatan
-                    </th>
-                    <th className="py-2 px-3 text-left border-r border-white">
-                        Sub Kegiatan
-                    </th>
-                    <th className="py-2 px-3 text-left border-r border-white">
-                        Anggaran Murni
-                    </th>
-                    <th className="py-2 px-3 text-left border-r border-white">
-                        Pergeseran
-                    </th>
-                    <th className="py-2 px-3 text-left border-r border-white">
-                        Perubahan
-                    </th>
-                    <th className="py-2 px-3 text-left border-r border-white">
-                        Bulan
-                    </th>
-                    <th className="py-2 px-3 text-left border-r border-white">
-                        Aksi
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {anggarans.map((anggaran) => (
-                    <tr
-                        key={anggaran.id}
-                        className="hover:bg-gray-100 transition-all border-b border-gray-300"
-                    >
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {anggaran.bidang?.nama_bidang || "N/A"}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {anggaran.kegiatan?.rekening?.no_rekening || "N/A"}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {anggaran.program?.nama_program || "N/A"}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {anggaran.subprogram?.nama_subprogram || "N/A"}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {anggaran.kegiatan?.nama_kegiatan || "N/A"}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {formatRupiahTanpaDesimal(anggaran.anggaran_murni)}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {formatRupiahTanpaDesimal(anggaran.pergeseran)}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {formatRupiahTanpaDesimal(anggaran.perubahan)}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {moment(anggaran.updated_at).format("MMMM YYYY") ||
-                                "N/A"}
-                        </td>
-                        <td className="py-2 px-3 flex gap-2">
-                            <button
-                                onClick={() => setEditAnggaran(anggaran)}
-                                className="flex items-center justify-center p-2 bg-[#f39237] text-white rounded-md hover:bg-[#0e79b2] transition-all"
-                            >
-                                <FaEdit className="mr-2" /> Edit
-                            </button>
-                            <button
-                                onClick={() => handleDelete(anggaran.id)}
-                                className="flex items-center justify-center p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all"
-                            >
-                                <FaTrashAlt className="mr-2" /> Hapus
-                            </button>
-                        </td>
+        <div>
+            <table className="min-w-full bg-[#fbfef9] shadow-lg rounded-lg border-collapse border border-gray-300 text-sm">
+                <thead className="bg-[#0e79b2] text-white">
+                    <tr>
+                        <th className="py-2 px-3 text-left border-r border-white">
+                            Bidang
+                        </th>
+                        <th className="py-2 px-3 text-left border-r border-white">
+                            No Rekening
+                        </th>
+                        <th className="py-2 px-3 text-left border-r border-white">
+                            Program
+                        </th>
+                        <th className="py-2 px-3 text-left border-r border-white">
+                            Kegiatan
+                        </th>
+                        <th className="py-2 px-3 text-left border-r border-white">
+                            Sub Kegiatan
+                        </th>
+                        <th className="py-2 px-3 text-left border-r border-white">
+                            Anggaran Murni
+                        </th>
+                        <th className="py-2 px-3 text-left border-r border-white">
+                            Pergeseran
+                        </th>
+                        <th className="py-2 px-3 text-left border-r border-white">
+                            Perubahan
+                        </th>
+                        <th className="py-2 px-3 text-left border-r border-white">
+                            Bulan
+                        </th>
+                        <th className="py-2 px-3 text-left border-r border-white">
+                            Aksi
+                        </th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {paginatedAnggarans.map((anggaran) => (
+                        <tr
+                            key={anggaran.id}
+                            className="hover:bg-gray-100 transition-all border-b border-gray-300"
+                        >
+                            <td className="py-2 px-3 border-r border-gray-300">
+                                {anggaran.bidang?.nama_bidang || "N/A"}
+                            </td>
+                            <td className="py-2 px-3 border-r border-gray-300">
+                                {anggaran.kegiatan?.rekening?.no_rekening ||
+                                    "N/A"}
+                            </td>
+                            <td className="py-2 px-3 border-r border-gray-300">
+                                {anggaran.program?.nama_program || "N/A"}
+                            </td>
+                            <td className="py-2 px-3 border-r border-gray-300">
+                                {anggaran.subprogram?.nama_subprogram || "N/A"}
+                            </td>
+                            <td className="py-2 px-3 border-r border-gray-300">
+                                {anggaran.kegiatan?.nama_kegiatan || "N/A"}
+                            </td>
+                            <td className="py-2 px-3 border-r border-gray-300">
+                                {formatRupiahTanpaDesimal(
+                                    anggaran.anggaran_murni
+                                )}
+                            </td>
+                            <td className="py-2 px-3 border-r border-gray-300">
+                                {formatRupiahTanpaDesimal(anggaran.pergeseran)}
+                            </td>
+                            <td className="py-2 px-3 border-r border-gray-300">
+                                {formatRupiahTanpaDesimal(anggaran.perubahan)}
+                            </td>
+                            <td className="py-2 px-3 border-r border-gray-300">
+                                {moment(anggaran.updated_at).format(
+                                    "MMMM YYYY"
+                                ) || "N/A"}
+                            </td>
+                            <td className="py-2 px-3 flex gap-2">
+                                <button
+                                    onClick={() => setEditAnggaran(anggaran)}
+                                    className="flex items-center justify-center p-2 bg-[#f39237] text-white rounded-md hover:bg-[#0e79b2] transition-all"
+                                >
+                                    <FaEdit className="mr-2" /> Edit
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(anggaran.id)}
+                                    className="flex items-center justify-center p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-all"
+                                >
+                                    <FaTrashAlt className="mr-2" /> Hapus
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            {/* Pagination Controls */}
+            <div className="flex justify-between mt-4">
+                {currentPage > 0 && (
+                    <button
+                        onClick={handlePreviousPage}
+                        className="flex items-center px-3 py-1 bg-[#0e79b2] text-white rounded-md transition-colors duration-300 hover:bg-[#095d7a]"
+                    >
+                        <FaArrowLeft className="mr-1" /> Previous
+                    </button>
+                )}
+
+                <button
+                    onClick={handleNextPage}
+                    className="flex items-center px-3 py-1 bg-[#0e79b2] text-white rounded-md transition-colors duration-300 hover:bg-[#095d7a]"
+                    disabled={
+                        (currentPage + 1) * itemsPerPage >= anggarans.length
+                    }
+                >
+                    Next <FaArrowRight className="ml-1" />
+                </button>
+            </div>
+        </div>
     );
 };
 
