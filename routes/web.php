@@ -53,6 +53,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('kegiatan', SubprogramController::class);
     Route::resource('anggaran', AnggaranController::class);
     Route::resource('realisasi', PenyerapanController::class);
+    Route::resource('users.realisasi', PenyerapanController::class)->only(['index']);
 
 
 });

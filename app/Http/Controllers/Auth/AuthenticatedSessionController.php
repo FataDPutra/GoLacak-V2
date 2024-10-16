@@ -28,15 +28,22 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
 
-        $request->session()->regenerate();
 
-        return redirect()->intended(route('bidang.index'));
+     public function store(LoginRequest $request): RedirectResponse
+{
+    $request->authenticate();
+
+    $request->session()->regenerate();
+
+    $user = Auth::user();
+
+    if ($user->role === 'admin') {
+        return redirect()->route('bidang.index'); // Redirect admin to programs index
+    } else {
+        return redirect()->route('realisasi.index'); // Redirect user to users.realisasi.index
     }
-
+}
     /**
      * Destroy an authenticated session.
      */
