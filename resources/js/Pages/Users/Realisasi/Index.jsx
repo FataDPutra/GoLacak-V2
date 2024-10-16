@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import RealisasiForm from "../../../Components/Realisasi/RealisasiForm";
 import RealisasiList from "../../../Components/Realisasi/RealisasiList";
-import Sidebar from "../../Components/Users/Sidebar";
-import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
+import Sidebar from "../../../Components/Users/Sidebar";
+import AuthenticatedLayout from "../../../Layouts/AuthenticatedLayout";
 
 /*************  ✨ Codeium Command ⭐  *************/
 /**

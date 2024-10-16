@@ -41,7 +41,7 @@ const Sidebar = () => {
                 <div
                     className={`${isOpen ? "block" : "hidden"} mt-4 space-y-2`}
                 >
-                    <Link
+                    {/* <Link
                         href="/bidang"
                         className={`flex items-center py-3 px-4 ${
                             isActive("/bidang")
@@ -50,7 +50,7 @@ const Sidebar = () => {
                         } rounded-md transition-all`}
                     >
                         <FaFolder className="mr-2" /> Bidang
-                    </Link>
+                    </Link> */}
                     <Link
                         href="/realisasi"
                         className={`flex items-center py-3 px-4 ${
@@ -68,7 +68,7 @@ const Sidebar = () => {
             <div className="hidden lg:block w-60 bg-[#c1292e] text-white p-5 shadow-lg rounded-md">
                 <h2 className="text-2xl font-bold mb-6">Menu</h2>
                 <ul className="space-y-3">
-                    <li>
+                    {/* <li>
                         <Link
                             href="/bidang"
                             className={`flex items-center py-3 px-4 ${
@@ -79,7 +79,7 @@ const Sidebar = () => {
                         >
                             <FaFolder className="mr-2" /> Bidang
                         </Link>
-                    </li>
+                    </li> */}
                     <li>
                         <Link
                             href="/realisasi"
