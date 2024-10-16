@@ -9,32 +9,31 @@ const Index = ({ kegiatans, programs, subprograms, rekenings, auth }) => {
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <div className="flex flex-col lg:flex-row bg-gray-100 min-h-screen">
-                <Sidebar />
-                <div className="lg:ml-20 lg:mr-10 p-8 flex-grow bg-white shadow-lg rounded-md">
-                    <div className="mb-8">
-                        <h1 className="text-3xl font-bold text-[#191923] mb-4">
-                            Daftar Sub Kegiatan
-                        </h1>
-                    </div>
+            <div className="flex bg-[#fbfef9] min-h-screen">
+                {/* Sidebar full height and fixed width */}
+                <div className="w-64 bg-white shadow-lg">
+                    <Sidebar />
+                </div>
 
-                    <div className="space-y-6">
-                        <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
-                            <KegiatanForm
-                                editKegiatan={editKegiatan}
-                                setEditKegiatan={setEditKegiatan}
-                                programs={programs}
-                                subprograms={subprograms}
-                                rekenings={rekenings}
-                            />
-                        </div>
-                        <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
-                            <KegiatanList
-                                kegiatans={kegiatans}
-                                setEditKegiatan={setEditKegiatan}
-                            />
-                        </div>
-                    </div>
+                {/* Main content area */}
+                <div className="flex-grow p-6 bg-white shadow-lg rounded-md">
+                    {/* Heading Section */}
+                    <h1 className="text-3xl font-bold text-[#191923] mb-4">
+                        Daftar Sub Kegiatan
+                    </h1>
+
+                    {/* Form and List Section */}
+                    <KegiatanForm
+                        editKegiatan={editKegiatan}
+                        setEditKegiatan={setEditKegiatan}
+                        programs={programs}
+                        subprograms={subprograms}
+                        rekenings={rekenings}
+                    />
+                    <KegiatanList
+                        kegiatans={kegiatans}
+                        setEditKegiatan={setEditKegiatan}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>

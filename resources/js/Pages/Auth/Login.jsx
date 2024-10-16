@@ -29,15 +29,15 @@ export default function Login({ status, canResetPassword }) {
             <div className="flex flex-col md:flex-row w-full min-h-[80vh]">
                 {/* Left Section */}
                 <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-6 sm:p-10 relative">
-                    {/* Back Button */}
-                    {/* <Link
-                        href={route("welcome")}
-                        className="text-sm text-[#B8001F] hover:text-[#507687] font-semibold absolute top-4 left-4 transition-colors duration-200 ease-in-out hover:underline"
-                    >
-                        &larr; Back
-                    </Link> */}
                     <div className="max-w-md w-full space-y-8 mt-12">
-                        <div>
+                        <div className="text-center">
+                            {/* GIF Image */}
+                            <img
+                                src="/lawangSewu.gif" // Replace with your GIF URL
+                                alt="Loading animation"
+                                className="mx-auto mb-4" // Center and add some margin
+                                style={{ maxWidth: "70%", height: "auto" }} // Responsive styling
+                            />
                             <h2 className="text-center text-3xl font-bold text-[#384B70]">
                                 Selamat datang di Go-Lacak
                             </h2>
@@ -106,16 +106,6 @@ export default function Login({ status, canResetPassword }) {
                                     Masuk
                                 </PrimaryButton>
                             </div>
-                            {/* <div className="flex items-center justify-between">
-                                {canResetPassword && (
-                                    <Link
-                                        href={route("register")}
-                                        className="underline text-sm text-[#507687] hover:text-[#384B70]"
-                                    >
-                                        Belum punya akun?
-                                    </Link>
-                                )}
-                            </div> */}
                         </form>
                     </div>
                 </div>

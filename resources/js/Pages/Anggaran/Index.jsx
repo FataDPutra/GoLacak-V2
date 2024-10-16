@@ -16,33 +16,30 @@ const Index = ({
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <div className="flex flex-col lg:flex-row bg-gray-100 min-h-screen">
-                <Sidebar />
-                <div className="lg:ml-20 lg:mr-10 p-8 flex-grow bg-white shadow-lg rounded-md">
-                    <div className="mb-8">
-                        <h1 className="text-3xl font-bold text-[#191923] mb-4">
-                            Daftar Anggaran
-                        </h1>
-                    </div>
+            <div className="flex bg-[#fbfef9] min-h-screen">
+                {/* Sidebar dengan lebar tetap */}
+                <div className="w-64 bg-white shadow-lg">
+                    <Sidebar />
+                </div>
 
-                    <div className="space-y-6">
-                        <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
-                            <AnggaranForm
-                                editAnggaran={editAnggaran}
-                                setEditAnggaran={setEditAnggaran}
-                                programs={programs}
-                                subprograms={subprograms}
-                                kegiatans={kegiatans}
-                                bidangs={bidangs}
-                            />
-                        </div>
-                        <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
-                            <AnggaranList
-                                anggarans={anggarans}
-                                setEditAnggaran={setEditAnggaran}
-                            />
-                        </div>
-                    </div>
+                {/* Konten Utama */}
+                <div className="flex-grow p-6 bg-white shadow-lg rounded-md">
+                    <h1 className="text-3xl font-bold text-[#191923] mb-4">
+                        Daftar Anggaran
+                    </h1>
+
+                    <AnggaranForm
+                        editAnggaran={editAnggaran}
+                        setEditAnggaran={setEditAnggaran}
+                        programs={programs}
+                        subprograms={subprograms}
+                        kegiatans={kegiatans}
+                        bidangs={bidangs}
+                    />
+                    <AnggaranList
+                        anggarans={anggarans}
+                        setEditAnggaran={setEditAnggaran}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>

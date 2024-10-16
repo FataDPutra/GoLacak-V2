@@ -4,35 +4,52 @@ import RealisasiList from "../../Components/Realisasi/RealisasiList";
 import Sidebar from "../../Components/Sidebar";
 import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
 
-const Index = ({ penyerapanList, anggaran, programs, auth }) => {
+/*************  ✨ Codeium Command ⭐  *************/
+/**
+ * Index page for Realisasi.
+ *
+ * This page displays a list of all penyerapan records and a form to add a new
+ * penyerapan record or edit an existing one.
+ *
+ * @param {object} props - Component props.
+ * @param {array} props.penyerapanList - List of penyerapan records.
+ * @param {array} props.anggaran - List of anggaran records.
+ * @param {array} props.programs - List of program records.
+ * @param {object} props.auth - User authentication information.
+ * @returns {ReactElement} - The rendered component.
+ */
+/******  16669c43-e0ad-4c30-8df1-b18a7ceea223  *******/ const Index = ({
+    penyerapanList,
+    anggaran,
+    programs,
+    auth,
+}) => {
     const [editPenyerapan, setEditPenyerapan] = useState(null);
 
     console.log("Data di Index:", penyerapanList);
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <div className="flex flex-col lg:flex-row bg-gray-100 min-h-screen">
-                <Sidebar />
-                <div className="lg:ml-20 lg:mr-10 p-8 flex-grow bg-white shadow-lg rounded-md">
+            <div className="flex bg-[#fbfef9] min-h-screen">
+                {/* Sidebar dengan lebar tetap */}
+                <div className="w-64 bg-white shadow-lg">
+                    <Sidebar />
+                </div>
+
+                <div className="flex-grow p-6 bg-white shadow-lg rounded-md">
                     <h1 className="text-3xl font-bold text-[#191923] mb-6">
                         Daftar Realisasi
                     </h1>
-                    <div className="space-y-6">
-                        <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
-                            <RealisasiForm
-                                editPenyerapan={editPenyerapan}
-                                setEditPenyerapan={setEditPenyerapan}
-                                programs={programs}
-                                anggarans={anggaran}
-                            />
-                        </div>
-                        <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
-                            <RealisasiList
-                                penyerapanList={penyerapanList}
-                                setEditPenyerapan={setEditPenyerapan}
-                            />
-                        </div>
-                    </div>
+                    <RealisasiForm
+                        editPenyerapan={editPenyerapan}
+                        setEditPenyerapan={setEditPenyerapan}
+                        programs={programs}
+                        anggarans={anggaran}
+                    />
+                    <RealisasiList
+                        penyerapanList={penyerapanList}
+                        setEditPenyerapan={setEditPenyerapan}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>

@@ -9,9 +9,14 @@ const Index = ({ programs, auth }) => {
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <div className="flex flex-col lg:flex-row bg-[#fbfef9] min-h-screen">
-                <Sidebar />
-                <div className="lg:ml-20 lg:mr-10 p-6 flex-grow bg-white shadow-lg rounded-md">
+            <div className="flex bg-[#fbfef9] min-h-screen">
+                {/* Sidebar dengan lebar tetap */}
+                <div className="w-64 bg-white shadow-lg">
+                    <Sidebar />
+                </div>
+
+                {/* Konten Utama */}
+                <div className="flex-grow p-6 bg-white shadow-lg rounded-md">
                     <h1 className="text-3xl font-bold text-[#191923] mb-6">
                         Daftar Program
                     </h1>

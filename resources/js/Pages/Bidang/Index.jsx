@@ -9,31 +9,29 @@ const Index = ({ bidangs, auth }) => {
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <div className="flex flex-col lg:flex-row bg-gray-100 min-h-screen">
-                <Sidebar />
-                <div className="lg:ml-20 lg:mr-10 p-8 flex-grow bg-white shadow-lg rounded-md">
-                    {/* Heading Section */}
-                    <div className="mb-8">
-                        <h1 className="text-3xl font-bold text-[#191923] mb-4">
-                            Daftar Bidang
-                        </h1>
-                    </div>
+            <div className="flex bg-[#fbfef9] min-h-screen">
+                {/* Sidebar dengan lebar tetap */}
+                <div className="w-64 bg-white shadow-lg">
+                    <Sidebar />
+                </div>
 
-                    {/* Form and List Section */}
-                    <div className="grid grid-cols-1 gap-8">
-                        <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
-                            <BidangForm
-                                editBidang={editBidang}
-                                setEditBidang={setEditBidang}
-                            />
-                        </div>
-                        <div className="bg-[#fbfef9] p-6 rounded-lg shadow-md">
-                            <BidangList
-                                bidangs={bidangs}
-                                setEditBidang={setEditBidang}
-                            />
-                        </div>
-                    </div>
+                {/* Konten Utama */}
+                <div className="flex-grow p-6 bg-white shadow-lg rounded-md">
+                    <h1 className="text-3xl font-bold text-[#191923] mb-6">
+                        Daftar Bidang
+                    </h1>
+
+                    {/* Formulir Bidang */}
+                    <BidangForm
+                        editBidang={editBidang}
+                        setEditBidang={setEditBidang}
+                    />
+
+                    {/* Daftar Bidang */}
+                    <BidangList
+                        bidangs={bidangs}
+                        setEditBidang={setEditBidang}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>

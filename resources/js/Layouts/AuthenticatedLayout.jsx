@@ -11,7 +11,6 @@ export default function Authenticated({ user, header, children }) {
 
     const userName = user?.name || "Guest";
     const userEmail = user?.email || "";
-    const userRole = user?.role || "guest"; // assuming role is part of the user object
 
     return (
         <div className="min-h-screen bg-[#fbfef9]">
@@ -70,17 +69,6 @@ export default function Authenticated({ user, header, children }) {
                                         >
                                             Profile
                                         </Dropdown.Link>
-
-                                        {/* Conditional Register Link for Admin */}
-                                        {/* {userRole === "admin" && (
-                                            <Dropdown.Link
-                                                href={route("/")}
-                                                className="hover:bg-gray-100 transition-all"
-                                            >
-                                                Add New User
-                                            </Dropdown.Link>
-                                        )} */}
-
                                         <Dropdown.Link
                                             href={route("logout")}
                                             method="post"
