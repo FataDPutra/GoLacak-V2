@@ -89,7 +89,7 @@ const Sidebar = () => {
                                     : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
                             } transition-all rounded-md shadow-sm`}
                         >
-                            <FaChartPie className="mr-2" /> Penyerapan
+                            <FaChartPie className="mr-2" /> Realisasi
                         </Link>
                     </li>
                 </ul>
