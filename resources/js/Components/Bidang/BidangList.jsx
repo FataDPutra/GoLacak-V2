@@ -1,20 +1,37 @@
 import React, { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
-import { FaEdit, FaTrashAlt, FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import icons
+import { FaEdit, FaTrashAlt, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import Swal from "sweetalert2"; // Pastikan Anda telah menginstal SweetAlert2
 
 const BidangList = ({ bidangs, setEditBidang }) => {
-    const itemsPerPage = 10; // Number of items to display per page
-    const [currentPage, setCurrentPage] = useState(0); // Current page index
+    const itemsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(0);
 
-    // Calculate the start and end indices for slicing the bidangs array
     const startIndex = currentPage * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const paginatedBidangs = bidangs.slice(startIndex, endIndex); // Sliced array
+    const paginatedBidangs = bidangs.slice(startIndex, endIndex);
 
     const handleDelete = (id) => {
-        if (confirm("Apakah Anda yakin ingin menghapus bidang ini?")) {
-            Inertia.delete(`/bidang/${id}`);
-        }
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Inertia.delete(`/bidang/${id}`).then(() => {
+                    Swal.fire(
+                        "Terhapus!",
+                        "Bidang berhasil dihapus.",
+                        "success"
+                    );
+                });
+            }
+        });
     };
 
     const handlePreviousPage = () => {
@@ -72,12 +89,11 @@ const BidangList = ({ bidangs, setEditBidang }) => {
                 </tbody>
             </table>
             <div className="flex justify-between mt-4">
-                {/* Hanya tampilkan tombol Previous jika bukan di halaman pertama */}
                 {currentPage > 0 && (
                     <button
                         onClick={handlePreviousPage}
                         className={`flex items-center justify-center px-3 py-1.5 bg-[#0e79b2] text-white 
-                        rounded-md text-sm transition-colors duration-300 hover:bg-[#095d7a]`}
+                      rounded-md text-sm transition-colors duration-300 hover:bg-[#095d7a]`}
                     >
                         <FaArrowLeft className="mr-1" />
                         Previous
@@ -87,7 +103,7 @@ const BidangList = ({ bidangs, setEditBidang }) => {
                 <button
                     onClick={handleNextPage}
                     className={`flex items-center justify-center px-3 py-1.5 bg-[#0e79b2] text-white 
-                    rounded-md text-sm transition-colors duration-300 hover:bg-[#095d7a]`}
+                      rounded-md text-sm transition-colors duration-300 hover:bg-[#095d7a]`}
                     disabled={
                         (currentPage + 1) * itemsPerPage >= bidangs.length
                     }

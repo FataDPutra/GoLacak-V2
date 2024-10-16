@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { FaEdit, FaTrashAlt, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import moment from "moment";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
     const itemsPerPage = 12; // Set jumlah data per halaman
     const [currentPage, setCurrentPage] = useState(0);
 
     const handleEdit = (penyerapan) => {
-        // Debugging: Cek struktur data penyerapan
         console.log("Penyerapan di handleEdit:", penyerapan);
 
         if (!penyerapan.anggaran || !penyerapan.anggaran.kegiatan) {
@@ -29,13 +29,29 @@ const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
     };
 
     const handleDelete = (id) => {
-        if (confirm("Apakah Anda yakin ingin menghapus realisasi ini?")) {
-            Inertia.delete(`/realisasi/${id}`, {
-                onSuccess: () => alert("Realisasi berhasil dihapus!"),
-                onError: (error) =>
-                    alert("Terjadi kesalahan: " + error.message),
-            });
-        }
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Inertia.delete(`/realisasi/${id}`, {
+                    onSuccess: () =>
+                        Swal.fire(
+                            "Terhapus!",
+                            "Realisasi berhasil dihapus.",
+                            "success"
+                        ),
+                    onError: (error) =>
+                        Swal.fire("Terjadi kesalahan!", error.message, "error"),
+                });
+            }
+        });
     };
 
     const handlePreviousPage = () => {

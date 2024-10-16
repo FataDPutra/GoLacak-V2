@@ -2,19 +2,42 @@ import React, { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { FaEdit, FaTrashAlt, FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import icons
 import moment from "moment"; // Make sure moment is installed
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
     const itemsPerPage = 12; // Set jumlah data per halaman
     const [currentPage, setCurrentPage] = useState(0);
 
     const handleDelete = (id) => {
-        if (confirm("Apakah Anda yakin ingin menghapus kegiatan ini?")) {
-            Inertia.delete(`/subkegiatan/${id}`, {
-                onSuccess: () => alert("Kegiatan berhasil dihapus!"),
-                onError: (error) =>
-                    alert("Terjadi kesalahan: " + error.message),
-            });
-        }
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Inertia.delete(`/subkegiatan/${id}`, {
+                    onSuccess: () => {
+                        Swal.fire(
+                            "Terhapus!",
+                            "Kegiatan berhasil dihapus.",
+                            "success"
+                        );
+                    },
+                    onError: (error) => {
+                        Swal.fire(
+                            "Error!",
+                            "Terjadi kesalahan: " + error.message,
+                            "error"
+                        );
+                    },
+                });
+            }
+        });
     };
 
     const handlePreviousPage = () => {

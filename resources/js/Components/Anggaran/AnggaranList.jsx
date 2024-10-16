@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
-import { FaEdit, FaTrashAlt, FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import icons
-import moment from "moment"; // Import moment for date formatting
+import { FaEdit, FaTrashAlt, FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import moment from "moment";
+import Swal from "sweetalert2";
 
 // Fungsi format Rupiah tanpa desimal khusus untuk tampilan tabel
 const formatRupiahTanpaDesimal = (value) => {
@@ -18,13 +19,35 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
     const [currentPage, setCurrentPage] = useState(0);
 
     const handleDelete = (id) => {
-        if (confirm("Apakah Anda yakin ingin menghapus anggaran ini?")) {
-            Inertia.delete(`/anggaran/${id}`, {
-                onSuccess: () => alert("Anggaran berhasil dihapus!"),
-                onError: (error) =>
-                    alert("Terjadi kesalahan: " + error.message),
-            });
-        }
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Inertia.delete(`/anggaran/${id}`, {
+                    onSuccess: () => {
+                        Swal.fire(
+                            "Terhapus!",
+                            "Anggaran berhasil dihapus.",
+                            "success"
+                        );
+                    },
+                    onError: (error) => {
+                        Swal.fire(
+                            "Gagal!",
+                            "Terjadi kesalahan: " + error.message,
+                            "error"
+                        );
+                    },
+                });
+            }
+        });
     };
 
     const handlePreviousPage = () => {

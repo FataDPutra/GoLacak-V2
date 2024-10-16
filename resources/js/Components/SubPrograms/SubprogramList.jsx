@@ -1,16 +1,44 @@
 import React, { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { FaEdit, FaTrash, FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import moment from "moment"; // Make sure moment is installed
+import moment from "moment";
+import Swal from "sweetalert2";
 
 const SubprogramList = ({ subprograms, setEditSubprogram }) => {
     const itemsPerPage = 12; // Set jumlah data per halaman
     const [currentPage, setCurrentPage] = useState(0);
 
     const handleDelete = (id) => {
-        if (confirm("Apakah Anda yakin ingin menghapus subprogram ini?")) {
-            Inertia.delete(`/kegiatan/${id}`);
-        }
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Inertia.delete(`/kegiatan/${id}`, {
+                    // Pastikan rute ini benar
+                    onSuccess: () => {
+                        Swal.fire(
+                            "Terhapus!",
+                            "Subprogram berhasil dihapus.",
+                            "success"
+                        );
+                    },
+                    onError: (error) => {
+                        Swal.fire(
+                            "Gagal!",
+                            "Terjadi kesalahan: " + error.message,
+                            "error"
+                        );
+                    },
+                });
+            }
+        });
     };
 
     const handlePreviousPage = () => {

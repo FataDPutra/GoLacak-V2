@@ -1,19 +1,42 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrashAlt, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Inertia } from "@inertiajs/inertia";
+import Swal from "sweetalert2";
 
 const UserList = ({ users, setEditUser }) => {
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 10;
 
     const handleDelete = (id) => {
-        if (confirm("Apakah Anda yakin ingin menghapus user ini?")) {
-            Inertia.delete(`/users/${id}`, {
-                onSuccess: () => alert("User berhasil dihapus!"),
-                onError: (error) =>
-                    alert("Terjadi kesalahan: " + error.message),
-            });
-        }
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Anda tidak akan dapat mengembalikan ini!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Inertia.delete(`/users/${id}`, {
+                    onSuccess: () => {
+                        Swal.fire(
+                            "Terhapus!",
+                            "User berhasil dihapus.",
+                            "success"
+                        );
+                    },
+                    onError: (error) => {
+                        Swal.fire(
+                            "Gagal!",
+                            "Terjadi kesalahan: " + error.message,
+                            "error"
+                        );
+                    },
+                });
+            }
+        });
     };
 
     const handlePreviousPage = () => {
@@ -34,8 +57,6 @@ const UserList = ({ users, setEditUser }) => {
 
     return (
         <div>
-            {" "}
-            {/* Container for table and pagination */}
             <table className="min-w-full bg-[#fbfef9] shadow-lg rounded-lg border-collapse border border-gray-300 text-sm">
                 <thead className="bg-[#0e79b2] text-white">
                     <tr>
@@ -92,9 +113,7 @@ const UserList = ({ users, setEditUser }) => {
                     ))}
                 </tbody>
             </table>
-            {/* Pagination Controls */}
             <div className="flex justify-between mt-4">
-                {/* Hanya tampilkan tombol Previous jika bukan di halaman pertama */}
                 {currentPage > 0 && (
                     <button
                         onClick={handlePreviousPage}
@@ -105,7 +124,6 @@ const UserList = ({ users, setEditUser }) => {
                         Previous
                     </button>
                 )}
-
                 <button
                     onClick={handleNextPage}
                     className={`flex items-center justify-center px-3 py-1.5 bg-[#0e79b2] text-white 
