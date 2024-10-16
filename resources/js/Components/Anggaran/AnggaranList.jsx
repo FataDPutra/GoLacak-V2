@@ -29,6 +29,9 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
             <thead className="bg-[#0e79b2] text-white">
                 <tr>
                     <th className="py-2 px-3 text-left border-r border-white">
+                        Bidang
+                    </th>
+                    <th className="py-2 px-3 text-left border-r border-white">
                         No Rekening
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
@@ -50,9 +53,6 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
                         Perubahan
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
-                        Bidang
-                    </th>
-                    <th className="py-2 px-3 text-left border-r border-white">
                         Bulan
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
@@ -66,6 +66,9 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
                         key={anggaran.id}
                         className="hover:bg-gray-100 transition-all border-b border-gray-300"
                     >
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {anggaran.bidang?.nama_bidang || "N/A"}
+                        </td>
                         <td className="py-2 px-3 border-r border-gray-300">
                             {anggaran.kegiatan?.rekening?.no_rekening || "N/A"}
                         </td>
@@ -86,9 +89,6 @@ const AnggaranList = ({ anggarans, setEditAnggaran }) => {
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
                             {formatRupiahTanpaDesimal(anggaran.perubahan)}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {anggaran.bidang?.nama_bidang || "N/A"}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
                             {moment(anggaran.updated_at).format("MMMM YYYY") ||

@@ -149,6 +149,18 @@ export default function KegiatanForm({
 
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
+                    Indikator Kinerja
+                </label>
+                <input
+                    type="text"
+                    value={indikatorKinerja}
+                    onChange={(e) => setIndikatorKinerja(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
+                />
+            </div>
+
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
                     Target
                 </label>
                 <input
@@ -167,18 +179,6 @@ export default function KegiatanForm({
                     type="text"
                     value={satuan}
                     onChange={(e) => setSatuan(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
-                />
-            </div>
-
-            <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">
-                    Indikator Kinerja
-                </label>
-                <input
-                    type="text"
-                    value={indikatorKinerja}
-                    onChange={(e) => setIndikatorKinerja(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-md focus:border-[#0e79b2] focus:ring-[#0e79b2] transition-all"
                 />
             </div>

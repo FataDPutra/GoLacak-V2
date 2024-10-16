@@ -22,14 +22,15 @@ const ProgramList = ({ programs, setEditProgram }) => {
                             Nama Program
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
+                            Indikator Kinerja
+                        </th>
+                        <th className="py-2 px-4 border-r border-white text-left">
                             Target
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
                             Satuan
                         </th>
-                        <th className="py-2 px-4 border-r border-white text-left">
-                            Indikator Kinerja
-                        </th>
+
                         <th className="py-2 px-4 border-r border-white text-left">
                             Diperbarui
                         </th>
@@ -49,13 +50,13 @@ const ProgramList = ({ programs, setEditProgram }) => {
                                 {program.nama_program}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
+                                {program.indikator_kinerja}
+                            </td>
+                            <td className="py-2 px-4 border-r border-gray-300">
                                 {program.target}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
                                 {program.satuan}
-                            </td>
-                            <td className="py-2 px-4 border-r border-gray-300">
-                                {program.indikator_kinerja}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
                                 {moment(program.updated_at).format("MMMM YYYY")}{" "}

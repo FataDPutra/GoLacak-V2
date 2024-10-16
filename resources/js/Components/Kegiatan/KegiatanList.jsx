@@ -23,22 +23,22 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
                             No Rekening
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
-                            Nama Sub Kegiatan
+                            Program
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
                             Kegiatan
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
-                            Program
+                            Nama Sub Kegiatan
+                        </th>
+                        <th className="py-2 px-4 border-r border-white text-left">
+                            Indikator Kinerja
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
                             Target
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
                             Satuan
-                        </th>
-                        <th className="py-2 px-4 border-r border-white text-left">
-                            Indikator Kinerja
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
                             Bulan
@@ -56,22 +56,22 @@ const KegiatanList = ({ kegiatans, setEditKegiatan }) => {
                                 {kegiatan.rekening?.no_rekening}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
-                                {kegiatan.nama_kegiatan}
+                                {kegiatan.program?.nama_program}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
                                 {kegiatan.subprogram?.nama_subprogram}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
-                                {kegiatan.program?.nama_program}
+                                {kegiatan.nama_kegiatan}
+                            </td>
+                            <td className="py-2 px-4 border-r border-gray-300">
+                                {kegiatan.indikator_kinerja}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
                                 {kegiatan.target}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
                                 {kegiatan.satuan}
-                            </td>
-                            <td className="py-2 px-4 border-r border-gray-300">
-                                {kegiatan.indikator_kinerja}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
                                 {moment(kegiatan.updated_at).format(

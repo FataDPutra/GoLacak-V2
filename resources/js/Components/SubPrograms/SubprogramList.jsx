@@ -22,16 +22,16 @@ const SubprogramList = ({ subprograms, setEditSubprogram }) => {
                             Program
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
-                            Subprogram
+                            Kegiatan
+                        </th>
+                        <th className="py-2 px-4 border-r border-white text-left">
+                            Indikator Kinerja
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
                             Target
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
                             Satuan
-                        </th>
-                        <th className="py-2 px-4 border-r border-white text-left">
-                            Indikator Kinerja
                         </th>
                         <th className="py-2 px-4 border-r border-white text-left">
                             Bulan
@@ -55,13 +55,13 @@ const SubprogramList = ({ subprograms, setEditSubprogram }) => {
                                 {subprogram.nama_subprogram}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
+                                {subprogram.indikator_kinerja}
+                            </td>
+                            <td className="py-2 px-4 border-r border-gray-300">
                                 {subprogram.target}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
                                 {subprogram.satuan}
-                            </td>
-                            <td className="py-2 px-4 border-r border-gray-300">
-                                {subprogram.indikator_kinerja}
                             </td>
                             <td className="py-2 px-4 border-r border-gray-300">
                                 {moment(subprogram.updated_at).format(

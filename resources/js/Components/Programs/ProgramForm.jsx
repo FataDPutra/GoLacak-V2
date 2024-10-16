@@ -86,6 +86,19 @@ export default function ProgramForm({ editProgram, setEditProgram }) {
                 />
             </div>
 
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Indikator Kinerja
+                </label>
+                <input
+                    type="text"
+                    value={indikatorKinerja}
+                    onChange={(e) => setIndikatorKinerja(e.target.value)}
+                    required
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                />
+            </div>
+
             {/* New Fields: Target, Satuan, Indikator Kinerja */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
@@ -111,19 +124,6 @@ export default function ProgramForm({ editProgram, setEditProgram }) {
                     className="w-full p-2 border border-gray-300 rounded-md"
                 />
             </div>
-            <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">
-                    Indikator Kinerja
-                </label>
-                <input
-                    type="text"
-                    value={indikatorKinerja}
-                    onChange={(e) => setIndikatorKinerja(e.target.value)}
-                    required
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                />
-            </div>
-
             {/* Submit Button with Icons */}
             <div className="flex gap-4">
                 <button
