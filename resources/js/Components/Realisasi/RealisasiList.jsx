@@ -1,7 +1,7 @@
 import React from "react";
 import { Inertia } from "@inertiajs/inertia";
-import { FaEdit, FaTrashAlt } from "react-icons/fa"; // Import icons
-import moment from "moment"; // Import moment.js
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import moment from "moment";
 
 const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
     const handleEdit = (penyerapan) => {
@@ -11,6 +11,7 @@ const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
             subprogram_id: penyerapan.kegiatan.subprogram_id,
         });
     };
+    console.log(penyerapanList); // Cek apakah data diterima dengan benar
 
     const handleDelete = (id) => {
         if (confirm("Apakah Anda yakin ingin menghapus realisasi ini?")) {
@@ -65,18 +66,20 @@ const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
                         className="hover:bg-gray-100 transition-all border-b border-gray-300"
                     >
                         <td className="py-2 px-3 border-r border-gray-300">
-                            {penyerapan.no_rekening || "N/A"}
+                            {penyerapan.anggaran.kegiatan.rekening
+                                ?.no_rekening || "N/A"}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
-                            {penyerapan.kegiatan?.program?.nama_program ||
+                            {penyerapan.anggaran.kegiatan.program
+                                ?.nama_program || "N/A"}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {penyerapan.anggaran.kegiatan.subprogram
+                                ?.nama_subprogram || "N/A"}
+                        </td>
+                        <td className="py-2 px-3 border-r border-gray-300">
+                            {penyerapan.anggaran.kegiatan?.nama_kegiatan ||
                                 "N/A"}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {penyerapan.kegiatan?.subprogram?.nama_subprogram ||
-                                "N/A"}
-                        </td>
-                        <td className="py-2 px-3 border-r border-gray-300">
-                            {penyerapan.kegiatan?.nama_kegiatan || "N/A"}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
                             Rp{" "}
@@ -92,14 +95,16 @@ const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
                             %
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
-                            {penyerapan.realisasi_capaian || "N/A"}
+                            {penyerapan.realisasi_kinerja || "N/A"}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
                             {penyerapan.capaian_fisik || "N/A"}
                         </td>
                         <td className="py-2 px-3 border-r border-gray-300">
-                            {penyerapan.bulan
-                                ? moment(penyerapan.bulan).format("MMMM YYYY")
+                            {penyerapan.updated_at
+                                ? moment(penyerapan.updated_at).format(
+                                      "MMMM YYYY"
+                                  )
                                 : "N/A"}
                         </td>
                         <td className="py-2 px-3 flex gap-2">

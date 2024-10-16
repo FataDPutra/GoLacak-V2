@@ -8,51 +8,38 @@ use App\Models\Anggaran;
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
 class PenyerapanController extends Controller
 {
     // Display a listing of the penyerapan
-    public function index()
-    {
-        if (auth()->user()->role === 'admin') {
-            // Jika admin, arahkan ke Penyerapan/Index
-            $penyerapan = Penyerapan::with(['anggaran', 'kegiatan'])->get();
-            $programs = Program::with([
-                'subprograms.kegiatans.rekening',
-                'subprograms.rekening',
-            ])->get();
-            $anggaran = Anggaran::with(['kegiatan.rekening'])->get();
+public function index()
+{
+    if (auth()->user()->role === 'admin' || auth()->user()->role === 'user') {
+        $penyerapan = Penyerapan::with([
+            'anggaran.kegiatan.program',
+            'anggaran.kegiatan.subprogram',
+            'anggaran.kegiatan.rekening'
+        ])->get();
 
-            return Inertia::render('Realisasi/Index', [
-                'penyerapanList' => $penyerapan,
-                'anggaran' => $anggaran,
-                'programs' => $programs,
-                'auth' => [
-                    'user' => auth()->user(),
-                ],
-            ]);
-        } elseif (auth()->user()->role === 'user') {
-            // Jika user, arahkan ke Users/Penyerapan/Index
-            $penyerapan = Penyerapan::with(['anggaran', 'kegiatan'])->get();
-            $programs = Program::with([
-                'subprograms.kegiatans.rekening',
-                'subprograms.rekening',
-            ])->get();
-            $anggaran = Anggaran::with(['kegiatan.rekening'])->get();
+        $programs = Program::with([
+            'subprograms.kegiatans.rekening',
+            'subprograms.rekening',
+        ])->get();
 
-            return Inertia::render('Users/Realisasi/Index', [
-                'penyerapanList' => $penyerapan,
-                'anggaran' => $anggaran,
-                'programs' => $programs,
-                'auth' => [
-                    'user' => auth()->user(),
-                ],
-            ]);
-        }
+        $anggaran = Anggaran::with(['kegiatan.rekening'])->get();
 
-        // Jika peran tidak dikenali, arahkan ke dashboard atau halaman default
-        return redirect('/dashboard');
+        return Inertia::render(auth()->user()->role === 'admin' ? 'Realisasi/Index' : 'Users/Realisasi/Index', [
+            'penyerapanList' => $penyerapan,
+            'anggaran' => $anggaran,
+            'programs' => $programs,
+            'auth' => [
+                'user' => auth()->user(),
+            ],
+        ]);
     }
+
+    // Jika peran tidak dikenali, arahkan ke dashboard atau halaman default
+    return redirect('/dashboard');
+}
 
     // Store a newly created penyerapan in storage
     public function store(Request $request)
