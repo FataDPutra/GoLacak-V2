@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "@inertiajs/inertia-react";
-import {
-    FaTasks,
-    FaListAlt,
-    FaMoneyCheckAlt,
-    FaClipboardList,
-    FaFolder,
-    FaChartPie,
-} from "react-icons/fa";
+import { FaFolder, FaChartPie } from "react-icons/fa";
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -59,14 +52,14 @@ const Sidebar = () => {
                         <FaFolder className="mr-2" /> Bidang
                     </Link>
                     <Link
-                        href="/penyerapan"
+                        href="/realisasi"
                         className={`flex items-center py-3 px-4 ${
-                            isActive("/penyerapan")
+                            isActive("/realisasi")
                                 ? "bg-[#0e79b2] shadow-md"
                                 : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
                         } rounded-md transition-all`}
                     >
-                        <FaChartPie className="mr-2" /> Penyerapan
+                        <FaChartPie className="mr-2" /> Realisasi
                     </Link>
                 </div>
             </div>
@@ -89,9 +82,9 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <Link
-                            href="/penyerapan"
+                            href="/realisasi"
                             className={`flex items-center py-3 px-4 ${
-                                isActive("/penyerapan")
+                                isActive("/realisasi")
                                     ? "bg-[#0e79b2] shadow-md"
                                     : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
                             } transition-all rounded-md shadow-sm`}

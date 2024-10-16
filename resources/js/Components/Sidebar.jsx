@@ -99,9 +99,9 @@ const Sidebar = () => {
                         <FaMoneyCheckAlt className="mr-2" /> Anggaran
                     </Link>
                     <Link
-                        href="/penyerapan"
+                        href="/realisasi"
                         className={`flex items-center py-3 px-4 ${
-                            isActive("/penyerapan")
+                            isActive("/realisasi")
                                 ? "bg-[#0e79b2] shadow-md"
                                 : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
                         } rounded-md transition-all`}

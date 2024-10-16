@@ -52,7 +52,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::resource('subkegiatan', KegiatanController::class);
     Route::resource('kegiatan', SubprogramController::class);
     Route::resource('anggaran', AnggaranController::class);
-    Route::resource('penyerapan', PenyerapanController::class);
+    Route::resource('realisasi', PenyerapanController::class);
 
 
 });
