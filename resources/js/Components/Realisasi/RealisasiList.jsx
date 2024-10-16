@@ -5,13 +5,18 @@ import moment from "moment";
 
 const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
     const handleEdit = (penyerapan) => {
+        if (!penyerapan.kegiatan) {
+            console.error("Data kegiatan tidak ditemukan!");
+            alert("Data kegiatan tidak ditemukan untuk penyerapan ini.");
+            return;
+        }
+
         setEditPenyerapan({
             ...penyerapan,
             program_id: penyerapan.kegiatan.program_id,
             subprogram_id: penyerapan.kegiatan.subprogram_id,
         });
     };
-    console.log(penyerapanList); // Cek apakah data diterima dengan benar
 
     const handleDelete = (id) => {
         if (confirm("Apakah Anda yakin ingin menghapus realisasi ini?")) {

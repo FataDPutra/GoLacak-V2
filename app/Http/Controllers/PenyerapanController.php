@@ -73,6 +73,7 @@ public function index()
             'penyerapan_anggaran' => $request->penyerapan_anggaran,
             'persentase_penyerapan' => $persentase_penyerapan,
             'realisasi_kinerja' => $request->realisasi_kinerja, // Store realisascapaian_fisik'capaian_fisik, // Store
+            'capaian_fisik' => $request->capaian_fisik, // Store realisascapaian_fisik'capaian_fisik, // Store
         ]);
 
         return redirect()->route('realisasi.index')->with('success', 'Penyerapan berhasil disimpan!');
@@ -107,6 +108,7 @@ public function index()
             'penyerapan_anggaran' => $request->penyerapan_anggaran,
             'persentase_penyerapan' => $persentase_penyerapan,
             'realisasi_kinerja' => $request->realisasi_kinerja, // Update realisascapaian_fisik'capaian_fisik, // Update
+            'capaian_fisik' => $request->capaian_fisik, // Update realisascapaian_fisik'capaian_fisik, // Update
         ]);
 
         return redirect()->route('realisasi.index')->with('success', 'Penyerapan berhasil diupdate!');

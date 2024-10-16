@@ -2,14 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import { FaSave, FaTimes } from "react-icons/fa";
 
-const formatRupiah = (value) => {
-    return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        minimumFractionDigits: 0,
-    }).format(value);
-};
-
 // Function to calculate absorption percentage
 const calculatePersentase = (anggaran, penyerapan) => {
     const totalAnggaran =
@@ -44,9 +36,9 @@ const RealisasiForm = ({
     const [filteredSubprograms, setFilteredSubprograms] = useState([]);
     const [filteredKegiatans, setFilteredKegiatans] = useState([]);
 
-    // New state variables for realisasi_capaian and capaian_fisik
-    const [realisasiCapaian, setRealisasiCapaian] = useState("");
+    // New state variables for Capaian fisik and realisasi fisik
     const [capaianFisik, setCapaianFisik] = useState("");
+    const [realisasiKinerja, setRealisasiKinerja] = useState("");
 
     useEffect(() => {
         if (editPenyerapan) {
@@ -54,8 +46,8 @@ const RealisasiForm = ({
             setSelectedSubprogram(editPenyerapan.subprogram_id);
             setSelectedKegiatan(editPenyerapan.kegiatan_id);
             setPenyerapanAnggaran(editPenyerapan.penyerapan_anggaran);
-            setRealisasiCapaian(editPenyerapan.realisasi_capaian || "");
             setCapaianFisik(editPenyerapan.capaian_fisik || "");
+            setRealisasiKinerja(editPenyerapan.realisasi_kinerja || "");
 
             const anggaran = anggarans.find(
                 (item) => item.id === editPenyerapan.anggaran_id
@@ -162,8 +154,8 @@ const RealisasiForm = ({
             kegiatan_id: selectedKegiatan,
             penyerapan_anggaran: penyerapanAnggaran,
             persentase_penyerapan: persentasePenyerapan,
-            realisasi_capaian: realisasiCapaian || 0, // Ensure realisasi_capaian is not empty
             capaian_fisik: capaianFisik || 0, // Ensure capaian_fisik is not empty
+            realisasi_kinerja: realisasiKinerja || 0, // Ensure realisasi_fisik is not empty
         };
         if (editPenyerapan) {
             Inertia.put(`/realisasi/${editPenyerapan.id}`, data);
@@ -181,8 +173,8 @@ const RealisasiForm = ({
         setSelectedRekening("");
         setPenyerapanAnggaran(0);
         setPersentasePenyerapan(0);
-        setRealisasiCapaian(""); // Reset realisasi_capaian to empty
-        setCapaianFisik(""); // Reset capaian_fisik to empty
+        setCapaianFisik(""); // Reset Capaian fisik to empty
+        setRealisasiKinerja(""); // Reset realisasi fisik to empty
         setAnggaranDetail({
             anggaran_murni: 0,
             pergeseran: 0,
@@ -255,6 +247,19 @@ const RealisasiForm = ({
                 </select>
             </div>
 
+            {/* Rekening Input */}
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    No Rekening
+                </label>
+                <input
+                    type="text"
+                    value={selectedRekening}
+                    readOnly
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                />
+            </div>
+
             {/* Penyerapan Anggaran Input */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
@@ -266,32 +271,7 @@ const RealisasiForm = ({
                     onChange={handlePenyerapanChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
-                />
-            </div>
-
-            {/* Persentase Penyerapan Display */}
-            <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">
-                    Persentase Penyerapan
-                </label>
-                <input
-                    type="text"
-                    value={persentasePenyerapan.toFixed(2) + "%"}
-                    readOnly
-                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
-                />
-            </div>
-
-            {/* Realisasi Capaian Input */}
-            <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">
-                    Realisasi Capaian
-                </label>
-                <input
-                    type="text"
-                    value={realisasiCapaian}
-                    onChange={(e) => setRealisasiCapaian(e.target.value)}
+                    required
                     className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 />
             </div>
@@ -309,53 +289,47 @@ const RealisasiForm = ({
                 />
             </div>
 
-            {/* Anggaran Detail Display */}
+            {/* Realisasi Fisik Input */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
-                    Anggaran
+                    Realisasi Kinerja
                 </label>
                 <input
                     type="text"
-                    value={formatRupiah(
-                        anggaranDetail.perubahan > 0
-                            ? anggaranDetail.perubahan +
-                                  anggaranDetail.pergeseran
-                            : anggaranDetail.anggaran_murni
-                    )}
-                    readOnly
-                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+                    value={realisasiKinerja}
+                    onChange={(e) => setRealisasiKinerja(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 />
             </div>
 
-            {/* Rekening Display */}
+            {/* Percentage Display */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
-                    No Rekening
+                    Persentase Penyerapan
                 </label>
                 <input
                     type="text"
-                    value={selectedRekening}
+                    value={`${persentasePenyerapan.toFixed(2)}%`}
                     readOnly
-                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-gray-100"
                 />
             </div>
 
-            {/* Form Action Buttons */}
-            <div className="flex justify-between items-center">
+            {/* Buttons */}
+            <div className="flex justify-end mt-4">
                 <button
                     type="submit"
-                    className="px-4 py-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#0c6a9c] transition-all flex items-center"
+                    className="flex items-center px-4 py-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#f39237] transition-all"
                 >
                     <FaSave className="mr-2" />
-                    Simpan
+                    Simpan Anggaran
                 </button>
                 <button
                     type="button"
-                    onClick={resetForm}
-                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-all flex items-center"
+                    onClick={() => setEditPenyerapan(null)}
+                    className="flex items-center px-4 py-2 ml-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition-all"
                 >
-                    <FaTimes className="mr-2" />
-                    Reset
+                    <FaTimes className="mr-2" /> Batal
                 </button>
             </div>
         </form>
