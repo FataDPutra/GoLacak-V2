@@ -89,4 +89,13 @@ class AnggaranController extends Controller
 
         return redirect()->back()->with('success', 'Anggaran berhasil diperbarui!');
     }
+
+    public function destroy($id)
+{
+    $anggaran = Anggaran::findOrFail($id);
+    $anggaran->delete();
+
+    return redirect()->back()->with('success', 'Anggaran berhasil dihapus!');
+}
+
 }
