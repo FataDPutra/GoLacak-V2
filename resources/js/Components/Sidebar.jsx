@@ -7,6 +7,7 @@ import {
     FaClipboardList,
     FaFolder,
     FaChartPie,
+    FaUsers,
 } from "react-icons/fa";
 
 const Sidebar = () => {
@@ -129,6 +130,18 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <Link
+                            href="/users"
+                            className={`flex items-center py-3 px-4 ${
+                                isActive("/users")
+                                    ? "bg-[#0e79b2] shadow-md"
+                                    : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
+                            } transition-all rounded-md shadow-sm`}
+                        >
+                            <FaUsers className="mr-2" /> Pengguna
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
                             href="/programs"
                             className={`flex items-center py-3 px-4 ${
                                 isActive("/programs")
@@ -185,18 +198,6 @@ const Sidebar = () => {
                             } transition-all rounded-md shadow-sm`}
                         >
                             <FaChartPie className="mr-2" /> Realisasi
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            href="/users"
-                            className={`flex items-center py-3 px-4 ${
-                                isActive("/users")
-                                    ? "bg-[#0e79b2] shadow-md"
-                                    : "bg-[#f39237] hover:bg-[#0e79b2] hover:shadow-md"
-                            } transition-all rounded-md shadow-sm`}
-                        >
-                            <FaChartPie className="mr-2" /> Pengguna
                         </Link>
                     </li>
                 </ul>

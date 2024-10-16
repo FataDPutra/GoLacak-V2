@@ -37,8 +37,8 @@ const RealisasiForm = ({
     const [filteredKegiatans, setFilteredKegiatans] = useState([]);
 
     // New state variables for Capaian fisik and realisasi fisik
-    const [capaianFisik, setCapaianFisik] = useState("");
     const [realisasiKinerja, setRealisasiKinerja] = useState("");
+    const [capaianFisik, setCapaianFisik] = useState("");
 
     useEffect(() => {
         if (editPenyerapan) {
@@ -67,6 +67,8 @@ const RealisasiForm = ({
             resetForm();
         }
     }, [editPenyerapan, anggarans]);
+
+    console.log("Data di RealisasiForm:", editPenyerapan);
 
     useEffect(() => {
         if (selectedProgram) {
@@ -154,8 +156,8 @@ const RealisasiForm = ({
             kegiatan_id: selectedKegiatan,
             penyerapan_anggaran: penyerapanAnggaran,
             persentase_penyerapan: persentasePenyerapan,
-            capaian_fisik: capaianFisik || 0, // Ensure capaian_fisik is not empty
             realisasi_kinerja: realisasiKinerja || 0, // Ensure realisasi_fisik is not empty
+            capaian_fisik: capaianFisik || 0, // Ensure capaian_fisik is not empty
         };
         if (editPenyerapan) {
             Inertia.put(`/realisasi/${editPenyerapan.id}`, data);
@@ -173,8 +175,8 @@ const RealisasiForm = ({
         setSelectedRekening("");
         setPenyerapanAnggaran(0);
         setPersentasePenyerapan(0);
-        setCapaianFisik(""); // Reset Capaian fisik to empty
         setRealisasiKinerja(""); // Reset realisasi fisik to empty
+        setCapaianFisik(""); // Reset Capaian fisik to empty
         setAnggaranDetail({
             anggaran_murni: 0,
             pergeseran: 0,
@@ -275,20 +277,6 @@ const RealisasiForm = ({
                     className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 />
             </div>
-
-            {/* Capaian Fisik Input */}
-            <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">
-                    Capaian Fisik
-                </label>
-                <input
-                    type="text"
-                    value={capaianFisik}
-                    onChange={(e) => setCapaianFisik(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
-                />
-            </div>
-
             {/* Realisasi Fisik Input */}
             <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2">
@@ -298,6 +286,19 @@ const RealisasiForm = ({
                     type="text"
                     value={realisasiKinerja}
                     onChange={(e) => setRealisasiKinerja(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
+                />
+            </div>
+
+            {/* Capaian Fisik Input */}
+            <div className="mb-4">
+                <label className="block text-gray-700 font-bold mb-2">
+                    Capaian Fisik (%)
+                </label>
+                <input
+                    type="text"
+                    value={capaianFisik}
+                    onChange={(e) => setCapaianFisik(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-md bg-white focus:border-[#0e79b2] focus:ring-[#0e79b2] focus:outline-none transition-all"
                 />
             </div>
@@ -322,7 +323,7 @@ const RealisasiForm = ({
                     className="flex items-center px-4 py-2 bg-[#0e79b2] text-white rounded-md hover:bg-[#f39237] transition-all"
                 >
                     <FaSave className="mr-2" />
-                    Simpan Anggaran
+                    Simpan Realisasi
                 </button>
                 <button
                     type="button"

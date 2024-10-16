@@ -5,16 +5,23 @@ import moment from "moment";
 
 const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
     const handleEdit = (penyerapan) => {
-        if (!penyerapan.kegiatan) {
-            console.error("Data kegiatan tidak ditemukan!");
-            alert("Data kegiatan tidak ditemukan untuk penyerapan ini.");
+        // Debugging: Cek struktur data penyerapan
+        console.log("Penyerapan di handleEdit:", penyerapan);
+
+        if (!penyerapan.anggaran || !penyerapan.anggaran.kegiatan) {
+            console.error("Data anggaran atau kegiatan tidak ditemukan!");
+            alert(
+                "Data anggaran atau kegiatan tidak ditemukan untuk penyerapan ini."
+            );
             return;
         }
 
         setEditPenyerapan({
             ...penyerapan,
-            program_id: penyerapan.kegiatan.program_id,
-            subprogram_id: penyerapan.kegiatan.subprogram_id,
+            program_id: penyerapan.anggaran.kegiatan.program_id, // Perbaikan
+            subprogram_id: penyerapan.anggaran.kegiatan.subprogram_id, // Perbaikan
+            kegiatan_id: penyerapan.anggaran.kegiatan.id,
+            anggaran_id: penyerapan.anggaran.id,
         });
     };
 
@@ -51,10 +58,10 @@ const RealisasiList = ({ penyerapanList, setEditPenyerapan }) => {
                         Persentase Penyerapan (%)
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
-                        Realisasi Capaian
+                        Realisasi Kinerja
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
-                        Capaian Fisik
+                        Capaian Fisik (%)
                     </th>
                     <th className="py-2 px-3 text-left border-r border-white">
                         Bulan

@@ -14,11 +14,12 @@ class PenyerapanController extends Controller
 public function index()
 {
     if (auth()->user()->role === 'admin' || auth()->user()->role === 'user') {
+        // Retrieve penyerapan and order by created_at descending
         $penyerapan = Penyerapan::with([
             'anggaran.kegiatan.program',
             'anggaran.kegiatan.subprogram',
             'anggaran.kegiatan.rekening'
-        ])->get();
+        ])->orderBy('updated_at', 'desc')->get(); // Order by created_at
 
         $programs = Program::with([
             'subprograms.kegiatans.rekening',
@@ -26,6 +27,8 @@ public function index()
         ])->get();
 
         $anggaran = Anggaran::with(['kegiatan.rekening'])->get();
+
+        // dd($penyerapan);
 
         return Inertia::render(auth()->user()->role === 'admin' ? 'Realisasi/Index' : 'Users/Realisasi/Index', [
             'penyerapanList' => $penyerapan,
@@ -37,9 +40,10 @@ public function index()
         ]);
     }
 
-    // Jika peran tidak dikenali, arahkan ke dashboard atau halaman default
+    // If role is not recognized, redirect to dashboard or default page
     return redirect('/dashboard');
 }
+
 
     // Store a newly created penyerapan in storage
     public function store(Request $request)
@@ -48,7 +52,8 @@ public function index()
             'anggaran_id' => 'required|exists:anggaran,id',
             'kegiatan_id' => 'required|exists:kegiatan,id',
             'penyerapan_anggaran' => 'required|numeric|min:1',
-            'target_fisirealisasi_kinerja' => 'nullable|numeric', // Validasi untuk tarcapaian_fisik' => 'nullable|numeric', // Validasi untuk realisasi fisik
+            'realisasi_kinerja' => 'nullable|numeric',
+            'capaian_fisik' => 'nullable|numeric', // Validasi untuk tarcapaian_fisik' => 'nullable|numeric', // Validasi untuk realisasi fisik
         ]);
 
         $anggaran = Anggaran::findOrFail($request->anggaran_id);
@@ -101,7 +106,12 @@ public function index()
             $persentase_penyerapan = ($request->penyerapan_anggaran / $anggaran->perubahan) * 100;
         }
 
-        $penyerapan = Penyerapan::findOrFail($id);
+        $penyerapan = Penyerapan::with([ // Pastikan relasi diambil
+            'anggaran.kegiatan.program',
+            'anggaran.kegiatan.subprogram',
+            'anggaran.kegiatan.rekening'
+        ])->findOrFail($id);        
+
         $penyerapan->update([
             'anggaran_id' => $request->anggaran_id,
             'kegiatan_id' => $request->kegiatan_id,

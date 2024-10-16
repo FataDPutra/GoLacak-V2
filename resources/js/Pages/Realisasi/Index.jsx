@@ -7,6 +7,8 @@ import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
 const Index = ({ penyerapanList, anggaran, programs, auth }) => {
     const [editPenyerapan, setEditPenyerapan] = useState(null);
 
+    console.log("Data di Index:", penyerapanList);
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <div className="flex flex-col lg:flex-row bg-gray-100 min-h-screen">
