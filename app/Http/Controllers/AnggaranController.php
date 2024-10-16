@@ -39,30 +39,42 @@ class AnggaranController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'program_id' => 'required|uuid|exists:programs,id',
-            'sub_program_id' => 'required|uuid|exists:subprograms,id',
-            'kegiatan_id' => 'required|uuid|exists:kegiatan,id',
-            'bidang_id' => 'required|uuid|exists:bidang,id', // Tambahkan validasi bidang_id
-            'anggaran_murni' => 'required|numeric',
-            'pergeseran' => 'nullable|numeric',
-            'perubahan' => 'nullable|numeric',
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'program_id' => 'required|uuid|exists:programs,id',
+        'sub_program_id' => 'required|uuid|exists:subprograms,id',
+        'kegiatan_id' => 'required|uuid|exists:kegiatan,id',
+        'bidang_id' => 'required|uuid|exists:bidang,id',
+        'anggaran_murni' => 'required|numeric',
+        'pergeseran' => 'nullable|numeric',
+        'perubahan' => 'nullable|numeric',
+    ]);
 
-        Anggaran::create([
-            'program_id' => $request->program_id,
-            'sub_program_id' => $request->sub_program_id,
-            'kegiatan_id' => $request->kegiatan_id,
-            'bidang_id' => $request->bidang_id, // Simpan bidang_id
-            'anggaran_murni' => $request->anggaran_murni,
-            'pergeseran' => $request->pergeseran ?? 0,
-            'perubahan' => $request->perubahan ?? 0,
-        ]);
+    // Cek apakah sudah ada anggaran dengan bidang dan kegiatan yang sama pada bulan yang sama
+    $bulanSekarang = date('Y-m');
+    $anggaranSama = Anggaran::where('bidang_id', $request->bidang_id)
+        ->where('kegiatan_id', $request->kegiatan_id)
+        ->whereMonth('created_at', date('m'))
+        ->whereYear('created_at', date('Y'))
+        ->first();
 
-        return redirect()->back()->with('success', 'Anggaran berhasil dibuat!');
+    if ($anggaranSama) {
+        return redirect()->back()->with('error', 'Anggaran dengan bidang dan kegiatan yang sama pada bulan yang sama sudah ada!');
     }
+
+    Anggaran::create([
+        'program_id' => $request->program_id,
+        'sub_program_id' => $request->sub_program_id,
+        'kegiatan_id' => $request->kegiatan_id,
+        'bidang_id' => $request->bidang_id,
+        'anggaran_murni' => $request->anggaran_murni,
+        'pergeseran' => $request->pergeseran ?? 0,
+        'perubahan' => $request->perubahan ?? 0,
+    ]);
+
+    return redirect()->back()->with('success', 'Anggaran berhasil dibuat!');
+}
 
     public function update(Request $request, $id)
     {
