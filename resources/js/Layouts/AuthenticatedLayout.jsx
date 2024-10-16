@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
 
 export default function Authenticated({ user, header, children }) {
@@ -21,14 +19,18 @@ export default function Authenticated({ user, header, children }) {
                         <div className="flex items-center">
                             <div className="shrink-0">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-[#fbfef9]" />
+                                    <img
+                                        src="/disnaker.ico"
+                                        alt="Disnaker Logo"
+                                        className="block h-12 w-auto" // Ukuran logo
+                                    />
                                 </Link>
                             </div>
-                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
                                 <NavLink
                                     href={route("bidang.index")}
-                                    active={route().current("bidang.index")}
-                                    className="text-[#fbfef9] hover:text-[#f39237] transition-all"
+                                    className="text-[#ffffff] hover:text-[#f39237] transition-all text-4xl font-bold no-underline" // Menghilangkan garis bawah
+                                    style={{ textDecoration: "none" }} // Menghilangkan garis biru di bawah
                                 >
                                     Go-Lacak
                                 </NavLink>
