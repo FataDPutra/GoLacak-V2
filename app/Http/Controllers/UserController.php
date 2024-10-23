@@ -36,7 +36,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
             'role' => 'required|string|in:user,admin',
-            'bidang_id' => 'required|uuid|exists:bidang,id', // Validasi bidang_id
+            'bidang_id' => 'nullable|uuid|exists:bidang,id', // Validasi bidang_id
         ]);
 
         User::create([
@@ -44,7 +44,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-            'bidang_id' => $request->bidang_id, // Simpan bidang_id
+            'bidang_id' => $request->bidang_id ?? null, // Simpan sebagai null jika tidak diisi
         ]);
 
         return redirect()->back()->with('success', 'User berhasil dibuat!');
@@ -57,7 +57,7 @@ class UserController extends Controller
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $id,
             'role' => 'required|string|in:user,admin',
-            'bidang_id' => 'required|uuid|exists:bidang,id', // Validasi bidang_id
+            'bidang_id' => 'nullable|uuid|exists:bidang,id', // Validasi bidang_id
         ]);
 
         $user = User::findOrFail($id);
@@ -65,7 +65,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
-            'bidang_id' => $request->bidang_id, // Update bidang_id
+            'bidang_id' => $request->bidang_id ?? null, // Simpan sebagai null jika tidak diisi
         ]);
 
         return redirect()->back()->with('success', 'User berhasil diperbarui!');

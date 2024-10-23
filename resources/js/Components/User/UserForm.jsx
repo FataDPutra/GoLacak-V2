@@ -117,7 +117,6 @@ export default function UserForm({ editUser, bidangList, setEditUser }) {
                 <select
                     value={bidangId}
                     onChange={(e) => setBidangId(e.target.value)}
-                    required
                     className="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
                 >
                     <option value="">Pilih Bidang</option>

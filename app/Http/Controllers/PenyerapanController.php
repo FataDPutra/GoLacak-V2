@@ -13,36 +13,75 @@ class PenyerapanController extends Controller
     // Display a listing of the penyerapan
 public function index()
 {
-    if (auth()->user()->role === 'admin' || auth()->user()->role === 'user') {
-        // Retrieve penyerapan and order by created_at descending
-        $penyerapan = Penyerapan::with([
-            'anggaran.kegiatan.program',
-            'anggaran.kegiatan.subprogram',
-            'anggaran.kegiatan.rekening'
-        ])->orderBy('updated_at', 'desc')->get(); // Order by created_at
+    $user = auth()->user(); // Ambil user yang sedang login
 
-        $programs = Program::with([
-            'subprograms.kegiatans.rekening',
-            'subprograms.rekening',
-        ])->get();
+    if ($user->role === 'admin' || $user->role === 'user') {
+        // Jika yang login adalah user, batasi berdasarkan bidang_id
+        if ($user->role === 'user') {
+            $bidangId = $user->bidang_id;
 
-        $anggaran = Anggaran::with(['kegiatan.rekening'])->get();
+            // Retrieve penyerapan dan filter berdasarkan bidang_id di anggaran
+            $penyerapan = Penyerapan::with([
+                'anggaran.kegiatan.program',
+                'anggaran.kegiatan.subprogram',
+                'anggaran.kegiatan.rekening'
+            ])
+            ->whereHas('anggaran', function ($query) use ($bidangId) {
+                // Filter berdasarkan bidang_id di anggaran
+                $query->where('bidang_id', $bidangId);
+            })
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
-        // dd($penyerapan);
+            // Ambil semua program melalui anggaran dan filter bidang_id di anggaran
+            $programs = Program::whereHas('subprograms.kegiatans.anggaran', function ($query) use ($bidangId) {
+                // Filter berdasarkan bidang_id di anggaran
+                $query->where('bidang_id', $bidangId);
+            })
+            ->with([
+                'subprograms.kegiatans.rekening',
+                'subprograms.rekening',
+            ])->get();
 
-        return Inertia::render(auth()->user()->role === 'admin' ? 'Realisasi/Index' : 'Users/Realisasi/Index', [
+            // Ambil anggaran yang terkait dengan bidang user
+            $anggaran = Anggaran::with(['kegiatan.rekening'])
+                ->where('bidang_id', $bidangId) // Filter anggaran berdasarkan bidang_id
+                ->get();
+        } else {
+            // Jika admin, ambil semua data tanpa filter
+            $penyerapan = Penyerapan::with([
+                'anggaran.kegiatan.program',
+                'anggaran.kegiatan.subprogram',
+                'anggaran.kegiatan.rekening'
+            ])
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+            // Ambil semua program tanpa filter
+            $programs = Program::with([
+                'subprograms.kegiatans.rekening',
+                'subprograms.rekening',
+            ])->get();
+
+            // Ambil semua anggaran tanpa filter
+            $anggaran = Anggaran::with(['kegiatan.rekening'])->get();
+        }
+
+        // Render view berdasarkan role user
+        return Inertia::render($user->role === 'admin' ? 'Realisasi/Index' : 'Users/Realisasi/Index', [
             'penyerapanList' => $penyerapan,
             'anggaran' => $anggaran,
             'programs' => $programs,
             'auth' => [
-                'user' => auth()->user(),
+                'user' => $user,
             ],
         ]);
     }
 
-    // If role is not recognized, redirect to dashboard or default page
+    // Jika role tidak dikenali, redirect ke dashboard atau halaman default
     return redirect('/dashboard');
 }
+
 
 
     // Store a newly created penyerapan in storage
